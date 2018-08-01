@@ -33,7 +33,7 @@ enum Token{
 	tLess,
 	tLessEqual,
 	tGreater,
-	tGraterEqual,
+	tGreaterEqual,
 	tEqual,
 	tDiff,
 	tAssignment,
