@@ -8,18 +8,23 @@
 
 digit       [0-9]
 letter		[a-zA-Z]
-id	        {letter}+[a-zA-Z0-9_]*	
+id	        {letter}([a-zA-Z0-9_]){0,30}	
 hex         0[xX]{1}[0-9a-fA-F]+
 real        [0-9]+\.[0-9]*
 exp         [eE]\+[0-9]+
-commentLine \/\/.*
-blockComment \/\*.*
+commentLine [/][/].*
+
+%x BLOCK_COMMENT
 
 %%
 
  /* Comment */
-{commentLine}       { column = 1; line++; }
-{blockComment}      { column = 1; }
+{commentLine}           { column = 1; }
+[/][*]                  { column += yyleng; BEGIN(BLOCK_COMMENT); }
+<BLOCK_COMMENT>"*/"     { column += yyleng; BEGIN 0; }
+<BLOCK_COMMENT>[^*\n]+  { column += yyleng; }
+<BLOCK_COMMENT>"*"      { column += yyleng; }
+<BLOCK_COMMENT>"\n"     { column = 1; line++; }
 
  /* Base types  */
 
@@ -118,7 +123,7 @@ blockComment \/\*.*
 
  /* Lines */
 
-[\t ]+              { column++; /* check whitespaces */ }
+[\t ]+              { column += yyleng; /* check whitespaces */ }
 "\n"                { column = 1; line++; /* detect new line */ }
 
  /* Others */

@@ -50,7 +50,9 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 # DUMMY ENTRIES
 clean:
 	@echo "Cleaning..."
-	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
+	@echo "$(RM) -rf $(BUILDDIR) $(TARGET)"; $(RM) -rf $(BUILDDIR) $(TARGET)
+	rm -rf $(SRCDIR)/lex.yy.c
+    
 
 .PHONY: clean
 
