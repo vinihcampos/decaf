@@ -1,16 +1,16 @@
 %{
 
-	#include <stdio.h>
-	#include "token.h"
-	#define ID_MAX_SZ 31
+    #include <stdio.h>
+    #include "token.h"
+    #define ID_MAX_SZ 31
     int line   = 1; int column = 1;    
 
 %}
 
 digit       [0-9]
-letter		[a-zA-Z]
+letter      [a-zA-Z]
 hexLetter   [a-fA-F]
-id	        {letter}({letter}|{digit}|[_])*	
+id          {letter}({letter}|{digit}|[_])*	
 notNumber   {digit}+{id}
 hex         0[xX]({digit}|{hexLetter})+
 real        {digit}+\.{digit}*
@@ -91,7 +91,7 @@ commentLine [/][/].*
 
  /* News  */
 
-"new"         		    { printf("%d %d %d %d %s\n", line, column, yyleng, tNew, yytext); column += yyleng; }
+"new"                   { printf("%d %d %d %d %s\n", line, column, yyleng, tNew, yytext); column += yyleng; }
 "newArray"              { printf("%d %d %d %d %s\n", line, column, yyleng, tNewArray, yytext); column += yyleng; }
 
  /* Identifier */
@@ -121,17 +121,17 @@ commentLine [/][/].*
 
 "&&"                    { printf("%d %d %d %d %s\n", line, column, yyleng, tAnd, yytext); column += yyleng; }
 "||"                    { printf("%d %d %d %d %s\n", line, column, yyleng, tOr, yytext); column += yyleng; }
-"!"       		        { printf("%d %d %d %d %s\n", line, column, yyleng, tNot, yytext); column += yyleng; }
+"!"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tNot, yytext); column += yyleng; }
 
  /* Symbols  */
 ";"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tSemiColon, yytext); column += yyleng; }
-","         	        { printf("%d %d %d %d %s\n", line, column, yyleng, tComma, yytext); column += yyleng; }
-"["       		        { printf("%d %d %d %d %s\n", line, column, yyleng, tBracketLeft, yytext); column += yyleng; }
-"]"            	        { printf("%d %d %d %d %s\n", line, column, yyleng, tBracketRight, yytext); column += yyleng; }
-"("         	        { printf("%d %d %d %d %s\n", line, column, yyleng, tParLeft, yytext); column += yyleng; }
-")"            	        { printf("%d %d %d %d %s\n", line, column, yyleng, tParRight, yytext); column += yyleng; }
-"{"         	        { printf("%d %d %d %d %s\n", line, column, yyleng, tBraceLeft, yytext); column += yyleng; }
-"}"         	        { printf("%d %d %d %d %s\n", line, column, yyleng, tBraceRight, yytext); column += yyleng; }
+","                     { printf("%d %d %d %d %s\n", line, column, yyleng, tComma, yytext); column += yyleng; }
+"["                     { printf("%d %d %d %d %s\n", line, column, yyleng, tBracketLeft, yytext); column += yyleng; }
+"]"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tBracketRight, yytext); column += yyleng; }
+"("                     { printf("%d %d %d %d %s\n", line, column, yyleng, tParLeft, yytext); column += yyleng; }
+")"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tParRight, yytext); column += yyleng; }
+"{"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tBraceLeft, yytext); column += yyleng; }
+"}"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tBraceRight, yytext); column += yyleng; }
 
 
  /* Lines */
