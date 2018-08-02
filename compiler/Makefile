@@ -20,7 +20,7 @@ SOURCES = $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJS = $(patsubst $(SRCDIR)/%, $(BUILDDIR)/%, $(SOURCES:.$(SRCEXT)=.o))  
 # COMPILER
 CC = gcc
-LEX = lex 
+LEX = @lex 
 # FOR CLEANING
 RM = /bin/rm
 # WARNING FLAG
@@ -38,21 +38,27 @@ CFLAGS = $(DEBUG) -c $(WARN)
 # ENTRIES
 # ----------------------
 
-$(TARGET): $(OBJS)
+$(TARGET): $(BUILDDIR)/lex.yy.o $(OBJS)
 	@echo "Linking..."
-	@echo "Converting lex file..."
-	cd $(SRCDIR) && $(LEX) $(LEXFILE) && cd ..
-	@echo " $(CC) $^ -o $(TARGET) $(LFLAGS)"; $(CC) $^ -o $(TARGET) $(LFLAGS)
-$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
-	@mkdir -p $(BUILDDIR)	
-	@echo " $(CC) $(CFLAGS) $(INCFLAG) -o $@ $<"; $(CC) $(CFLAGS) $(INCFLAG) -o $@ $<	
+	@echo " $(CC) $^ -o $(TARGET) $(LFLAGS)"; $(CC) $^ -o $(TARGET) $(LFLAGS); 
+	@rm -rf $(SRCDIR)/lex.yy.c
 
+$(BUILDDIR)/lex.yy.o: $(SRCDIR)/lex.yy.c
+	@mkdir -p $(BUILDDIR)
+	@$(CC) $(CFLAGS) $(INCFLAG) -o $@ $<;
+
+$(SRCDIR)/lex.yy.c:
+	$(LEX) $(SRCDIR)/$(LEXFILE)
+	@mv lex.yy.c $(SRCDIR)/
+
+$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
+	@mkdir -p $(BUILDDIR)
+	@echo " $(CC) $(CFLAGS) $(INCFLAG) -o $@ $<"; $(CC) $(CFLAGS) $(INCFLAG) -o $@ $<;
+	
 # DUMMY ENTRIES
 clean:
 	@echo "Cleaning..."
 	@echo "$(RM) -rf $(BUILDDIR) $(TARGET)"; $(RM) -rf $(BUILDDIR) $(TARGET)
-	rm -rf $(SRCDIR)/lex.yy.c
-    
 
 .PHONY: clean
 
