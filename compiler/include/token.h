@@ -2,7 +2,7 @@
 #define _LEXICAL_
 
 enum Token{
-	tMain = 5,
+	tMain = 10,
 	tVoid,   	// base type
 	tInt,        	// base type
 	tDouble,     	// base type

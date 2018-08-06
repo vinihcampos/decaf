@@ -3,8 +3,14 @@
     #include <stdio.h>
     #include "token.h"
     #define ID_MAX_SZ 31
-    int line   = 1; int column = 1;    
-
+    int line = 1; 
+    int column = 1;    
+    
+    int returnToken(int token){
+        printf("%d\t%d\t%lu\t%d\t%s\n", line, column, yyleng, token, yytext); 
+        column += yyleng;
+        return token;
+    }
 %}
 
 digit       [0-9]
@@ -30,108 +36,108 @@ commentLine [/][/].*
 
  /* Constants */
 
-{real}{exp}*            { printf("%d %d %d %d %s\n", line, column, yyleng, tDoubleConstant, yytext); column += yyleng; }
-{hex}|{digit}+          { printf("%d %d %d %d %s\n", line, column, yyleng, tIntConstant, yytext); column += yyleng; }
-\".*\"                  { printf("%d %d %d %d %s\n", line, column, yyleng, tStringConstant, yytext); column += yyleng; }
-"false"                 { printf("%d %d %d %d %s\n", line, column, yyleng, tFalse, yytext); column += yyleng; }
-"true"                  { printf("%d %d %d %d %s\n", line, column, yyleng, tTrue, yytext); column += yyleng; }
-"null"                  { printf("%d %d %d %d %s\n", line, column, yyleng, tNull, yytext); column += yyleng; }
+{hex}|{digit}+          { returnToken(tIntConstant); }
+\".*\"                  { returnToken(tStringConstant); }
+"false"                 { returnToken(tFalse); }
+"true"                  { returnToken(tTrue); }
+{real}{exp}*            { returnToken(tDoubleConstant); }
+"null"                  { returnToken(tNull); }
 
  /* Errors  */
 {id}                    {   
                             if(yyleng > ID_MAX_SZ){
-                                printf("%d %d %d %d %s\n", line, column, yyleng, tError, yytext); column += yyleng; 
+                                returnToken(tError); 
                             }else{
                                 REJECT;
                             }
                         }
 
-{notNumber}             { printf("%d %d %d %d %s\n", line, column, yyleng, tError, yytext); column += yyleng; }   
+{notNumber}             { returnToken(tError); }   
 
  /* Base types  */
 
-"void"                  { printf("%d %d %d %d %s\n", line, column, yyleng, tVoid, yytext); column += yyleng; }
-"int"                   { printf("%d %d %d %d %s\n", line, column, yyleng, tInt, yytext); column += yyleng; }
-"double"                { printf("%d %d %d %d %s\n", line, column, yyleng, tDouble, yytext); column += yyleng; }
-"bool"                  { printf("%d %d %d %d %s\n", line, column, yyleng, tBool, yytext); column += yyleng; }
-"string"                { printf("%d %d %d %d %s\n", line, column, yyleng, tString, yytext); column += yyleng; }
+"void"                  { returnToken(tVoid); }
+"int"                   { returnToken(tInt); }
+"double"                { returnToken(tDouble); }
+"bool"                  { returnToken(tBool); }
+"string"                { returnToken(tString); }
 
  /* Loops */
 
-"for"                   { printf("%d %d %d %d %s\n", line, column, yyleng, tFor, yytext); column += yyleng; }
-"while"                 { printf("%d %d %d %d %s\n", line, column, yyleng, tWhile, yytext); column += yyleng; }
+"for"                   { returnToken(tFor); }
+"while"                 { returnToken(tWhile); }
 
  /* Control statements */
 
-"if"                    { printf("%d %d %d %d %s\n", line, column, yyleng, tIf, yytext); column += yyleng; }
-"else"                  { printf("%d %d %d %d %s\n", line, column, yyleng, tElse, yytext); column += yyleng; }
+"if"                    { returnToken(tIf); }
+"else"                  { returnToken(tElse); }
 
  /* Class patterns */
 
-"class"                 { printf("%d %d %d %d %s\n", line, column, yyleng, tClass, yytext); column += yyleng; }
-"extends"               { printf("%d %d %d %d %s\n", line, column, yyleng, tExtends, yytext); column += yyleng; }
-"this"                  { printf("%d %d %d %d %s\n", line, column, yyleng, tThis, yytext); column += yyleng; }
-"\."                    { printf("%d %d %d %d %s\n", line, column, yyleng, tDot, yytext); column += yyleng; }
+"class"                 { returnToken(tClass); }
+"extends"               { returnToken(tExtends); }
+"this"                  { returnToken(tThis); }
+"\."                    { returnToken(tDot); }
 
  /* Interface patterns */
 
-"interface"             { printf("%d %d %d %d %s\n", line, column, yyleng, tInterface, yytext); column += yyleng; }
-"implements"            { printf("%d %d %d %d %s\n", line, column, yyleng, tImplements, yytext); column += yyleng; }
+"interface"             { returnToken(tInterface); }
+"implements"            { returnToken(tImplements); }
 
  /* Exit scope */
 
-"break"                 { printf("%d %d %d %d %s\n", line, column, yyleng, tBreak, yytext); column += yyleng; }
-"return"                { printf("%d %d %d %d %s\n", line, column, yyleng, tReturn, yytext); column += yyleng; }
+"break"                 { returnToken(tBreak); }
+"return"                { returnToken(tReturn); }
 
  /* IO */
 
-"print"                 { printf("%d %d %d %d %s\n", line, column, yyleng, tPrint, yytext); column += yyleng; }
-"readLine"              { printf("%d %d %d %d %s\n", line, column, yyleng, tReadLine, yytext); column += yyleng; }
-"readInteger"           { printf("%d %d %d %d %s\n", line, column, yyleng, tReadInteger, yytext); column += yyleng; }
+"print"                 { returnToken(tPrint); }
+"readLine"              { returnToken(tReadLine); }
+"readInteger"           { returnToken(tReadInteger); }
 
  /* News  */
 
-"new"                   { printf("%d %d %d %d %s\n", line, column, yyleng, tNew, yytext); column += yyleng; }
-"newArray"              { printf("%d %d %d %d %s\n", line, column, yyleng, tNewArray, yytext); column += yyleng; }
+"new"                   { returnToken(tNew); }
+"newArray"              { returnToken(tNewArray); }
 
  /* Identifier */
 
-{id}                    { printf("%d %d %d %d %s\n", line, column, yyleng, tId, yytext); column += yyleng; }
+{id}                    { returnToken(tId); }
 
  /*** Operators ***/
  /* Arithmetic */
 
-"+"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tPlus, yytext); column += yyleng; }
-"-"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tMinus, yytext); column += yyleng; }
-"*"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tMulti, yytext); column += yyleng; }
-"/"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tDiv, yytext); column += yyleng; }
-"%"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tMod, yytext); column += yyleng; }
+"+"                     { returnToken(tPlus); }
+"-"                     { returnToken(tMinus); }
+"*"                     { returnToken(tMulti); }
+"/"                     { returnToken(tDiv); }
+"%"                     { returnToken(tMod); }
 
  /* Relational */
 
-"<"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tLess, yytext); column += yyleng; }
-"<="                    { printf("%d %d %d %d %s\n", line, column, yyleng, tLessEqual, yytext); column += yyleng; }
-">"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tGreater, yytext); column += yyleng; }
-">="                    { printf("%d %d %d %d %s\n", line, column, yyleng, tGreaterEqual, yytext); column += yyleng; }
-"="                     { printf("%d %d %d %d %s\n", line, column, yyleng, tAssignment, yytext); column += yyleng; }
-"=="                    { printf("%d %d %d %d %s\n", line, column, yyleng, tEqual, yytext); column += yyleng; }
-"!="                    { printf("%d %d %d %d %s\n", line, column, yyleng, tDiff, yytext); column += yyleng; }
+"<"                     { returnToken(tLess); }
+"<="                    { returnToken(tLessEqual); }
+">"                     { returnToken(tGreater); }
+">="                    { returnToken(tGreaterEqual); }
+"="                     { returnToken(tAssignment); }
+"=="                    { returnToken(tEqual); }
+"!="                    { returnToken(tDiff); }
 
  /* Logic */
 
-"&&"                    { printf("%d %d %d %d %s\n", line, column, yyleng, tAnd, yytext); column += yyleng; }
-"||"                    { printf("%d %d %d %d %s\n", line, column, yyleng, tOr, yytext); column += yyleng; }
-"!"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tNot, yytext); column += yyleng; }
+"&&"                    { returnToken(tAnd); }
+"||"                    { returnToken(tOr); }
+"!"                     { returnToken(tNot); }
 
  /* Symbols  */
-";"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tSemiColon, yytext); column += yyleng; }
-","                     { printf("%d %d %d %d %s\n", line, column, yyleng, tComma, yytext); column += yyleng; }
-"["                     { printf("%d %d %d %d %s\n", line, column, yyleng, tBracketLeft, yytext); column += yyleng; }
-"]"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tBracketRight, yytext); column += yyleng; }
-"("                     { printf("%d %d %d %d %s\n", line, column, yyleng, tParLeft, yytext); column += yyleng; }
-")"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tParRight, yytext); column += yyleng; }
-"{"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tBraceLeft, yytext); column += yyleng; }
-"}"                     { printf("%d %d %d %d %s\n", line, column, yyleng, tBraceRight, yytext); column += yyleng; }
+";"                     { returnToken(tSemiColon); }
+","                     { returnToken(tComma); }
+"["                     { returnToken(tBracketLeft); }
+"]"                     { returnToken(tBracketRight); }
+"("                     { returnToken(tParLeft); }
+")"                     { returnToken(tParRight); }
+"{"                     { returnToken(tBraceLeft); }
+"}"                     { returnToken(tBraceRight); }
 
 
  /* Lines */
@@ -143,4 +149,11 @@ commentLine [/][/].*
 
 .                       ;
 %%
+
+int main(){
+    
+    printf("Line\tColumn\tLength\tToken\tLexema\n");
+    yylex();
+    return 0;
+}
 
