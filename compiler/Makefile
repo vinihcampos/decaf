@@ -40,6 +40,7 @@ CFLAGS = $(DEBUG) -c $(WARN)
 
 $(TARGET): $(BUILDDIR)/lex.yy.o $(OBJS)
 	@echo "Linking..."
+	@mkdir -p $(BINDIR)
 	@echo " $(CC) $^ -o $(TARGET) $(LFLAGS)"; $(CC) $^ -o $(TARGET) $(LFLAGS); 
 	@rm -rf $(SRCDIR)/lex.yy.c
 

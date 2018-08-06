@@ -3,11 +3,14 @@
     #include <stdio.h>
     #include "token.h"
     #define ID_MAX_SZ 31
+    #define TOKEN_NAME(Token) (#Token)
+
     int line = 1; 
     int column = 1;    
     
     int returnToken(int token){
-        printf("%d\t%d\t%lu\t%d\t%s\n", line, column, yyleng, token, yytext); 
+        char * tokenStr = getTokenString(token);
+        printf("%4d %6d %6d %14s %4d %s\n", line, column, yyleng, tokenStr, token, yytext);
         column += yyleng;
         return token;
     }
@@ -145,14 +148,14 @@ commentLine [/][/].*
 [\t ]+                  { column += yyleng; /* check whitespaces */ }
 "\n"                    { column = 1; line++; /* detect new line */ }
 
- /* Others */
+ /* Errors  */
 
-.                       ;
+.                       { returnToken(tError); }
 %%
 
 int main(){
     
-    printf("Line\tColumn\tLength\tToken\tLexema\n");
+    printf("%4s %6s %6s %14s %4s %s\n", "Line", "Column", "Length", "Token", "Code", "Lexema");
     yylex();
     return 0;
 }
