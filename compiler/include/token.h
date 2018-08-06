@@ -3,7 +3,7 @@
 
 enum Token{
 	tMain = 10,
-	tVoid,   	// base type
+	tVoid,   	    // base type
 	tInt,        	// base type
 	tDouble,     	// base type
 	tBool,       	// base type
@@ -57,5 +57,16 @@ enum Token{
 	tStringConstant,
     tError,
 };
+
+char * getTokenString(int token){
+    switch(token){
+        case tMain:
+			return "T_MAIN";
+		case tVoid:
+			return "T_VOID";
+		default:
+			return "T_ERROR";
+    }
+}
 
 #endif

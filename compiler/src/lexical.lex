@@ -9,7 +9,7 @@
     int column = 1;    
     
     int returnToken(int token){
-        printf("%d\t%d\t%lu\t%s\t%s\n", line, column, yyleng, token, yytext); 
+        printf("%d\t%d\t%lu\t%d\t%s\n", line, column, yyleng, token, getTokenString(token)); 
         column += yyleng;
         return token;
     }
@@ -147,9 +147,9 @@ commentLine [/][/].*
 [\t ]+                  { column += yyleng; /* check whitespaces */ }
 "\n"                    { column = 1; line++; /* detect new line */ }
 
- /* Others */
+ /* Errors  */
 
-.                       ;
+.                       { returnToken(tError); }
 %%
 
 int main(){
