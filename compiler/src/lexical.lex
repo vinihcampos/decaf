@@ -1,7 +1,6 @@
 %{
 
     #include <stdio.h>
-    #include <string.h>
     #include "token.h"
     #define ID_MAX_SZ 31
     #define TOKEN_NAME(Token) (#Token)
@@ -10,13 +9,8 @@
     int column = 1;    
     
     int returnToken(int token){
-        printf("%d\t%d\t%d\t\t", line, column, yyleng);
         char * tokenStr = getTokenString(token);
-        printf("%s", tokenStr);
-        int i;
-        for(i = 0; i < strlen(tokenStr); printf(" "), ++i);
-
-        printf("%d\t%s\n", token, yytext);
+        printf("%4d %6d %6d %14s %4d %s\n", line, column, yyleng, tokenStr, token, yytext);
         column += yyleng;
         return token;
     }
@@ -161,7 +155,7 @@ commentLine [/][/].*
 
 int main(){
     
-    printf("Line\tColumn\tLength's Token\tToken\tToken Code\tLexema\n");
+    printf("%4s %6s %6s %14s %4s %s\n", "Line", "Column", "Length", "Token", "Code", "Lexema");
     yylex();
     return 0;
 }
