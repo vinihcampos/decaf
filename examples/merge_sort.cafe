@@ -1,10 +1,10 @@
-void merge(int arr[], int l, int m, int r)
+void merge(int[] arr, int l, int m, int r)
 {
     int n1 = m - l + 1;
     int n2 = r - m;
 
-    int L[] = newArray(n1, int);
-    int R[] = newArray(n2, int);
+    int[] L = newArray(n1, int);
+    int[] R = newArray(n2, int);
 
     for (int i=0; i<n1; i=i+1)
         L[i] = arr[l + i];
@@ -41,7 +41,7 @@ void merge(int arr[], int l, int m, int r)
     }
 }
 
-void merge_sort(int arr[], int l, int r)
+int[] merge_sort(int[] arr, int l, int r)
 {
     if (l < r)
     {
@@ -52,4 +52,6 @@ void merge_sort(int arr[], int l, int r)
 
         merge(arr, l, m, r);
     }
+
+    return arr;
 }
