@@ -10,20 +10,20 @@ void main(){
      BinarySearch(vector, 0, vector.length());
 }
 
-int BinarySearch (int[] vet, int chave, int tam)
+int BinarySearch (int[] vector, int key, int length)
 {
      int inf = 0;     
-     int sup = tam-1; 
-     int meio;
+     int sup = length-1; 
+     int half;
      while (inf <= sup)
      {
-          meio = (inf + sup)/2;
-          if (chave == vet[meio])
-               return meio;
-          if (chave < vet[meio])
-               sup = meio-1;
+          half = (inf + sup)/2;
+          if (key == vector[half])
+               return half;
+          if (key < vector[half])
+               sup = half-1;
           else
-               inf = meio+1;
+               inf = half+1;
      }
      return -1;
 }

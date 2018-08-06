@@ -20,29 +20,29 @@ int[] quick_sort(int[] vector, int left, int right ){
 
 	i = left;
     j = right;
-    x = a[(left + right) / 2];
+    x = vector[(left + right) / 2];
 
 	while(i <= j) {
-        while(a[i] < x && i < right) {
+        while(vector[i] < x && i < right) {
             i = i + 1;
         }
-        while(a[j] > x && j > left) {
+        while(vector[j] > x && j > left) {
             j = j - 1;
         }
         if(i <= j) {
-            y = a[i];
-            a[i] = a[j];
-            a[j] = y;
+            y = vector[i];
+            vector[i] = vector[j];
+            vector[j] = y;
             i = i + 1;
             j = j - 1;
         }
     }
      
     if(j > left) {
-        quick_sort(a, left, j);
+        quick_sort(vector, left, j);
     }
     if(i < right) {
-        quick_sort(a, i, right);
+        quick_sort(vector, i, right);
     }
 
 	return vector;
