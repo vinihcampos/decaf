@@ -1,0 +1,49 @@
+void main(){
+	int[] vector = newArray(10, int);
+
+	vector[0] = 42;
+	vector[1] = 34;
+	vector[2] = 9;
+	vector[3] = 56;
+	vector[4] = 90;
+	vector[5] = 17;
+	vector[6] = 49;
+	vector[7] = 27;
+	vector[8] = 94;
+	vector[9] = 11;
+
+	quick_sort(vector, 0, vector.length - 1);
+}
+
+int[] quick_sort(int[] vector, int left, int right ){
+	int i; int j; int x; int y;
+
+	i = left;
+    j = right;
+    x = a[(left + right) / 2];
+
+	while(i <= j) {
+        while(a[i] < x && i < right) {
+            i = i + 1;
+        }
+        while(a[j] > x && j > left) {
+            j = j - 1;
+        }
+        if(i <= j) {
+            y = a[i];
+            a[i] = a[j];
+            a[j] = y;
+            i = i + 1;
+            j = j - 1;
+        }
+    }
+     
+    if(j > left) {
+        quick_sort(a, left, j);
+    }
+    if(i < right) {
+        quick_sort(a, i, right);
+    }
+
+	return vector;
+}
