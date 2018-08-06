@@ -12,7 +12,7 @@ void main(){
 	vector[8] = 94;
 	vector[9] = 11;
 
-	quick_sort(vector, 0, vector.length - 1);
+	quick_sort(vector, 0, vector.length() - 1);
 }
 
 int[] quick_sort(int[] vector, int left, int right ){
