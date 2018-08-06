@@ -139,7 +139,7 @@ char * getTokenString(int token){
         case tNot:
             return "T_!";
         case tSemiColon:
-            return "T_";
+            return "T_;";
         case tComma:
             return "T_,";
         case tDot:

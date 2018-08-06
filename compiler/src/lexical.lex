@@ -3,14 +3,17 @@
     #include <stdio.h>
     #include "token.h"
     #define ID_MAX_SZ 31
-    #define TOKEN_NAME(Token) (#Token)
-
+    
     int line = 1; 
     int column = 1;    
-    
+    int output = 0;    
+ 
     int returnToken(int token){
         char * tokenStr = getTokenString(token);
-        printf("%4d %6d %6d %14s %4d %s\n", line, column, yyleng, tokenStr, token, yytext);
+        if(output)
+            fprintf(yyout ,"%4d %6d %6d %14s %4d %s\n", line, column, yyleng, tokenStr, token, yytext);
+        else
+            printf("%4d %6d %6d %14s %4d %s\n", line, column, yyleng, tokenStr, token, yytext);
         column += yyleng;
         return token;
     }
@@ -56,6 +59,10 @@ commentLine [/][/].*
                         }
 
 {notNumber}             { returnToken(tError); }   
+ 
+ /* Main Subprogram */
+
+main                    { returnToken(tMain); }                  
 
  /* Base types  */
 
@@ -153,10 +160,22 @@ commentLine [/][/].*
 .                       { returnToken(tError); }
 %%
 
-int main(){
-    
-    printf("%4s %6s %6s %14s %4s %s\n", "Line", "Column", "Length", "Token", "Code", "Lexema");
-    yylex();
+int main(int argn, char * argv[]){
+    if(argn > 1){
+        yyin = fopen(argv[1], "r");
+        if(argn > 2){
+            yyout = fopen(argv[2], "w");
+            output = 1;
+            fprintf(yyout, "%4s %6s %6s %14s %4s %s\n", "Line", "Column", "Length", "Token", "Code", "Lexema");
+        }else{
+            printf("%4s %6s %6s %14s %4s %s\n", "Line", "Column", "Length", "Token", "Code", "Lexema");
+        }
+        yylex();
+        fclose(yyin);
+        fclose(yyout);
+    }else{
+        printf("ERROR! There is no file to analyze!\n");
+    }
     return 0;
 }
 
