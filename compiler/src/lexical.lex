@@ -3,11 +3,13 @@
     #include <stdio.h>
     #include "token.h"
     #define ID_MAX_SZ 31
+    #define TOKEN_NAME(Token) (#Token)
+
     int line = 1; 
     int column = 1;    
     
     int returnToken(int token){
-        printf("%d\t%d\t%lu\t%d\t%s\n", line, column, yyleng, token, yytext); 
+        printf("%d\t%d\t%lu\t%s\t%s\n", line, column, yyleng, token, yytext); 
         column += yyleng;
         return token;
     }
