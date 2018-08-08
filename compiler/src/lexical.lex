@@ -60,10 +60,6 @@ commentLine [/][/].*
 
 {notNumber}             { returnToken(tError); }   
  
- /* Main Subprogram */
-
-main                    { returnToken(tMain); }                  
-
  /* Base types  */
 
 "void"                  { returnToken(tVoid); }

@@ -2,8 +2,7 @@
 #define _LEXICAL_
 
 enum Token{
-	tMain = 10,
-	tVoid,   	    // base type
+	tVoid = 10,   	// base type
 	tInt,        	// base type
 	tDouble,     	// base type
 	tBool,       	// base type
@@ -20,12 +19,12 @@ enum Token{
 	tElse,       	// conditional
 	tReturn,     	// subprogram return;
 	tBreak,      	// break statement
-	tNew,		 	// expression
+	tNew,		// expression
 	tNewArray,   	// expression
-	tPrint,		 	// print statement
+	tPrint,		// print statement
 	tReadInteger,	// read int
 	tReadLine,   	// read string
-	tId,		 	// Identifier (variable, class, interface or subprogram)
+	tId,		// Identifier (variable, class, interface or subprogram)
 	tPlus,
 	tMinus,
 	tMulti,
@@ -60,10 +59,8 @@ enum Token{
 
 char * getTokenString(int token){
     switch(token){
-        case tMain:
-			return "T_MAIN";
-		case tVoid:
-			return "T_VOID";
+	case tVoid:
+	    return "T_VOID";
         case tInt:
             return "T_INT";           
         case tDouble:
