@@ -7,16 +7,14 @@ void main(){
      vector[3] = 56;
      vector[4] = 90;
 
-     BinarySearch(vector, 0, vector.length());
+     binarySearch(vector, 0, vector.length());
 }
 
-int BinarySearch (int[] vector, int key, int length)
-{
+int binarySearch (int[] vector, int key, int length){
      int inf = 0;     
      int sup = length-1; 
      int half;
-     while (inf <= sup)
-     {
+     while (inf <= sup){
           half = (inf + sup)/2;
           if (key == vector[half])
                return half;

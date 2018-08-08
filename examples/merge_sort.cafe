@@ -1,5 +1,4 @@
-void merge(int[] arr, int l, int m, int r)
-{
+void merge(int[] arr, int l, int m, int r){
     int n1 = m - l + 1;
     int n2 = r - m;
 
@@ -15,8 +14,7 @@ void merge(int[] arr, int l, int m, int r)
     int i = 0; int j = 0;
 
     int k = l;
-    while (i < n1 && j < n2)
-    {
+    while (i < n1 && j < n2){
         if (L[i] <= R[j]) {
             arr[k] = L[i];
             i = i + 1;
@@ -28,23 +26,21 @@ void merge(int[] arr, int l, int m, int r)
         k = k + 1;
     }
 
-    while (i < n1) {
+    while (i < n1){
         arr[k] = L[i];
         i = i + 1;
         k = k + 1;
     }
 
-    while (j < n2) {
+    while (j < n2){
         arr[k] = R[j];
         j = j + 1;
         k = k + 1;
     }
 }
 
-int[] merge_sort(int[] arr, int l, int r)
-{
-    if (l < r)
-    {
+int[] merge_sort(int[] arr, int l, int r){
+    if (l < r){
         int m = (l+r)/2;
 
         merge_sort(arr, l, m);
@@ -54,4 +50,16 @@ int[] merge_sort(int[] arr, int l, int r)
     }
 
     return arr;
+}
+
+void main(){
+    int[] vector = newArray(5, int);
+
+    vector[0] = 10;
+    vector[1] = 50;
+    vector[2] = 2;
+    vector[3] = 3;
+    vector[4] = 7;
+
+    vector = merge_sort(vector, 0, vector.length() - 1);
 }

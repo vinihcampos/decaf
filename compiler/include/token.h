@@ -54,7 +54,6 @@ enum Token{
 	tTrue,
 	tFalse,
 	tStringConstant,
-    tError,
 };
 
 char * getTokenString(int token){

@@ -10,6 +10,7 @@ BUILDDIR = build
 # LIB OPTIONS
 # TARGET
 LEXFILE = lexical.lex
+LEXFILE_C = lex.yy.c
 TARGET = $(BINDIR)/lexical_analyzer
 # EXTENSIONS
 SRCEXT = c
@@ -42,15 +43,15 @@ $(TARGET): $(BUILDDIR)/lex.yy.o $(OBJS)
 	@echo "Linking..."
 	@mkdir -p $(BINDIR)
 	@echo " $(CC) $^ -o $(TARGET) $(LFLAGS)"; $(CC) $^ -o $(TARGET) $(LFLAGS); 
-	@rm -rf $(SRCDIR)/lex.yy.c
+	@rm -rf $(SRCDIR)/$(LEXFILE_C)
 
-$(BUILDDIR)/lex.yy.o: $(SRCDIR)/lex.yy.c
+$(BUILDDIR)/lex.yy.o: $(SRCDIR)/$(LEXFILE_C)
 	@mkdir -p $(BUILDDIR)
 	@$(CC) $(CFLAGS) $(INCFLAG) -o $@ $<;
 
-$(SRCDIR)/lex.yy.c:
+$(SRCDIR)/$(LEXFILE_C):
 	$(LEX) $(SRCDIR)/$(LEXFILE)
-	@mv lex.yy.c $(SRCDIR)/
+	@mv $(LEXFILE_C) $(SRCDIR)/
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDDIR)
@@ -60,6 +61,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 clean:
 	@echo "Cleaning..."
 	@echo "$(RM) -rf $(BUILDDIR) $(TARGET)"; $(RM) -rf $(BUILDDIR) $(TARGET)
+	@rm -rf $(SRCDIR)/$(LEXFILE_C) 
 
 .PHONY: clean
 
