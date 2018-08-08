@@ -26,7 +26,7 @@ id          {letter}({letter}|{digit}|[_])*
 notNumber   {digit}+{id}
 hex         0[xX]({digit}|{hexLetter})+
 real        {digit}+\.{digit}*
-exp         [eE]\+{digit}+
+exp         [eE]([+]){0,1}{digit}+
 commentLine [/][/].*
 
 %x BLOCK_COMMENT
