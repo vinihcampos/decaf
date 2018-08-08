@@ -8,14 +8,22 @@
     int column = 1;    
     int output = 0;    
  
-    int returnToken(int token){
+    void printToken(int token){
+        int len = yyleng;
         char * tokenStr = getTokenString(token);
-        if(output)
-            fprintf(yyout ,"%4d %6d %6d %14s %4d %s\n", line, column, yyleng, tokenStr, token, yytext);
-        else
-            printf("%4d %6d %6d %14s %4d %s\n", line, column, yyleng, tokenStr, token, yytext);
+        char * text;
+        if(token == tId && len > 31){
+            text = (char*) malloc(32);
+            for(len = 0; len < 31; ++len) text[len] = yytext[len];
+            text[31] = '\0';
+        }else{
+            text = yytext;
+        }
+        
+        if(output) fprintf(yyout ,"%4d %6d %6d %14s %4d %s\n", line, column, len, tokenStr, token, text);
+        else       printf("%4d %6d %6d %14s %4d %s\n", line, column, len, tokenStr, token, text);
+        
         column += yyleng;
-        return token;
     }
 %}
 
@@ -42,118 +50,125 @@ commentLine [/][/].*
 
  /* Constants */
 
-{hex}|{digit}+          { returnToken(tIntConstant); }
-\".*\"                  { returnToken(tStringConstant); }
-"false"                 { returnToken(tFalse); }
-"true"                  { returnToken(tTrue); }
-{real}{exp}*            { returnToken(tDoubleConstant); }
-"null"                  { returnToken(tNull); }
+{hex}|{digit}+  { printToken(tIntConstant); }
+\".*\"          { printToken(tStringConstant); }
+false           { printToken(tFalse); }
+true            { printToken(tTrue); }
+{real}{exp}*    { printToken(tDoubleConstant); }
+null            { printToken(tNull); }
 
  /* Errors  */
-{id}                    {   
-                            if(yyleng > ID_MAX_SZ){
-                                returnToken(tError); 
-                            }else{
-                                REJECT;
-                            }
-                        }
+{id}            {   
+                    if(yyleng > ID_MAX_SZ){
+                        fprintf(stderr, "Warning: the %s will be truncated, because it exceeded maximum size of an identifier\n", yytext);
+				        printToken(tId); 
+                    }else{
+                        REJECT;
+                    }
+                }
 
-{notNumber}             { returnToken(tError); }   
+{notNumber}     { 
+                    fprintf(stderr, "Error: the %s is not a valid number\n", yytext);
+                    column += yyleng;			
+                }   
  
  /* Base types  */
 
-"void"                  { returnToken(tVoid); }
-"int"                   { returnToken(tInt); }
-"double"                { returnToken(tDouble); }
-"bool"                  { returnToken(tBool); }
-"string"                { returnToken(tString); }
+void            { printToken(tVoid); }
+int             { printToken(tInt); }
+double          { printToken(tDouble); }
+bool            { printToken(tBool); }
+string          { printToken(tString); }
 
  /* Loops */
 
-"for"                   { returnToken(tFor); }
-"while"                 { returnToken(tWhile); }
+for             { printToken(tFor); }
+while           { printToken(tWhile); }
 
  /* Control statements */
 
-"if"                    { returnToken(tIf); }
-"else"                  { returnToken(tElse); }
+if              { printToken(tIf); }
+else            { printToken(tElse); }
 
  /* Class patterns */
 
-"class"                 { returnToken(tClass); }
-"extends"               { returnToken(tExtends); }
-"this"                  { returnToken(tThis); }
-"\."                    { returnToken(tDot); }
+class           { printToken(tClass); }
+extends         { printToken(tExtends); }
+this            { printToken(tThis); }
+"\."            { printToken(tDot); }
 
  /* Interface patterns */
 
-"interface"             { returnToken(tInterface); }
-"implements"            { returnToken(tImplements); }
+interface       { printToken(tInterface); }
+implements      { printToken(tImplements); }
 
  /* Exit scope */
 
-"break"                 { returnToken(tBreak); }
-"return"                { returnToken(tReturn); }
+break           { printToken(tBreak); }
+return          { printToken(tReturn); }
 
  /* IO */
 
-"print"                 { returnToken(tPrint); }
-"readLine"              { returnToken(tReadLine); }
-"readInteger"           { returnToken(tReadInteger); }
+print           { printToken(tPrint); }
+readLine        { printToken(tReadLine); }
+readInteger     { printToken(tReadInteger); }
 
  /* News  */
 
-"new"                   { returnToken(tNew); }
-"newArray"              { returnToken(tNewArray); }
+new             { printToken(tNew); }
+newArray        { printToken(tNewArray); }
 
  /* Identifier */
 
-{id}                    { returnToken(tId); }
+{id}            { printToken(tId); }
 
  /*** Operators ***/
  /* Arithmetic */
 
-"+"                     { returnToken(tPlus); }
-"-"                     { returnToken(tMinus); }
-"*"                     { returnToken(tMulti); }
-"/"                     { returnToken(tDiv); }
-"%"                     { returnToken(tMod); }
+"+"             { printToken(tPlus); }
+"-"             { printToken(tMinus); }
+"*"             { printToken(tMulti); }
+"/"             { printToken(tDiv); }
+"%"             { printToken(tMod); }
 
  /* Relational */
 
-"<"                     { returnToken(tLess); }
-"<="                    { returnToken(tLessEqual); }
-">"                     { returnToken(tGreater); }
-">="                    { returnToken(tGreaterEqual); }
-"="                     { returnToken(tAssignment); }
-"=="                    { returnToken(tEqual); }
-"!="                    { returnToken(tDiff); }
+"<"             { printToken(tLess); }
+"<="            { printToken(tLessEqual); }
+">"             { printToken(tGreater); }
+">="            { printToken(tGreaterEqual); }
+"="             { printToken(tAssignment); }
+"=="            { printToken(tEqual); }
+"!="            { printToken(tDiff); }
 
  /* Logic */
 
-"&&"                    { returnToken(tAnd); }
-"||"                    { returnToken(tOr); }
-"!"                     { returnToken(tNot); }
+"&&"            { printToken(tAnd); }
+"||"            { printToken(tOr); }
+"!"             { printToken(tNot); }
 
  /* Symbols  */
-";"                     { returnToken(tSemiColon); }
-","                     { returnToken(tComma); }
-"["                     { returnToken(tBracketLeft); }
-"]"                     { returnToken(tBracketRight); }
-"("                     { returnToken(tParLeft); }
-")"                     { returnToken(tParRight); }
-"{"                     { returnToken(tBraceLeft); }
-"}"                     { returnToken(tBraceRight); }
+";"             { printToken(tSemiColon); }
+","             { printToken(tComma); }
+"["             { printToken(tBracketLeft); }
+"]"             { printToken(tBracketRight); }
+"("             { printToken(tParLeft); }
+")"             { printToken(tParRight); }
+"{"             { printToken(tBraceLeft); }
+"}"             { printToken(tBraceRight); }
 
 
  /* Lines */
 
-[\t ]+                  { column += yyleng; /* check whitespaces */ }
-"\n"                    { column = 1; line++; /* detect new line */ }
+[\t ]+          { column += yyleng; /* check whitespaces */ }
+"\n"            { column = 1; line++; /* detect new line */ }
 
  /* Errors  */
 
-.                       { returnToken(tError); }
+.               {   
+                    fprintf(stderr, "Warning: the %s is not a recognized pattern\n", yytext); 
+                    column += yyleng;
+                }
 %%
 
 int main(int argn, char * argv[]){
@@ -166,11 +181,13 @@ int main(int argn, char * argv[]){
         }else{
             printf("%4s %6s %6s %14s %4s %s\n", "Line", "Column", "Length", "Token", "Code", "Lexema");
         }
+
         yylex();
+        
         fclose(yyin);
         fclose(yyout);
     }else{
-        printf("ERROR! There is no file to analyze!\n");
+        fprintf(stderr, "ERROR: There is no file to analyze!\n");
     }
     return 0;
 }
