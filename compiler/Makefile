@@ -61,7 +61,8 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 clean:
 	@echo "Cleaning..."
 	@echo "$(RM) -rf $(BUILDDIR) $(TARGET)"; $(RM) -rf $(BUILDDIR) $(TARGET)
-	@rm -rf $(SRCDIR)/$(LEXFILE_C) 
+	@rm -rf $(SRCDIR)/$(LEXFILE_C)
+	rm -rf $(BINDIR) 
 
 .PHONY: clean
 
