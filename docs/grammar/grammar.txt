@@ -29,8 +29,8 @@ Implements 	-: λ | , ident Implements
 Field		-: λ | Var Dec' Field
 InterDec 	-: interface ident { Prototype }
 Prototype 	-: λ | Var (Formals) ; | void ident (Formals) ;
-Expr		-: Constant | this | readInteger() | readLine | new ( ident ) | newArray ( Expr , Type ) | LValue | Call
-
+Expr		-: 
+Term        -: Constant | this | readInteger() | readLine | new ( ident ) | newArray ( Expr , Type ) | LValue | Call | ( Expr )
 Expr'		-: λ | Expr
 Expr'' 		-: λ | , Expr Actual
 LValue 		-: ident | Expr . ident | Expr [ Expr ]
