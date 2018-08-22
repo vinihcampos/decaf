@@ -1,5 +1,3 @@
-%token tVoid tInt tDouble tBool tString tClass tInterface tNull tThis tExtends tImplements tFor tWhile tIf tElse tReturn tBreak tNew tNewArray tPrint tReadInteger tReadLine tId tPlus tMinus tMulti tDiv tMod tLess tLessEqual tGreater tGreaterEqual tEqual tDiff tAssignment tAnd tOr tNot tSemiColon tComma tDot tBracketLeft tBracketRight tParLeft tParRight tBraceLeft tBraceRight tIntConstant tDoubleConstant tTrue tFalse tStringConstant
-%% /* LL(1) */
 Prog  		: Dec Prog1 ;
 Prog1		: /*eps*/ ;
 Prog1		: Prog ;
@@ -97,19 +95,14 @@ Expr1		: Expr ;
 Expr2 		: /*eps*/ ;
 Expr2 		: tComma Expr Actual ;
 LValue 		: tId ;
-LValue 		: LValue1 ;
-LValue 		: LValue2 ;
-LValue1		: tDot tId ;
-LValue1		: tDot tId LValue1 ;
-LValue2		: tBracketLeft Expr tBracketRight ;
-LValue2		: tBracketLeft Expr tBracketRight LValue2 ;
+LValue 		: Expr tDot tId ;
+LValue 		: Expr tBracketLeft Expr tBracketRight ;
 Call 		: tId tParLeft Actual tParRight ;
 Call 		: Expr tDot tId tParLeft Actual tParRight ;
 Actual 		: /*eps*/ ;
 Actual 		: Expr Expr2 ;
 Constant	: tIntConstant ;
 Constant	: tDoubleConstant ;
-Constant	: tTrue ;
-Constant	: tFalse ;
+Constant	: tBoolConstant ;
 Constant	: tStringConstant ;
 Constant	: tNull ;
