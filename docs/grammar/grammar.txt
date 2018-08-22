@@ -6,12 +6,12 @@ Dec'  		-: ; | FuncDec
 Var   		-: Type ident
 Type  		-: int Type' | double Type' | bool Type' | string Type' | ident Type'
 Type' 		-: λ | [] Type'
-FuncDec 	-: (Formals) StmtBlock
+FuncDec 	-: ( Formals ) StmtBlock
 Formals		-: λ | Formals'
 Formals'	-: Var Formals''
 Formals''	-: λ | , Formals'
 StmtBlock	-: { Var ; StmtBlock' Stmt  }
-StmtBlock'	-: λ | Var; StmtBlock'
+StmtBlock'	-: λ | Var ; StmtBlock'
 Stmt 		-: λ | IfStmt Stmt' | whileStmt Stmt' | forStmt Stmt' | BreakStmt Stmt' | returnStmt Stmt' | PrintStmt Stmt' | StmtBlock' Stmt' | Expr' ; Stmt'
 Stmt' 		-: Stmt
 IfStmt      -: if (Expr) Stmt ElseStmt
@@ -28,12 +28,19 @@ ClassDec''	-: implements ident Implements { Field } | { Field }
 Implements 	-: λ | , ident Implements
 Field		-: λ | Var Dec' Field
 InterDec 	-: interface ident { Prototype }
-Prototype 	-: λ | Var (Formals) ; | void ident (Formals) ;
-Expr		-: 
-Term        -: Constant | this | readInteger() | readLine | new ( ident ) | newArray ( Expr , Type ) | LValue | Call | ( Expr )
+Prototype 	-: λ | Var ( Formals ) ; | void ident ( Formals ) ;
+Expr		-: LValue = Expr | F
+F           -: G || F | G && F | G
+G           -: H < G | H <= G | H > G | H >= G | H == G | H != G | H
+H           -: I H'
+H'          -: λ | + I H' | - I H'
+I           -: J I'
+I'          -: λ | * J I' | / J I' | % J I'
+J           -: ! J | - J | Term  
+Term        -: Constant | this | readInteger() | readLine() | new ( ident ) | newArray ( Expr , Type ) | LValue | Call | ( Expr )
 Expr'		-: λ | Expr
 Expr'' 		-: λ | , Expr Actual
 LValue 		-: ident | Expr . ident | Expr [ Expr ]
-Call 		-: ident (Actual) | Expr . ident (Actual)
+Call 		-: ident ( Actual ) | Expr . ident ( Actual )
 Actual 		-: λ | Expr Expr''
 Constant	-: intConstant | doubleConstant | boolConstant | stringConstant | null
