@@ -24,7 +24,6 @@ Formals2	-> tComma Formals1
 StmtBlock	-> tBraceLeft Var tSemiColon StmtBlock1 Stmt  tBraceRight 
 StmtBlock1	-> '' 
 StmtBlock1	-> Var tSemiColon StmtBlock1 
-Stmt 		-> '' 
 Stmt 		-> IfStmt Stmt 
 Stmt 		-> WhileStmt Stmt 
 Stmt 		-> ForStmt Stmt 
@@ -32,8 +31,7 @@ Stmt 		-> BreakStmt Stmt
 Stmt 		-> ReturnStmt Stmt 
 Stmt 		-> PrintStmt Stmt 
 Stmt 		-> StmtBlock Stmt 
-Stmt 		-> tSemiColon Stmt
-Stmt 		-> Expr tSemiColon Stmt ;
+Stmt 		-> Expr1 tSemiColon Stmt ;
 IfStmt      -> tIf tParLeft Expr tParRight Stmt ElseStmt 
 ElseStmt	-> '' 
 ElseStmt	-> tElse Stmt 
