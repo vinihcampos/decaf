@@ -31,7 +31,7 @@ Stmt 		-> BreakStmt Stmt
 Stmt 		-> ReturnStmt Stmt 
 Stmt 		-> PrintStmt Stmt 
 Stmt 		-> StmtBlock Stmt 
-Stmt 		-> Expr1 tSemiColon Stmt ;
+Stmt 		-> Expr1 tSemiColon Stmt 
 IfStmt      -> tIf tParLeft Expr tParRight Stmt ElseStmt 
 ElseStmt	-> '' 
 ElseStmt	-> tElse Stmt 
@@ -91,13 +91,13 @@ Term        -> tParLeft Expr tParRight
 Expr1		-> '' 
 Expr1		-> Expr
 Expr2 		-> '' 
-Expr2 		-> tComma Expr Actual 
+Expr2 		-> tComma Expr Expr2 
 LValue 		-> tId LValue1 
 LValue1     -> Call 
 LValue1		-> tAssignment Expr
 LValue1     -> tDot tId LValue1 
 LValue1     -> tBracketLeft Expr tBracketRight LValue1 
-Call		-> /*eps*/ 
+Call		-> ''
 Call		-> tParLeft Actual tParRight 
 Actual 		-> '' 
 Actual 		-> Expr Expr2 

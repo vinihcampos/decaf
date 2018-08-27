@@ -93,7 +93,7 @@ Term        : tParLeft Expr tParRight  ;
 Expr1		: /*eps*/  ;
 Expr1		: Expr ;
 Expr2 		: /*eps*/  ;
-Expr2 		: tComma Expr Actual  ;
+Expr2 		: tComma Expr Expr2 ;
 LValue 		: tId LValue1  ;
 LValue1     : Call  ;
 LValue1     : tAssignment Expr ;
