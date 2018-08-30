@@ -1,6 +1,6 @@
-Prog  		-> Dec ProRelOp1  
-ProRelOp1	-> ''  
-ProRelOp1	-> Prog  
+Prog  		-> Dec Prog1  
+Prog1		-> ''  
+Prog1		-> Prog  
 Dec   		-> ClassDec  
 Dec   		-> InterDec  
 Dec   		-> Var Dec1  

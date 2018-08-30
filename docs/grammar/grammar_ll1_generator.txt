@@ -1,8 +1,8 @@
 %token tVoid tInt tDouble tBool tString tClass tInterface tNull tThis tExtends tImplements tFor tWhile tIf tElse tReturn tBreak tNew tNewArray tPrint tReadInteger tReadLine tId tPlus tMinus tMulti tDiv tMod tLess tLessEqual tGreater tGreaterEqual tEqual tDiff tAssignment tAnd tOr tNot tSemiColon tComma tDot tBracketLeft tBracketRight tParLeft tParRight tBraceLeft tBraceRight tIntConstant tDoubleConstant tTrue tFalse tClassId tStringConstant
 %% /* LL(1) */
-Prog  		: Dec ProRelOp1  ;
-ProRelOp1		: /*eps*/  ;
-ProRelOp1		: Prog  ;
+Prog  		: Dec Prog1  ;
+Prog1		: /*eps*/  ;
+Prog1		: Prog  ;
 Dec   		: ClassDec  ;
 Dec   		: InterDec  ;
 Dec   		: Var Dec1  ;
