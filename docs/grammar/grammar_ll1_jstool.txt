@@ -21,26 +21,29 @@ Formals -> Formals1
 Formals1 -> Var Formals2
 Formals2 -> ε
 Formals2 -> tComma Formals1
-StmtBlock -> tBraceLeft StmtBlock1 Stmt tBraceRight
-StmtBlock1 -> ε
+StmtBlock -> tBraceLeft StmtBlock1 tBraceRight
+StmtBlock1 -> StatementList
+StatementList -> Stmt StatementList
+StatementList -> ε
 StmtBlock1 -> Var tSemiColon StmtBlock1
-Stmt -> tIf tParLeft Expr tParRight Matched OpTail Stmt
 Stmt -> Stmt1
+Stmt -> tIf tParLeft Expr tParRight Matched OpTail
 Matched -> tIf tParLeft Expr tParRight Matched tElse Matched
 Matched -> Stmt1
 OpTail -> tElse Tail
 OpTail -> ε
 Tail -> tIf tParLeft Expr tParRight Tail
 Tail -> Stmt1
-Stmt1 -> WhileStmt Stmt
-Stmt1 -> ForStmt Stmt
-Stmt1 -> BreakStmt Stmt
-Stmt1 -> ReturnStmt Stmt
-Stmt1 -> PrintStmt Stmt
-Stmt1 -> StmtBlock Stmt
-Stmt1 -> Expr1 tSemiColon
+Stmt1 -> WhileStmt
+Stmt1 -> ForStmt
+Stmt1 -> BreakStmt
+Stmt1 -> ReturnStmt
+Stmt1 -> PrintStmt
+Stmt1 -> StmtBlock
+Stmt1 -> ExprAssign tSemiColon
+Stmt1 -> tSemiColon
 WhileStmt -> tWhile tParLeft Expr tParRight Stmt
-ForStmt -> tFor tParLeft Expr1 tSemiColon Expr tSemiColon Expr1 tParRight Stmt
+ForStmt -> tFor tParLeft ExprAssignOrEmpty tSemiColon Expr tSemiColon Expr1 tParRight Stmt
 ReturnStmt -> tReturn Expr1 tSemiColon
 BreakStmt -> tBreak tSemiColon
 PrintStmt -> tPrint tParLeft Expr PrintStmt1
@@ -59,6 +62,9 @@ InterDec -> tInterface tId tBraceLeft Prototype tBraceRight
 Prototype -> ε
 Prototype -> Var tParLeft Formals tParRight tSemiColon
 Prototype -> tVoid tId tParLeft Formals tParRight tSemiColon
+ExprAssign -> LValue Variable tAssignment Expr
+ExprAssignOrEmpty -> ExprAssign
+ExprAssignOrEmpty -> ε
 Expr -> RelOp LogicOp
 LogicOp -> ε
 LogicOp -> tOr RelOp LogicOp
@@ -83,15 +89,15 @@ MulDivModOp1 -> tMod UnaryOp MulDivModOp1
 UnaryOp -> tNot UnaryOp
 UnaryOp -> tMinus UnaryOp
 UnaryOp -> Term
-Term -> LValue AssignOrCallOrVariable
+Term -> LValue CallOrVariable
 Term -> Constant
 Term -> tReadInteger tParLeft tParRight
 Term -> tReadLine tParLeft tParRight
 Term -> tNew tParLeft tId tParRight
 Term -> tNewArray tParLeft Expr tComma Type tParRight
 Term -> tParLeft Expr tParRight
-AssignOrCallOrVariable -> Call
-AssignOrCallOrVariable -> Variable Assignment
+CallOrVariable -> Call
+CallOrVariable -> Variable
 Call -> tParLeft Actual tParRight CallVariable
 CallVariable -> ε
 CallVariable -> VariableNotEmpty
@@ -103,8 +109,6 @@ CallAfterVariable -> Call
 Variable -> ε
 Variable -> tBracketLeft Expr tBracketRight Variable
 Variable -> tDot LValue Variable
-Assignment -> ε
-Assignment -> tAssignment Expr
 LValue -> tId
 LValue -> tThis tDot tId
 Expr1 -> ε
