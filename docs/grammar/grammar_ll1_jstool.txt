@@ -12,7 +12,7 @@ Type -> tInt Type1
 Type -> tDouble Type1
 Type -> tBool Type1
 Type -> tString Type1
-Type -> tClassId Type1
+Type -> tUserType Type1
 Type1 -> ε
 Type1 -> tBracketLeft tBracketRight Type1
 FuncDec -> tParLeft Formals tParRight StmtBlock
@@ -49,16 +49,16 @@ BreakStmt -> tBreak tSemiColon
 PrintStmt -> tPrint tParLeft Expr PrintStmt1
 PrintStmt1 -> tParRight tSemiColon
 PrintStmt1 -> tComma Expr PrintStmt1
-ClassDec -> tClass tId ClassDec1
-ClassDec1 -> tExtends tId ClassDec2
+ClassDec -> tClass tUserType ClassDec1
+ClassDec1 -> tExtends tUserType ClassDec2
 ClassDec1 -> ClassDec2
-ClassDec2 -> tImplements tId Implements tBraceLeft Field tBraceRight
+ClassDec2 -> tImplements tUserType Implements tBraceLeft Field tBraceRight
 ClassDec2 -> tBraceLeft Field tBraceRight
 Implements -> ε
-Implements -> tComma tId Implements
+Implements -> tComma tUserType Implements
 Field -> ε
 Field -> Var Dec1 Field
-InterDec -> tInterface tId tBraceLeft Prototype tBraceRight
+InterDec -> tInterface tUserType tBraceLeft Prototype tBraceRight
 Prototype -> ε
 Prototype -> Var tParLeft Formals tParRight tSemiColon
 Prototype -> tVoid tId tParLeft Formals tParRight tSemiColon
