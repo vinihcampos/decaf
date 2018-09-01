@@ -26,29 +26,26 @@ StmtBlock1 -> StatementList
 StatementList -> Stmt StatementList
 StatementList -> ε
 StmtBlock1 -> Var tSemiColon StmtBlock1
-Stmt -> Stmt1
-Stmt -> tIf tParLeft Expr tParRight tBraceLeft Matched tBraceRight OpTail
-Matched -> tIf tParLeft Expr tParRight tBraceLeft Matched tBraceRight tElse tBraceLeft Matched tBraceRight
-Matched -> Stmt1
-OpTail -> tElse tBraceLeft Tail tBraceRight
+Stmt -> ConditionStmt
+Stmt -> OtherStmt
+ConditionStmt -> tIf tParLeft Expr tParRight tBraceLeft Stmt tBraceRight OpTail
+OpTail -> tElse tBraceLeft Stmt tBraceRight
 OpTail -> ε
-Tail -> tIf tParLeft Expr tParRight tBraceLeft Tail tBraceRight
-Tail -> Stmt1
-Stmt1 -> WhileStmt
-Stmt1 -> ForStmt
-Stmt1 -> BreakStmt
-Stmt1 -> ReturnStmt
-Stmt1 -> PrintStmt
-Stmt1 -> StmtBlock
-Stmt1 -> ExprAssign tSemiColon
-Stmt1 -> tSemiColon
+OtherStmt -> WhileStmt
+OtherStmt -> ForStmt
+OtherStmt -> BreakStmt
+OtherStmt -> ReturnStmt
+OtherStmt -> PrintStmt
+OtherStmt -> StmtBlock
+OtherStmt -> ExprAssign tSemiColon
+OtherStmt -> tSemiColon
 WhileStmt -> tWhile tParLeft Expr tParRight Stmt
-ForStmt -> tFor tParLeft ExprAssignOrEmpty tSemiColon Expr tSemiColon Expr1 tParRight Stmt
-ReturnStmt -> tReturn Expr1 tSemiColon
+ForStmt -> tFor tParLeft ExprAssignOrEmpty tSemiColon Expr tSemiColon ExprOrEmpty tParRight Stmt
+ReturnStmt -> tReturn ExprOrEmpty tSemiColon
 BreakStmt -> tBreak tSemiColon
-PrintStmt -> tPrint tParLeft Expr PrintStmt1
-PrintStmt1 -> tParRight tSemiColon
-PrintStmt1 -> tComma Expr PrintStmt1
+PrintStmt -> tPrint tParLeft Expr PrintOtherStmt
+PrintOtherStmt -> tParRight tSemiColon
+PrintOtherStmt -> tComma Expr PrintOtherStmt
 ClassDec -> tClass tUserType ClassDec1
 ClassDec1 -> tExtends tUserType ClassDec2
 ClassDec1 -> ClassDec2
@@ -111,12 +108,12 @@ Variable -> tBracketLeft Expr tBracketRight Variable
 Variable -> tDot LValue Variable
 LValue -> tId
 LValue -> tThis tDot tId
-Expr1 -> ε
-Expr1 -> Expr
-Expr2 -> ε
-Expr2 -> tComma Expr Expr2
+ExprOrEmpty -> ε
+ExprOrEmpty -> Expr
+ExprSeq -> ε
+ExprSeq -> tComma Expr ExprSeq
 Actual -> ε
-Actual -> Expr Expr2
+Actual -> Expr ExprSeq
 Constant -> tIntConstant
 Constant -> tDoubleConstant
 Constant -> tTrue
