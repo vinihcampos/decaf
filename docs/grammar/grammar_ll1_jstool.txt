@@ -27,12 +27,12 @@ StatementList -> Stmt StatementList
 StatementList -> ε
 StmtBlock1 -> Var tSemiColon StmtBlock1
 Stmt -> Stmt1
-Stmt -> tIf tParLeft Expr tParRight Matched OpTail
-Matched -> tIf tParLeft Expr tParRight Matched tElse Matched
+Stmt -> tIf tParLeft Expr tParRight tBraceLeft Matched tBraceRight OpTail
+Matched -> tIf tParLeft Expr tParRight tBraceLeft Matched tBraceRight tElse tBraceLeft Matched tBraceRight
 Matched -> Stmt1
-OpTail -> tElse Tail
+OpTail -> tElse tBraceLeft Tail tBraceRight
 OpTail -> ε
-Tail -> tIf tParLeft Expr tParRight Tail
+Tail -> tIf tParLeft Expr tParRight tBraceLeft Tail tBraceRight
 Tail -> Stmt1
 Stmt1 -> WhileStmt
 Stmt1 -> ForStmt
