@@ -12,7 +12,7 @@
         int len = yyleng;
         char * tokenStr = getTokenString(token);
         char * text;
-        if(token == tId && len > 31){
+        if((token == tId || token == tUserType) && len > 31){
             text = (char*) malloc(32);
             for(len = 0; len < 31; ++len) text[len] = yytext[len];
             text[31] = '\0';
@@ -29,8 +29,11 @@
 
 digit       [0-9]
 letter      [a-zA-Z]
+lowerCase   [a-z]
+upperCase   [A-Z]
 hexLetter   [a-fA-F]
-id          {letter}({letter}|{digit}|[_])*	
+id          {lowerCase}({letter}|{digit}|[_])*
+userType    {upperCase}({letter}|{digit}|[_])*	
 notNumber   {digit}+{id}
 hex         0[xX]({digit}|{hexLetter})+
 real        {digit}+\.{digit}*
@@ -62,6 +65,15 @@ null            { printToken(tNull); }
                     if(yyleng > ID_MAX_SZ){
                         fprintf(stderr, "Warning: the %s will be truncated, because it exceeded maximum size of an identifier\n", yytext);
 				        printToken(tId); 
+                    }else{
+                        REJECT;
+                    }
+                }
+
+{userType}      {   
+                    if(yyleng > ID_MAX_SZ){
+                        fprintf(stderr, "Warning: the %s will be truncated, because it exceeded maximum size of an identifier\n", yytext);
+                        printToken(tUserType); 
                     }else{
                         REJECT;
                     }
@@ -121,6 +133,7 @@ newArray        { printToken(tNewArray); }
  /* Identifier */
 
 {id}            { printToken(tId); }
+{userType}      { printToken(tUserType); }
 
  /*** Operators ***/
  /* Arithmetic */

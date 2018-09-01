@@ -2,29 +2,30 @@
 #define _LEXICAL_
 
 enum Token{
-	tVoid = 10,   	// base type
-	tInt,        	// base type
-	tDouble,     	// base type
-	tBool,       	// base type
-	tString,     	// base type
-	tClass,      	// class
-	tInterface,  	// interface
-	tNull,       	// null
+	tVoid = 10,
+	tInt,
+	tDouble,  
+	tBool,    
+	tString,  
+	tClass,
+	tInterface,
+	tNull,
 	tThis,       
-	tExtends,    	// class
-	tImplements, 	// interface
-	tFor,	     	// loop
-	tWhile,      	// loop
-	tIf,         	// conditional
-	tElse,       	// conditional
-	tReturn,     	// subprogram return;
-	tBreak,      	// break statement
-	tNew,		// expression
-	tNewArray,   	// expression
-	tPrint,		// print statement
-	tReadInteger,	// read int
-	tReadLine,   	// read string
-	tId,		// Identifier (variable, class, interface or subprogram)
+	tExtends,
+	tImplements,
+	tFor,
+	tWhile,
+	tIf,
+	tElse,
+	tReturn,
+	tBreak,
+	tNew,
+	tNewArray,
+	tPrint,
+	tReadInteger,
+	tReadLine,
+	tId,
+    tUserType,
 	tPlus,
 	tMinus,
 	tMulti,
@@ -103,7 +104,9 @@ char * getTokenString(int token){
         case tReadLine:
             return "T_READ_LINE";      
         case tId:
-            return "T_ID";            
+            return "T_ID";
+        case tUserType:
+            return "T_USER_TYPE";            
         case tPlus:
             return "T_+";
         case tMinus:
