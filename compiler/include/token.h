@@ -55,6 +55,7 @@ enum Token{
 	tTrue,
 	tFalse,
 	tStringConstant,
+    tEOF,
 };
 
 char * getTokenString(int token){
@@ -165,6 +166,8 @@ char * getTokenString(int token){
             return "T_FALSE";
         case tStringConstant:
             return "T_STRING_CONST";
+        case tEOF:
+            return "T_END_OF_FILE";
 		default:
 			return "T_ERROR";
     }

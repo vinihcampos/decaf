@@ -170,6 +170,9 @@ newArray        { printToken(tNewArray); }
 "{"             { printToken(tBraceLeft); }
 "}"             { printToken(tBraceRight); }
 
+ /* EOF */
+ <<EOF>>        { printToken(tEOF); yyterminate(); }
+
 
  /* Lines */
 
