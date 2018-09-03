@@ -498,7 +498,31 @@ void prototype(){
 }
 
 void expr(){
+    relOp(); logicOp();
+}
 
+void logicOp(){
+    switch(tok){
+        case tOr:
+            eat(tOr); relOp(); logicOp();
+            break;
+        case tAnd:
+            eat(tAnd); relOp(); logicOp();
+            break;
+        case tParRight:
+        case tSemiColon:
+        case tPrint:
+        case tComma:
+        case tBracketRight:
+            break;
+        default:
+            error();
+            break;
+    }
+}
+
+void relOp(){
+    plusSubOp(); relOp1();
 }
 
 void exprAssign(){
