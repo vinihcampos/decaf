@@ -1,5 +1,6 @@
 void main(){
-	int[] vector = newArray(10, int);
+	int[] vector;
+    vector = newArray(10, int);
 
 	vector[0] = 42;
 	vector[1] = 34;
@@ -12,24 +13,27 @@ void main(){
 	vector[8] = 94;
 	vector[9] = 11;
 
-	quick_sort(vector, 0, vector.length() - 1);
+	vector = quick_sort(vector, 0, vector.length() - 1);
 }
 
 int[] quick_sort(int[] vector, int left, int right ){
-	int i; int j; int x; int y;
+    int i; 
+    int j; 
+    int x; 
+    int y;
 
-	i = left;
+    i = left;
     j = right;
     x = vector[(left + right) / 2];
 
-	while(i <= j) {
-        while(vector[i] < x && i < right) {
+    while(i <= j){
+        while(vector[i] < x && i < right){
             i = i + 1;
         }
-        while(vector[j] > x && j > left) {
+        while(vector[j] > x && j > left){
             j = j - 1;
         }
-        if(i <= j) {
+        if(i <= j){
             y = vector[i];
             vector[i] = vector[j];
             vector[j] = y;
@@ -38,12 +42,12 @@ int[] quick_sort(int[] vector, int left, int right ){
         }
     }
      
-    if(j > left) {
+    if(j > left){
         quick_sort(vector, left, j);
     }
-    if(i < right) {
+    if(i < right){
         quick_sort(vector, i, right);
     }
-
-	return vector;
+    
+    return vector;
 }
