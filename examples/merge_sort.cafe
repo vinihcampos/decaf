@@ -1,59 +1,6 @@
-void merge(int[] arr, int l, int m, int r){
-    int n1 = m - l + 1;
-    int n2 = r - m;
-
-    int[] L = newArray(n1, int);
-    int[] R = newArray(n2, int);
-
-    for (int i=0; i<n1; i=i+1)
-        L[i] = arr[l + i];
-    for (int j=0; j<n2; j=j+1)
-        R[j] = arr[m + 1+ j];
-
-  
-    int i = 0; int j = 0;
-
-    int k = l;
-    while (i < n1 && j < n2){
-        if (L[i] <= R[j]) {
-            arr[k] = L[i];
-            i = i + 1;
-        }
-        else {
-            arr[k] = R[j];
-            j = j + 1;
-        }
-        k = k + 1;
-    }
-
-    while (i < n1){
-        arr[k] = L[i];
-        i = i + 1;
-        k = k + 1;
-    }
-
-    while (j < n2){
-        arr[k] = R[j];
-        j = j + 1;
-        k = k + 1;
-    }
-}
-
-int[] merge_sort(int[] arr, int l, int r){
-    if (l < r){
-        int m = (l+r)/2;
-
-        merge_sort(arr, l, m);
-        merge_sort(arr , m+1, r);
-
-        merge(arr, l, m, r);
-    }
-
-    return arr;
-}
-
 void main(){
-    int[] vector = newArray(5, int);
+    int[] vector;
+    vector = newArray(5, int);
 
     vector[0] = 10;
     vector[1] = 50;
@@ -62,4 +9,66 @@ void main(){
     vector[4] = 7;
 
     vector = merge_sort(vector, 0, vector.length() - 1);
+}
+
+void merge(int[] vector, int l, int m, int r){
+    int n1;
+    int n2;
+    int[] L;
+    int[] R;
+    int i; 
+    int j;
+    int k;
+    
+    n1 = m - l + 1;
+    n2 = r - m;
+    L = newArray(n1, int);
+    R = newArray(n2, int);
+    
+    for (i=0; i<n1; i=i+1)
+        L[i] = vector[l + i];
+    for (i=0; i<n2; i=i+1)
+        R[i] = vector[m + 1+ i];
+
+    i = 0;
+    j = 0;
+    k = l;
+    while (i < n1 && j < n2){
+        if (L[i] <= R[j]){
+            vector[k] = L[i];
+            i = i + 1;
+        }
+        else{
+            vector[k] = R[j];
+            j = j + 1;
+        }
+        k = k + 1;
+    }
+
+    while (i < n1){
+        vector[k] = L[i];
+        i = i + 1;
+        k = k + 1;
+    }
+
+    while (j < n2){
+        vector[k] = R[j];
+        j = j + 1;
+        k = k + 1;
+    }
+}
+
+int[] merge_sort(int[] vector, int l, int r){
+    if (l < r){
+        int m;
+
+        m = (l+r)/2;
+        
+        merge_sort(vector, l, m);
+        merge_sort(vector , m+1, r);
+
+        merge(vector, l, m, r);
+    }
+
+    return vector;
 }
