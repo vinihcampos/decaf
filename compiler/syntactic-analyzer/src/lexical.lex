@@ -6,10 +6,11 @@
 
     int row = 1;
     int column = 1;
+    Token tok;
  
-    Token returnToken(Token token){
+    void updateToken(Token token){
         column += yyleng;
-        return token;
+        tok = token;
     }
 %}
 
@@ -39,18 +40,18 @@ commentLine [/][/].*
 
  /* Constants */
 
-{hex}|{digit}+  { returnToken(tIntConstant); }
-\".*\"          { returnToken(tStringConstant); }
-false           { returnToken(tFalse); }
-true            { returnToken(tTrue); }
-{real}{exp}*    { returnToken(tDoubleConstant); }
-null            { returnToken(tNull); }
+{hex}|{digit}+  { updateToken(tIntConstant); return 0; }
+\".*\"          { updateToken(tStringConstant); return 0; }
+false           { updateToken(tFalse); return 0; }
+true            { updateToken(tTrue); return 0; }
+{real}{exp}*    { updateToken(tDoubleConstant); return 0; }
+null            { updateToken(tNull); return 0; }
 
  /* Errors  */
 {id}            {   
                     if(yyleng > ID_MAX_SZ){
                         fprintf(stderr, "Warning: the %s will be truncated, because it exceeded maximum size of an identifier\n", yytext);
-				        returnToken(tId); 
+				        updateToken(tId); return 0; 
                     }else{
                         REJECT;
                     }
@@ -59,7 +60,7 @@ null            { returnToken(tNull); }
 {userType}      {   
                     if(yyleng > ID_MAX_SZ){
                         fprintf(stderr, "Warning: the %s will be truncated, because it exceeded maximum size of an identifier\n", yytext);
-                        returnToken(tUserType); 
+                        updateToken(tUserType); return 0; 
                     }else{
                         REJECT;
                     }
@@ -72,92 +73,92 @@ null            { returnToken(tNull); }
  
  /* Base types  */
 
-void            { returnToken(tVoid); }
-int             { returnToken(tInt); }
-double          { returnToken(tDouble); }
-bool            { returnToken(tBool); }
-string          { returnToken(tString); }
+void            { updateToken(tVoid); return 0; }
+int             { updateToken(tInt); return 0; }
+double          { updateToken(tDouble); return 0; }
+bool            { updateToken(tBool); return 0; }
+string          { updateToken(tString); return 0; }
 
  /* Loops */
 
-for             { returnToken(tFor); }
-while           { returnToken(tWhile); }
+for             { updateToken(tFor); return 0; }
+while           { updateToken(tWhile); return 0; }
 
  /* Control statements */
 
-if              { returnToken(tIf); }
-else            { returnToken(tElse); }
+if              { updateToken(tIf); return 0; }
+else            { updateToken(tElse); return 0; }
 
  /* Class patterns */
 
-class           { returnToken(tClass); }
-extends         { returnToken(tExtends); }
-this            { returnToken(tThis); }
-"\."            { returnToken(tDot); }
+class           { updateToken(tClass); return 0; }
+extends         { updateToken(tExtends); return 0; }
+this            { updateToken(tThis); return 0; }
+"\."            { updateToken(tDot); return 0; }
 
  /* Interface patterns */
 
-interface       { returnToken(tInterface); }
-implements      { returnToken(tImplements); }
+interface       { updateToken(tInterface); return 0; }
+implements      { updateToken(tImplements); return 0; }
 
  /* Exit scope */
 
-break           { returnToken(tBreak); }
-return          { returnToken(tReturn); }
+break           { updateToken(tBreak); return 0; }
+return          { updateToken(tReturn); return 0; }
 
  /* IO */
 
-print           { returnToken(tPrint); }
-readLine        { returnToken(tReadLine); }
-readInteger     { returnToken(tReadInteger); }
+print           { updateToken(tPrint); return 0; }
+readLine        { updateToken(tReadLine); return 0; }
+readInteger     { updateToken(tReadInteger); return 0; }
 
  /* News  */
 
-new             { returnToken(tNew); }
-newArray        { returnToken(tNewArray); }
+new             { updateToken(tNew); return 0; }
+newArray        { updateToken(tNewArray); return 0; }
 
  /* Identifier */
 
-{id}            { returnToken(tId); }
-{userType}      { returnToken(tUserType); }
+{id}            { updateToken(tId); return 0; }
+{userType}      { updateToken(tUserType); return 0; }
 
  /*** Operators ***/
  /* Arithmetic */
 
-"+"             { returnToken(tPlus); }
-"-"             { returnToken(tMinus); }
-"*"             { returnToken(tMulti); }
-"/"             { returnToken(tDiv); }
-"%"             { returnToken(tMod); }
+"+"             { updateToken(tPlus); return 0; }
+"-"             { updateToken(tMinus); return 0; }
+"*"             { updateToken(tMulti); return 0; }
+"/"             { updateToken(tDiv); return 0; }
+"%"             { updateToken(tMod); return 0; }
 
  /* Relational */
 
-"<"             { returnToken(tLess); }
-"<="            { returnToken(tLessEqual); }
-">"             { returnToken(tGreater); }
-">="            { returnToken(tGreaterEqual); }
-"="             { returnToken(tAssignment); }
-"=="            { returnToken(tEqual); }
-"!="            { returnToken(tDiff); }
+"<"             { updateToken(tLess); return 0; }
+"<="            { updateToken(tLessEqual); return 0; }
+">"             { updateToken(tGreater); return 0; }
+">="            { updateToken(tGreaterEqual); return 0; }
+"="             { updateToken(tAssignment); return 0; }
+"=="            { updateToken(tEqual); return 0; }
+"!="            { updateToken(tDiff); return 0; }
 
  /* Logic */
 
-"&&"            { returnToken(tAnd); }
-"||"            { returnToken(tOr); }
-"!"             { returnToken(tNot); }
+"&&"            { updateToken(tAnd); return 0; }
+"||"            { updateToken(tOr); return 0; }
+"!"             { updateToken(tNot); return 0; }
 
  /* Symbols  */
-";"             { returnToken(tSemiColon); }
-","             { returnToken(tComma); }
-"["             { returnToken(tBracketLeft); }
-"]"             { returnToken(tBracketRight); }
-"("             { returnToken(tParLeft); }
-")"             { returnToken(tParRight); }
-"{"             { returnToken(tBraceLeft); }
-"}"             { returnToken(tBraceRight); }
+";"             { updateToken(tSemiColon); return 0; }
+","             { updateToken(tComma); return 0; }
+"["             { updateToken(tBracketLeft); return 0; }
+"]"             { updateToken(tBracketRight); return 0; }
+"("             { updateToken(tParLeft); return 0; }
+")"             { updateToken(tParRight); return 0; }
+"{"             { updateToken(tBraceLeft); return 0; }
+"}"             { updateToken(tBraceRight); return 0; }
 
  /* EOF */
- <<EOF>>        { returnToken(tEOF); yyterminate(); }
+ <<EOF>>        { updateToken(tEOF); return 0; yyterminate(); }
 
 
  /* Lines */

@@ -1,14 +1,15 @@
 #include <iostream>
+#include <string>
 #include "recursive.h"
 
-Token tok;
+using namespace std;
 
 extern FILE* yyin;
-extern Token yylex();
+extern int yylex();
 extern int column, row;
+extern Token tok;
 
-/*
-char * getTokenString(Token token){
+string getTokenString(Token token){
     switch(token){
 	case tVoid:
 	    return "T_VOID";
@@ -122,10 +123,9 @@ char * getTokenString(Token token){
 			return "T_ERROR";
     }
 }
-*/
+
 
 void prog(){
-    advance();
     switch(tok){
         case tEOF:
             break;
@@ -158,7 +158,6 @@ void dec(){
 }
 
 void dec1(){
-    advance();
     switch(tok){
         case tSemiColon:
             eat(tSemiColon);
@@ -198,7 +197,7 @@ void type(){
 
 void type1(){
     switch(tok){
-        case tEOF:
+        case tId:
             break;
         case tBracketLeft:
             eat(tBracketLeft); eat(tBracketRight); type1();
@@ -297,7 +296,7 @@ void stmt(){
 void conditionStmt(){
     switch(tok){
         case tIf:
-            eat(tIf); eat(tParLeft); expr(); eat(tParRight); eat(tBraceLeft); stmt(); eat(tBraceRight); opTail();
+            eat(tIf); eat(tParLeft); expr(); eat(tParRight); stmtBlock(); opTail();
             break;
         default:
             error();
@@ -308,7 +307,7 @@ void conditionStmt(){
 void opTail(){
     switch(tok){
         case tElse:
-            eat(tElse); eat(tBraceLeft); stmt(); eat(tBraceRight);
+            eat(tElse); stmtBlock();
         case tBraceRight:
             break;
         default:
@@ -572,7 +571,6 @@ void lValue(){
 
 void exprOrEmpty(){
     switch(tok){
-        case tParRight:
         case tSemiColon:
             break;
         default:
@@ -584,6 +582,7 @@ void exprOrEmpty(){
 int main(int argc, char** args){
     if(argc > 1){
     	yyin = fopen(args[1], "r");
+        advance();
         prog();
     }else{
     	error();
@@ -596,12 +595,13 @@ void error(){
 }
 
 void advance(){
-    tok = yylex();
+    yylex();
 }
 
 void eat(Token t){
-    if(t == tok)
+    if(t == tok){
         advance();
-    else
+    }else{
         error();
+    }
 }

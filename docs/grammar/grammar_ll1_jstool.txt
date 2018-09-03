@@ -28,8 +28,8 @@ StatementList -> Stmt StatementList
 StatementList -> ε
 Stmt -> ConditionStmt
 Stmt -> OtherStmt
-ConditionStmt -> tIf tParLeft Expr tParRight tBraceLeft Stmt tBraceRight OpTail
-OpTail -> tElse tBraceLeft Stmt tBraceRight
+ConditionStmt -> tIf tParLeft Expr tParRight StmtBlock OpTail
+OpTail -> tElse StmtBlock
 OpTail -> ε
 OtherStmt -> WhileStmt
 OtherStmt -> ForStmt
@@ -40,7 +40,7 @@ OtherStmt -> StmtBlock
 OtherStmt -> ExprAssign tSemiColon
 OtherStmt -> tSemiColon
 WhileStmt -> tWhile tParLeft Expr tParRight Stmt
-ForStmt -> tFor tParLeft ExprAssignOrEmpty tSemiColon Expr tSemiColon ExprOrEmpty tParRight Stmt
+ForStmt -> tFor tParLeft ExprAssignOrEmpty tSemiColon Expr tSemiColon ExprAssignOrEmpty tParRight Stmt
 ReturnStmt -> tReturn ExprOrEmpty tSemiColon
 BreakStmt -> tBreak tSemiColon
 PrintStmt -> tPrint tParLeft Expr PrintOtherStmt
