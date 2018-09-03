@@ -23,9 +23,9 @@ Formals2 -> ε
 Formals2 -> tComma Formals1
 StmtBlock -> tBraceLeft StmtBlock1 tBraceRight
 StmtBlock1 -> StatementList
+StmtBlock1 -> Var tSemiColon StmtBlock1
 StatementList -> Stmt StatementList
 StatementList -> ε
-StmtBlock1 -> Var tSemiColon StmtBlock1
 Stmt -> ConditionStmt
 Stmt -> OtherStmt
 ConditionStmt -> tIf tParLeft Expr tParRight tBraceLeft Stmt tBraceRight OpTail
