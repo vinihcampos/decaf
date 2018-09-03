@@ -39,6 +39,7 @@ void exprAssignOrEmpty();
 void expr();
 void logicOp();
 void relOp();
+void relOp1();
 void plusSubOp();
 void plusSubOp1();
 void mulDivModOp();

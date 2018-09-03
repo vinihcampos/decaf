@@ -497,6 +497,28 @@ void prototype(){
     }
 }
 
+void exprAssign(){
+    lValue(); variable(); 
+    switch(tok){
+        case tAssignment:
+            eat(tAssignment); expr();
+            break;
+        default:
+            error();
+            break;
+    }
+}
+
+void exprAssignOrEmpty(){
+    switch(tok){
+        case tSemiColon:
+            break;
+        default:
+            exprAssign();
+            break;
+    }
+}
+
 void expr(){
     relOp(); logicOp();
 }
@@ -525,11 +547,33 @@ void relOp(){
     plusSubOp(); relOp1();
 }
 
-void exprAssign(){
-    lValue(); variable(); 
+void relOp1(){
     switch(tok){
-        case tAssignment:
-            eat(tAssignment); expr();
+        case tLess:
+            eat(tLess); plusSubOp(); relOp1();
+            break;
+        case tLessEqual:
+            eat(tLessEqual); plusSubOp(); relOp1();
+            break;
+        case tGreater:
+            eat(tGreater); plusSubOp(); relOp1();
+            break;
+        case tGreaterEqual:
+            eat(tGreaterEqual); plusSubOp(); relOp1();
+            break;
+        case tEqual:
+            eat(tEqual); plusSubOp(); relOp1();
+            break;
+        case tDiff:
+            eat(tDiff); plusSubOp(); relOp1();
+            break;
+        case tParRight:
+        case tSemiColon:
+        case tPrint:
+        case tComma:
+        case tBracketRight:
+        case tOr:
+        case tAnd:
             break;
         default:
             error();
@@ -537,12 +581,219 @@ void exprAssign(){
     }
 }
 
-void exprAssignOrEmpty(){
+void plusSubOp(){
+    mulDivModOp(); plusSubOp1();
+}
+
+void plusSubOp1(){
     switch(tok){
+        case tPlus:
+            eat(tPlus); mulDivModOp(); plusSubOp1();
+            break;
+        case tMinus:
+            eat(tMinus); mulDivModOp(); plusSubOp1();
+            break;
+        case tParRight:
         case tSemiColon:
+        case tPrint:
+        case tComma:
+        case tBracketRight:
+        case tOr:
+        case tAnd:
+        case tLess:
+        case tLessEqual:
+        case tGreater:
+        case tGreaterEqual:
+        case tEqual:
+        case tDiff:
             break;
         default:
-            exprAssign();
+            error();
+            break;
+    }
+}
+
+void mulDivModOp(){
+    unaryOp(); mulDivModOp1(); 
+}
+
+void mulDivModOp1(){
+    switch(tok){
+        case tMulti:
+            eat(tMulti); unaryOp(); mulDivModOp1();
+            break;
+        case tDiv:
+            eat(tDiv); unaryOp(); mulDivModOp1();
+            break;
+        case tMod:
+            eat(tMod); unaryOp(); mulDivModOp1();
+            break;
+        case tParRight:
+        case tSemiColon:
+        case tPrint:
+        case tComma:
+        case tBracketRight:
+        case tOr:
+        case tAnd:
+        case tLess:
+        case tLessEqual:
+        case tGreater:
+        case tGreaterEqual:
+        case tEqual:
+        case tDiff:
+        case tPlus:
+        case tMinus:
+            break;
+        default:
+            error();
+            break;
+    }
+}
+
+void unaryOp(){
+    switch(tok){
+        case tNot:
+            eat(tNot); unaryOp();
+            break;
+        case tMinus:
+            eat(tMinus); unaryOp(); 
+            break;
+        default:
+            term();
+            break;
+    }
+}
+
+void term(){
+    switch(tok){
+        case tReadInteger:
+            eat(tReadInteger); eat(tParLeft); eat(tParRight);
+            break;
+        case tReadLine:
+            eat(tReadLine); eat(tParLeft); eat(tParRight);
+            break;
+        case tNew:
+            eat(tNew); eat(tParLeft); eat(tId); eat(tParRight);
+            break;
+        case tNewArray:
+            eat(tNewArray); eat(tParLeft); expr(); eat(tComma); type(); eat(tParRight);
+            break;
+        case tParLeft:
+            eat(tParLeft); expr(); eat(tParRight);
+            break;
+        case tId:
+        case tThis:
+            lValue(); callOrVariable();
+            break;
+        case tIntConstant:
+        case tDoubleConstant:
+        case tTrue:
+        case tFalse:
+        case tStringConstant:
+        case tNull:
+            constant();
+            break;
+        default:
+            error();
+            break;
+    }
+}
+
+void callOrVariable(){
+    switch(tok){
+        case tParLeft:
+            call();
+            break;
+        default:
+            variable();
+            break;
+    }
+}
+
+void call(){
+    switch(tok){
+        case tParLeft:
+            eat(tParLeft); actual(); eat(tParRight); callVariable();
+            break;
+        default:
+            error();
+            break;
+    }
+}
+
+void callVariable(){
+    switch(tok){
+        case tBracketLeft:
+        case tDot:
+            variableNotEmpty();
+            break;
+        case tMulti:
+        case tDiv:
+        case tMod:
+        case tPlus:
+        case tMinus:
+        case tLess:
+        case tLessEqual:
+        case tGreater:
+        case tGreaterEqual:
+        case tEqual:
+        case tDiff:
+        case tOr:
+        case tAnd:
+        case tParRight:
+        case tSemiColon:
+        case tComma:
+        case tBracketRight:
+            break;
+        default:
+            error();
+            break;
+    }
+}
+
+void variableNotEmpty(){
+    switch(tok){
+        case tBracketLeft:
+            eat(tBracketLeft); expr(); eat(tBracketRight); callAfterVariable();
+            break;
+        case tDot:
+            eat(tDot); lValue(); callAfterVariable();
+            break;
+        default:
+            error();
+            break;
+    }
+}
+
+void callAfterVariable(){
+    switch(tok){
+        case tParLeft:
+            call();
+            break;
+        case tBracketLeft:
+        case tDot:
+            variableNotEmpty();
+            break;
+        case tMulti:
+        case tDiv:
+        case tMod:
+        case tPlus:
+        case tMinus:
+        case tLess:
+        case tLessEqual:
+        case tGreater:
+        case tGreaterEqual:
+        case tEqual:
+        case tDiff:
+        case tOr:
+        case tAnd:
+        case tParRight:
+        case tSemiColon:
+        case tComma:
+        case tBracketRight:
+            break;
+        default:
+            error();
             break;
     }
 }
@@ -566,9 +817,10 @@ void variable(){
         case tParRight:
         case tSemiColon:
         case tComma:
+        case tBracketRight:
             break;
         case tBracketLeft:
-            eat(tBracketLeft); expr(); eat(tBraceRight); variable();
+            eat(tBracketLeft); expr(); eat(tBracketRight); variable();
             break;
         case tDot:
             eat(tDot); lValue(); variable();
@@ -599,6 +851,72 @@ void exprOrEmpty(){
             break;
         default:
             expr();
+            break;
+    }
+}
+
+void exprSeq(){
+    switch(tok){
+        case tComma:
+            eat(tComma); expr(); exprSeq();
+            break;
+        case tParRight:
+            break;
+        default:
+            error();
+            break;
+    }
+}
+
+void actual(){
+    switch(tok){
+        case tParRight:
+            break;
+        case tNot:
+        case tMinus:
+        case tReadInteger:
+        case tReadLine:
+        case tNew:
+        case tNewArray:
+        case tParLeft:
+        case tId:
+        case tThis:
+        case tIntConstant:
+        case tDoubleConstant:
+        case tTrue:
+        case tFalse:
+        case tStringConstant:
+        case tNull:
+            expr();
+            break;
+        default:
+            error();
+            break;
+    }
+}
+
+void constant(){
+    switch(tok){
+        case tIntConstant:
+            eat(tIntConstant);
+            break;
+        case tDoubleConstant:
+            eat(tDoubleConstant);
+            break;
+        case tTrue:
+            eat(tTrue);
+            break;
+        case tFalse:
+            eat(tFalse);
+            break;
+        case tStringConstant:
+            eat(tStringConstant);
+            break;
+        case tNull:
+            eat(tNull);
+            break;
+        default:
+            error();
             break;
     }
 }
