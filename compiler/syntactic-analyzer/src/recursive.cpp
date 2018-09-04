@@ -128,18 +128,8 @@ void prog(){
     switch(tok){
         case tEOF:
             break;
-        case tVoid:
-        case tClass:
-        case tInterface:
-        case tInt:
-        case tDouble:
-        case tBool:
-        case tString:
-        case tUserType:
+        default:            
             dec(); prog1();
-            break;
-        default:
-            error();
             break;
     }
     
@@ -160,15 +150,8 @@ void dec(){
         case tVoid:
             eat(tVoid); eat(tId); funcDec();
             break;
-        case tInt:
-        case tDouble:
-        case tBool:
-        case tString:
-        case tUserType:
-            var(); dec1();
-            break;
         default:
-            error();
+            var(); dec1();
     }
 }
 
@@ -177,28 +160,14 @@ void dec1(){
         case tSemiColon:
             eat(tSemiColon);
             break;
-        case tParLeft:
-            funcDec();
-            break;
         default:
-            error();
+            funcDec();
             break;
     }
 }
 
 void var(){
-    switch(tok){
-        case tInt:
-        case tDouble:
-        case tBool:
-        case tString:
-        case tUserType:
-            type(); eat(tId);
-            break;
-        default:
-            error();
-            break;        
-    }
+    type(); eat(tId);
 }
 
 void type(){
@@ -226,14 +195,10 @@ void type(){
 
 void type1(){
     switch(tok){
-        case tId:
-        case tParRight:
-            break;
         case tBracketLeft:
             eat(tBracketLeft); eat(tBracketRight); type1();
-            break;
+            break;        
         default:
-            error();
             break;
     }
 }
@@ -251,44 +216,28 @@ void funcDec(){
 
 void formals(){
     switch(tok){
-        case tParRight:
-            break;
-        case tInt:
-        case tDouble:
-        case tBool:
-        case tString:
-        case tUserType:     
-            formals1();
-            break;
-        default:
-            error();
-            break;
-    }
-}
-
-void formals1(){
-    switch(tok){
         case tInt:
         case tDouble:
         case tBool:
         case tString:
         case tUserType:
-            var(); formals2();
+            formals1();
             break;
         default:
-            error();
+            break;
     }
+}
+
+void formals1(){
+    var(); formals2();
 }
 
 void formals2(){
     switch(tok){
-        case tParRight:
-            break;
-        case tComma:
+       case tComma:
             eat(tComma); formals1();
             break;
         default:
-            error();
             break;        
     }
 }
@@ -313,30 +262,14 @@ void stmtBlock1(){
         case tUserType:
             var(); eat(tSemiColon); stmtBlock1();
             break;
-        case tIf:
-        case tSemiColon:
-        case tWhile:
-        case tFor:
-        case tBreak:
-        case tReturn:
-        case tPrint:
-        case tBraceLeft:
-        case tId:
-        case tThis: 
-            statementList();
-            break;
-        case tBraceRight:
-            break;
         default:
-            error();
+            statementList();
             break;
     }
 }
 
 void statementList(){
     switch(tok){
-        case tBraceRight:
-            break;
         case tIf:
         case tSemiColon:
         case tWhile:
@@ -350,7 +283,6 @@ void statementList(){
             stmt(); statementList();
             break;
         default:
-            error();
             break;
     }
 }
@@ -392,10 +324,8 @@ void opTail(){
     switch(tok){
         case tElse:
             eat(tElse); stmtBlock();
-        case tBraceRight:
-            break;
         default:
-            error();
+            break;
     }
 }
 
@@ -516,12 +446,8 @@ void classDec1(){
         case tExtends:
             eat(tExtends); eat(tUserType); classDec2();
             break;
-        case tImplements:
-        case tBraceLeft:
-            classDec2();
-            break;
         default:
-            error();
+            classDec2();
             break;
     }
 }
@@ -542,22 +468,26 @@ void classDec2(){
 
 void implements(){
     switch(tok){
-        case tBraceLeft:
-            break;
         case tComma:
             eat(tComma); eat(tUserType); implements();
             break;
         default:
-            error();
+            break;
     }
 }
 
 void field(){
     switch(tok){
-        case tBraceRight:
+        case tVoid:
+            eat(tVoid); eat(tId); funcDec();
             break;
-        default:
+        case tInt:
+        case tDouble:
+        case tBool:
+        case tString:
+        case tUserType: 
             var(); dec1(); field();
+        default:
             break;
     }
 }
@@ -575,8 +505,6 @@ void interDec(){
 
 void prototype(){
     switch(tok){
-        case tBraceRight:
-            break;
         case tVoid:
             eat(tVoid); eat(tId); eat(tParLeft); formals(); eat(tParRight); eat(tSemiColon);
             break;
@@ -588,7 +516,6 @@ void prototype(){
             var(); eat(tParLeft); formals(); eat(tParRight); eat(tSemiColon);
             break;
         default:
-            error();
             break;
     }
 }
@@ -611,11 +538,7 @@ void exprAssignOrEmpty(){
         case tThis:
             exprAssign();
             break;
-        case tSemiColon:
-        case tParRight:
-            break;
         default:
-            error();
             break;
     }
 }
@@ -632,14 +555,7 @@ void logicOp(){
         case tAnd:
             eat(tAnd); relOp(); logicOp();
             break;
-        case tParRight:
-        case tSemiColon:
-        case tPrint:
-        case tComma:
-        case tBracketRight:
-            break;
         default:
-            error();
             break;
     }
 }
@@ -668,16 +584,7 @@ void relOp1(){
         case tDiff:
             eat(tDiff); plusSubOp(); relOp1();
             break;
-        case tParRight:
-        case tSemiColon:
-        case tPrint:
-        case tComma:
-        case tBracketRight:
-        case tOr:
-        case tAnd:
-            break;
         default:
-            error();
             break;
     }
 }
@@ -694,22 +601,7 @@ void plusSubOp1(){
         case tMinus:
             eat(tMinus); mulDivModOp(); plusSubOp1();
             break;
-        case tParRight:
-        case tSemiColon:
-        case tPrint:
-        case tComma:
-        case tBracketRight:
-        case tOr:
-        case tAnd:
-        case tLess:
-        case tLessEqual:
-        case tGreater:
-        case tGreaterEqual:
-        case tEqual:
-        case tDiff:
-            break;
         default:
-            error();
             break;
     }
 }
@@ -729,24 +621,7 @@ void mulDivModOp1(){
         case tMod:
             eat(tMod); unaryOp(); mulDivModOp1();
             break;
-        case tParRight:
-        case tSemiColon:
-        case tPrint:
-        case tComma:
-        case tBracketRight:
-        case tOr:
-        case tAnd:
-        case tLess:
-        case tLessEqual:
-        case tGreater:
-        case tGreaterEqual:
-        case tEqual:
-        case tDiff:
-        case tPlus:
-        case tMinus:
-            break;
         default:
-            error();
             break;
     }
 }
@@ -805,8 +680,11 @@ void callOrVariable(){
         case tParLeft:
             call();
             break;
-        default:
+        case tBracketLeft:
+        case tDot:
             variable();
+            break;
+        default:
             break;
     }
 }
