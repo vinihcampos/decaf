@@ -11,7 +11,7 @@ void main(){
      vector = binarySearch(vector, 0, vector.length());
 }
 
-int BinarySearch (int[] vector, int key, int length){
+int binarySearch (int[] vector, int key, int length){
     int inf;     
     int sup; 
     int half;

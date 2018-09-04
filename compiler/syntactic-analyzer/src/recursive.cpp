@@ -11,8 +11,8 @@ extern Token tok;
 
 string getTokenString(Token token){
     switch(token){
-	case tVoid:
-	    return "T_VOID";
+    	case tVoid:
+    	    return "T_VOID";
         case tInt:
             return "T_INT";           
         case tDouble:
@@ -119,11 +119,10 @@ string getTokenString(Token token){
             return "T_STRING_CONST";
         case tEOF:
             return "T_END_OF_FILE";
-		default:
-			return "T_ERROR";
+    	default:
+    		return "T_ERROR";
     }
 }
-
 
 void prog(){
     switch(tok){
@@ -581,16 +580,24 @@ void prototype(){
         case tVoid:
             eat(tVoid); eat(tId); eat(tParLeft); formals(); eat(tParRight); eat(tSemiColon);
             break;
-        default:
+        case tInt:
+        case tDouble:
+        case tBool:
+        case tString:
+        case tUserType:
             var(); eat(tParLeft); formals(); eat(tParRight); eat(tSemiColon);
+            break;
+        default:
+            error();
+            break;
     }
 }
 
 void exprAssign(){
-    lValue(); variable(); 
     switch(tok){
-        case tAssignment:
-            eat(tAssignment); expr();
+        case tId:
+        case tThis:
+            lValue(); variable(); eat(tAssignment); expr();
             break;
         default:
             error();
@@ -600,10 +607,15 @@ void exprAssign(){
 
 void exprAssignOrEmpty(){
     switch(tok){
+        case tId:
+        case tThis:
+            exprAssign();
+            break;
         case tSemiColon:
+        case tParRight:
             break;
         default:
-            exprAssign();
+            error();
             break;
     }
 }
@@ -976,7 +988,7 @@ void actual(){
         case tFalse:
         case tStringConstant:
         case tNull:
-            expr();
+            expr(); exprSeq();
             break;
         default:
             error();
@@ -1022,7 +1034,8 @@ int main(int argc, char** args){
 }
 
 void error(){
-    fprintf(stderr, "An error was found\n");
+    cerr << "Error - ";
+    cerr << "Token: " << getTokenString(tok) << ", line: " << row << " column: " << column << endl;
 }
 
 void advance(){
