@@ -376,7 +376,7 @@ void whileStmt(){
 void forStmt(){
     switch(tok){
         case tFor:
-            eat(tFor); eat(tParLeft); exprAssignOrEmpty(); eat(tSemiColon); expr(); eat(tSemiColon); exprOrEmpty(); eat(tParRight); stmt();
+            eat(tFor); eat(tParLeft); exprAssignOrEmpty(); eat(tSemiColon); expr(); eat(tSemiColon); exprAssignOrEmpty(); eat(tParRight); stmt();
             break;
         default:
             error();
@@ -524,7 +524,7 @@ void exprAssign(){
     switch(tok){
         case tId:
         case tThis:
-            lValue(); variable(); eat(tAssignment); expr();
+            lValue(); variableForAssignment(); eat(tAssignment); expr();
             break;
         default:
             error();
@@ -706,26 +706,7 @@ void callVariable(){
         case tDot:
             variableNotEmpty();
             break;
-        case tMulti:
-        case tDiv:
-        case tMod:
-        case tPlus:
-        case tMinus:
-        case tLess:
-        case tLessEqual:
-        case tGreater:
-        case tGreaterEqual:
-        case tEqual:
-        case tDiff:
-        case tOr:
-        case tAnd:
-        case tParRight:
-        case tSemiColon:
-        case tComma:
-        case tBracketRight:
-            break;
         default:
-            error();
             break;
     }
 }
@@ -753,59 +734,50 @@ void callAfterVariable(){
         case tDot:
             variableNotEmpty();
             break;
-        case tMulti:
-        case tDiv:
-        case tMod:
-        case tPlus:
-        case tMinus:
-        case tLess:
-        case tLessEqual:
-        case tGreater:
-        case tGreaterEqual:
-        case tEqual:
-        case tDiff:
-        case tOr:
-        case tAnd:
-        case tParRight:
-        case tSemiColon:
-        case tComma:
-        case tBracketRight:
-            break;
         default:
-            error();
             break;
     }
 }
 
-void variable(){
+void variableForAssignment(){
     switch(tok){
-        case tAssignment:
-        case tMulti:
-        case tDiv:
-        case tMod:
-        case tPlus:
-        case tMinus:
-        case tLess:
-        case tLessEqual:
-        case tGreater:
-        case tGreaterEqual:
-        case tEqual:
-        case tDiff:
-        case tOr:
-        case tAnd:
-        case tParRight:
-        case tSemiColon:
-        case tComma:
-        case tBracketRight:
-            break;
         case tBracketLeft:
-            eat(tBracketLeft); expr(); eat(tBracketRight); variable();
+            eat(tBracketLeft); expr(); eat(tBracketRight); variableForAssignment();
             break;
         case tDot:
-            eat(tDot); lValue(); variable();
+            eat(tDot); lValue(); variableForAssignment();
             break;
         default:
-            error();
+            break;
+    }
+}
+
+
+void variable(){
+    switch(tok){
+        case tBracketLeft:
+            eat(tBracketLeft); expr(); eat(tBracketRight); variable1();
+            break;
+        case tDot:
+            eat(tDot); lValue(); variable1();
+            break;
+        default:
+            break;
+    }
+}
+
+void variable1(){
+    switch(tok){
+        case tBracketLeft:
+            eat(tBracketLeft); expr(); eat(tBracketRight); variable1();
+            break;
+        case tDot:
+            eat(tDot); lValue(); variable1();
+            break;
+        case tParLeft:
+            call();
+            break;
+        default:
             break;
     }
 }
@@ -839,18 +811,13 @@ void exprSeq(){
         case tComma:
             eat(tComma); expr(); exprSeq();
             break;
-        case tParRight:
-            break;
         default:
-            error();
             break;
     }
 }
 
 void actual(){
     switch(tok){
-        case tParRight:
-            break;
         case tNot:
         case tMinus:
         case tReadInteger:
@@ -869,7 +836,6 @@ void actual(){
             expr(); exprSeq();
             break;
         default:
-            error();
             break;
     }
 }
@@ -912,8 +878,8 @@ int main(int argc, char** args){
 }
 
 void error(){
-    cerr << "Error - ";
-    cerr << "Token: " << getTokenString(tok) << ", line: " << row << " column: " << column << endl;
+    cerr << "Error - Token: " << getTokenString(tok) << ", line: " << row << " column: " << column << endl;
+    exit(0);
 }
 
 void advance(){
