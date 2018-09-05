@@ -35,6 +35,8 @@ void field();
 void interDec();
 void prototype();
 void exprAssign();
+void exprAssignOrCall();
+void exprAssignOrCall1();
 void exprAssignOrEmpty();
 void expr();
 void logicOp();
