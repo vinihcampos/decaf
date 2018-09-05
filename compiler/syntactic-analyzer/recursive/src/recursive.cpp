@@ -1,128 +1,14 @@
 #include <iostream>
 #include <string>
 #include "recursive.h"
+#include "token.h"
 
 using namespace std;
 
 extern FILE* yyin;
 extern int yylex();
-extern int column, row;
+extern int currRow, currColumn, row, column;
 extern Token tok;
-
-string getTokenString(Token token){
-    switch(token){
-    	case tVoid:
-    	    return "T_VOID";
-        case tInt:
-            return "T_INT";           
-        case tDouble:
-            return "T_DOUBLE";        
-        case tBool:
-            return "T_BOOL";          
-        case tString:
-            return "T_STRING";        
-        case tClass:
-            return "T_CLASS";         
-        case tInterface:
-            return "T_INTERFACE";     
-        case tNull:
-            return "T_NULL";          
-        case tThis:
-            return "T_THIS";       
-        case tExtends:
-            return "T_EXTENDS";       
-        case tImplements:
-            return "T_IMPLEMENTS";    
-        case tFor:
-            return "T_FOR";           
-        case tWhile:
-            return "T_WHILE";         
-        case tIf:
-            return "T_IF";            
-        case tElse:
-            return "T_ELSE";          
-        case tReturn:;
-            return "T_RETURN";        
-        case tBreak:
-            return "T_BREAK";         
-        case tNew:
-            return "T_NEW";           
-        case tNewArray:
-            return "T_NEW_ARRAY";      
-        case tPrint:
-            return "T_PRINT";         
-        case tReadInteger:
-            return "T_READ_INTEGER";   
-        case tReadLine:
-            return "T_READ_LINE";      
-        case tId:
-            return "T_ID";
-        case tUserType:
-            return "T_USER_TYPE";            
-        case tPlus:
-            return "T_+";
-        case tMinus:
-            return "T_-";
-        case tMulti:
-            return "T_*";
-        case tDiv:
-            return "T_/";
-        case tMod:
-            return "T_\%";
-        case tLess:
-            return "T_<";
-        case tLessEqual:
-            return "T_<=";
-        case tGreater:
-            return "T_>";
-        case tGreaterEqual:
-            return "T_>=";
-        case tEqual:
-            return "T_==";
-        case tDiff:
-            return "T_!=";
-        case tAssignment:
-            return "T_=";
-        case tAnd:
-            return "T_&&";
-        case tOr:
-            return "T_||";
-        case tNot:
-            return "T_!";
-        case tSemiColon:
-            return "T_;";
-        case tComma:
-            return "T_,";
-        case tDot:
-            return "T_.";
-        case tBracketLeft:
-            return "T_[";
-        case tBracketRight:
-            return "T_]";
-        case tParLeft:
-            return "T_(";
-        case tParRight:
-            return "T_)";  
-        case tBraceLeft:
-            return "T_{";
-        case tBraceRight:
-            return "T_}";
-        case tIntConstant:
-            return "T_INT_CONST";
-        case tDoubleConstant:
-            return "T_DOUBLE_CONST";
-        case tTrue:
-            return "T_TRUE";
-        case tFalse:
-            return "T_FALSE";
-        case tStringConstant:
-            return "T_STRING_CONST";
-        case tEOF:
-            return "T_END_OF_FILE";
-    	default:
-    		return "T_ERROR";
-    }
-}
 
 void prog(){
     switch(tok){
@@ -188,7 +74,8 @@ void type(){
             eat(tUserType); type1();
             break;
         default:
-            error();
+            Token tokens[] = {tInt,tDouble,tBool,tString,tUserType};
+            error(tokens);
             break;
     }
 }
@@ -209,7 +96,8 @@ void funcDec(){
             eat(tParLeft); formals(); eat(tParRight); stmtBlock();
             break;
         default:
-            error();
+            Token tokens[] = {tParLeft};
+            error(tokens);
             break;
     }
 }
@@ -248,7 +136,8 @@ void stmtBlock(){
             eat(tBraceLeft); stmtBlock1(); eat(tBraceRight);
             break;
         default:
-            error();
+            Token tokens[] = {tBraceLeft};
+            error(tokens);
             break;
     }
 }
@@ -304,7 +193,8 @@ void stmt(){
             otherStmt();
             break;
         default:
-            error();
+            Token tokens[] = {tIf,tSemiColon,tWhile,tFor,tBreak,tReturn,tPrint,tBraceLeft,tId,tThis};
+            error(tokens);
             break;
     }
 }
@@ -315,7 +205,8 @@ void conditionStmt(){
             eat(tIf); eat(tParLeft); expr(); eat(tParRight); stmtBlock(); opTail();
             break;
         default:
-            error();
+            Token tokens[] = {tIf};
+            error(tokens);
             break;
     }
 }
@@ -357,7 +248,8 @@ void otherStmt(){
             eat(tSemiColon);
             break;
         default:
-            error();
+            Token tokens[] = {tSemiColon,tWhile,tFor,tBreak,tReturn,tPrint,tBraceLeft,tId,tThis};
+            error(tokens);
             break;
     }
 }
@@ -368,7 +260,8 @@ void whileStmt(){
             eat(tWhile); eat(tParLeft); expr(); eat(tParRight); stmt();
             break;
         default:
-            error();
+            Token tokens[] = {tWhile};
+            error(tokens);
             break;
     }
 }
@@ -379,7 +272,8 @@ void forStmt(){
             eat(tFor); eat(tParLeft); exprAssignOrEmpty(); eat(tSemiColon); expr(); eat(tSemiColon); exprAssignOrEmpty(); eat(tParRight); stmt();
             break;
         default:
-            error();
+            Token tokens[] = {tFor};
+            error(tokens);
             break;
     }
 }
@@ -390,7 +284,8 @@ void returnStmt(){
             eat(tReturn); exprOrEmpty(); eat(tSemiColon);
             break;
         default:
-            error();
+            Token tokens[] = {tReturn};
+            error(tokens);
             break;
     }
 }
@@ -401,7 +296,8 @@ void breakStmt(){
             eat(tBreak); eat(tSemiColon);
             break;
         default:
-            error();
+            Token tokens[] = {tBreak};
+            error(tokens);
             break;
     }
 }
@@ -412,7 +308,8 @@ void printStmt(){
             eat(tPrint); eat(tParLeft); expr(); printOtherStmt();
             break;
         default:
-            error();
+            Token tokens[] = {tPrint};
+            error(tokens);
             break;
     }
 }
@@ -425,7 +322,8 @@ void printOtherStmt(){
         case tComma:
             eat(tComma); expr(); printOtherStmt();
         default:
-            error();
+            Token tokens[] = {tParRight, tComma};
+            error(tokens);
             break;
     }
 }
@@ -436,7 +334,8 @@ void classDec(){
             eat(tClass); eat(tUserType); classDec1();
             break;
         default:
-            error();
+            Token tokens[] = {tClass};
+            error(tokens);
             break;
     }
 }
@@ -461,7 +360,8 @@ void classDec2(){
             eat(tBraceLeft); field(); eat(tBraceRight);
             break;
         default:
-            error();
+            Token tokens[] = {tImplements, tBraceLeft};
+            error(tokens);
             break;
     }
 }
@@ -498,7 +398,8 @@ void interDec(){
             eat(tInterface); eat(tUserType); eat(tBraceLeft); prototype(); eat(tBraceRight);
             break;
         default:
-            error();
+            Token tokens[] = {tInterface};
+            error(tokens);
             break;
     }
 }
@@ -527,7 +428,8 @@ void exprAssign(){
             lValue(); variableForAssignment(); eat(tAssignment); expr();
             break;
         default:
-            error();
+            Token tokens[] = {tId, tThis};
+            error(tokens);
             break;
     }
 }
@@ -539,7 +441,8 @@ void exprAssignOrCall(){
             lValue(); variableForAssignment(); exprAssignOrCall1();
             break;
         default:
-            error();
+            Token tokens[] = {tId, tThis};
+            error(tokens);
             break;
     }
 }
@@ -553,7 +456,8 @@ void exprAssignOrCall1(){
             call();
             break;
         default:
-            error();
+            Token tokens[] = {tAssignment, tParLeft};
+            error(tokens);
             break;
     }
 }
@@ -696,7 +600,8 @@ void term(){
             constant();
             break;
         default:
-            error();
+            Token tokens[] = {tReadInteger,tReadLine,tNew,tNewArray,tParLeft,tId,tThis,tIntConstant,tDoubleConstant,tTrue,tFalse,tStringConstant,tNull};
+            error(tokens);
             break;
     }
 }
@@ -721,7 +626,8 @@ void call(){
             eat(tParLeft); actual(); eat(tParRight); callVariable();
             break;
         default:
-            error();
+            Token tokens[] = {tParLeft};
+            error(tokens);
             break;
     }
 }
@@ -746,7 +652,8 @@ void variableNotEmpty(){
             eat(tDot); lValue(); callAfterVariable();
             break;
         default:
-            error();
+            Token tokens[] = {tBraceLeft, tDot};
+            error(tokens);
             break;
     }
 }
@@ -817,7 +724,8 @@ void lValue(){
             eat(tThis); eat(tDot); eat(tId);
             break;
         default:
-            error();
+            Token tokens[] = {tId, tThis};
+            error(tokens);
             break;
     }
 }
@@ -887,7 +795,8 @@ void constant(){
             eat(tNull);
             break;
         default:
-            error();
+            Token tokens[] = {tIntConstant,tDoubleConstant,tTrue,tFalse,tStringConstant,tNull};
+            error(tokens);
             break;
     }
 }
@@ -897,14 +806,17 @@ int main(int argc, char** args){
     	yyin = fopen(args[1], "r");
         advance();
         prog();
-    }else{
-    	error();
     }
     return 0;
 }
 
-void error(){
-    cerr << "Error - Token: " << getTokenString(tok) << ", line: " << row << " column: " << column << endl;
+void error(Token expected_token[]){
+    cout << "Size: " << sizeof(expected_token)/sizeof(expected_token[0]) << endl;
+    cerr << "Expected tokens: ";
+    for(int i = 0; i < sizeof(expected_token)/sizeof(expected_token[0]); ++i){
+        cerr << getTokenString(expected_token[i]) << ", ";
+    }
+    //cerr << "Error - Token: " << getTokenString(tok) << ", line: " << row << " column: " << column << endl;
     exit(0);
 }
 
@@ -916,6 +828,122 @@ void eat(Token t){
     if(t == tok){
         advance();
     }else{
-        error();
+        Token tokens[] = {t};
+        error(tokens);
+    }
+}
+
+string getTokenString(Token token){
+    switch(token){
+        case tVoid:
+            return "T_VOID";
+        case tInt:
+            return "T_INT";           
+        case tDouble:
+            return "T_DOUBLE";        
+        case tBool:
+            return "T_BOOL";          
+        case tString:
+            return "T_STRING";        
+        case tClass:
+            return "T_CLASS";         
+        case tInterface:
+            return "T_INTERFACE";     
+        case tNull:
+            return "T_NULL";          
+        case tThis:
+            return "T_THIS";       
+        case tExtends:
+            return "T_EXTENDS";       
+        case tImplements:
+            return "T_IMPLEMENTS";    
+        case tFor:
+            return "T_FOR";           
+        case tWhile:
+            return "T_WHILE";         
+        case tIf:
+            return "T_IF";            
+        case tElse:
+            return "T_ELSE";          
+        case tReturn:;
+            return "T_RETURN";        
+        case tBreak:
+            return "T_BREAK";         
+        case tNew:
+            return "T_NEW";           
+        case tNewArray:
+            return "T_NEW_ARRAY";      
+        case tPrint:
+            return "T_PRINT";         
+        case tReadInteger:
+            return "T_READ_INTEGER";   
+        case tReadLine:
+            return "T_READ_LINE";      
+        case tId:
+            return "T_ID";
+        case tUserType:
+            return "T_USER_TYPE";            
+        case tPlus:
+            return "T_+";
+        case tMinus:
+            return "T_-";
+        case tMulti:
+            return "T_*";
+        case tDiv:
+            return "T_/";
+        case tMod:
+            return "T_\%";
+        case tLess:
+            return "T_<";
+        case tLessEqual:
+            return "T_<=";
+        case tGreater:
+            return "T_>";
+        case tGreaterEqual:
+            return "T_>=";
+        case tEqual:
+            return "T_==";
+        case tDiff:
+            return "T_!=";
+        case tAssignment:
+            return "T_=";
+        case tAnd:
+            return "T_&&";
+        case tOr:
+            return "T_||";
+        case tNot:
+            return "T_!";
+        case tSemiColon:
+            return "T_;";
+        case tComma:
+            return "T_,";
+        case tDot:
+            return "T_.";
+        case tBracketLeft:
+            return "T_[";
+        case tBracketRight:
+            return "T_]";
+        case tParLeft:
+            return "T_(";
+        case tParRight:
+            return "T_)";  
+        case tBraceLeft:
+            return "T_{";
+        case tBraceRight:
+            return "T_}";
+        case tIntConstant:
+            return "T_INT_CONST";
+        case tDoubleConstant:
+            return "T_DOUBLE_CONST";
+        case tTrue:
+            return "T_TRUE";
+        case tFalse:
+            return "T_FALSE";
+        case tStringConstant:
+            return "T_STRING_CONST";
+        case tEOF:
+            return "T_END_OF_FILE";
+        default:
+            return "T_ERROR";
     }
 }

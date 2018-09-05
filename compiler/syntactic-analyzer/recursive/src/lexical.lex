@@ -4,12 +4,16 @@
     #include "token.h"
     #define ID_MAX_SZ 31
 
+    int currRow = 1;
+    int currColumn = 1;
     int row = 1;
     int column = 1;
     Token tok;
  
     void updateToken(Token token){
-        column += yyleng;
+        row = currRow;
+        column = currColumn;
+        currColumn += yyleng;
         tok = token;
     }
 %}
@@ -32,11 +36,11 @@ commentLine [/][/].*
 %%
 
  /* Comment */
-{commentLine}           { column = 1; }
-[/][*]                  { column += yyleng; BEGIN(BLOCK_COMMENT); }
-<BLOCK_COMMENT>"*/"     { column += yyleng; BEGIN 0; }
-<BLOCK_COMMENT>[^*\n]+  { column += yyleng; }
-<BLOCK_COMMENT>"*"      { column += yyleng; }
+{commentLine}           { currColumn = 1; }
+[/][*]                  { currColumn += yyleng; BEGIN(BLOCK_COMMENT); }
+<BLOCK_COMMENT>"*/"     { currColumn += yyleng; BEGIN 0; }
+<BLOCK_COMMENT>[^*\n]+  { currColumn += yyleng; }
+<BLOCK_COMMENT>"*"      { currColumn += yyleng; }
 
  /* Constants */
 
@@ -68,7 +72,7 @@ null            { updateToken(tNull); return 0; }
 
 {notNumber}     { 
                     fprintf(stderr, "Error: the %s is not a valid number\n", yytext);
-                    column += yyleng;			
+                    currColumn += yyleng;			
                 }   
  
  /* Base types  */
@@ -163,13 +167,13 @@ newArray        { updateToken(tNewArray); return 0; }
 
  /* Lines */
 
-[\t ]+          { column += yyleng; /* check whitespaces */ }
-"\n"            { column = 1; row++; /* detect new row */ }
+[\t ]+          { currColumn += yyleng; /* check whitespaces */ }
+"\n"            { currColumn = 1; currRow++; /* detect new currRow */ }
 
  /* Errors  */
 
 .               {   
                     fprintf(stderr, "Warning: the %s is not a recognized pattern\n", yytext); 
-                    column += yyleng;
+                    currColumn += yyleng;
                 }
 %%

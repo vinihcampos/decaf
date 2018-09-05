@@ -2,6 +2,7 @@
 #define _RECURSIVE_
 
 #include "token.h"
+#include <string>
 
 void prog();
 void prog1();
@@ -63,8 +64,9 @@ void exprSeq();
 void actual();
 void constant();
 
-void error();
+void error(Token expected_token[]);
 void eat(Token t);
 void advance();
+std::string getTokenString(Token token);
 
 #endif
