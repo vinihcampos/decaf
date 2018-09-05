@@ -351,7 +351,7 @@ void otherStmt(){
             break;
         case tId:
         case tThis:
-            exprAssign(); eat(tSemiColon);
+            exprAssignOrCall(); eat(tSemiColon);
             break;
         case tSemiColon:
             eat(tSemiColon);
@@ -479,7 +479,7 @@ void implements(){
 void field(){
     switch(tok){
         case tVoid:
-            eat(tVoid); eat(tId); funcDec();
+            eat(tVoid); eat(tId); funcDec(); field();
             break;
         case tInt:
         case tDouble:
@@ -525,6 +525,32 @@ void exprAssign(){
         case tId:
         case tThis:
             lValue(); variableForAssignment(); eat(tAssignment); expr();
+            break;
+        default:
+            error();
+            break;
+    }
+}
+
+void exprAssignOrCall(){
+    switch(tok){
+        case tId:
+        case tThis:
+            lValue(); variableForAssignment(); exprAssignOrCall1();
+            break;
+        default:
+            error();
+            break;
+    }
+}
+
+void exprAssignOrCall1(){
+    switch(tok){
+        case tAssignment:
+            eat(tAssignment); expr();
+            break;
+        case tParLeft:
+            call();
             break;
         default:
             error();
