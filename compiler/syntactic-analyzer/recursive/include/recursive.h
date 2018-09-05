@@ -3,6 +3,7 @@
 
 #include "token.h"
 #include <string>
+#include <vector>
 
 void prog();
 void prog1();
@@ -64,7 +65,7 @@ void exprSeq();
 void actual();
 void constant();
 
-void error(Token expected_token[]);
+void error(std::vector<Token> expected_tokens);
 void eat(Token t);
 void advance();
 std::string getTokenString(Token token);

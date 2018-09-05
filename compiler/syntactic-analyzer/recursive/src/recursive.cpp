@@ -7,8 +7,9 @@ using namespace std;
 
 extern FILE* yyin;
 extern int yylex();
-extern int currRow, currColumn, row, column;
+extern int row, column;
 extern Token tok;
+extern char * lexema;
 
 void prog(){
     switch(tok){
@@ -74,7 +75,7 @@ void type(){
             eat(tUserType); type1();
             break;
         default:
-            Token tokens[] = {tInt,tDouble,tBool,tString,tUserType};
+            vector<Token> tokens = {tInt,tDouble,tBool,tString,tUserType};
             error(tokens);
             break;
     }
@@ -96,7 +97,7 @@ void funcDec(){
             eat(tParLeft); formals(); eat(tParRight); stmtBlock();
             break;
         default:
-            Token tokens[] = {tParLeft};
+            vector<Token> tokens = {tParLeft};
             error(tokens);
             break;
     }
@@ -136,7 +137,7 @@ void stmtBlock(){
             eat(tBraceLeft); stmtBlock1(); eat(tBraceRight);
             break;
         default:
-            Token tokens[] = {tBraceLeft};
+            vector<Token> tokens = {tBraceLeft};
             error(tokens);
             break;
     }
@@ -193,7 +194,7 @@ void stmt(){
             otherStmt();
             break;
         default:
-            Token tokens[] = {tIf,tSemiColon,tWhile,tFor,tBreak,tReturn,tPrint,tBraceLeft,tId,tThis};
+            vector<Token> tokens = {tIf,tSemiColon,tWhile,tFor,tBreak,tReturn,tPrint,tBraceLeft,tId,tThis};
             error(tokens);
             break;
     }
@@ -205,7 +206,7 @@ void conditionStmt(){
             eat(tIf); eat(tParLeft); expr(); eat(tParRight); stmtBlock(); opTail();
             break;
         default:
-            Token tokens[] = {tIf};
+            vector<Token> tokens = {tIf};
             error(tokens);
             break;
     }
@@ -248,7 +249,7 @@ void otherStmt(){
             eat(tSemiColon);
             break;
         default:
-            Token tokens[] = {tSemiColon,tWhile,tFor,tBreak,tReturn,tPrint,tBraceLeft,tId,tThis};
+            vector<Token> tokens = {tSemiColon,tWhile,tFor,tBreak,tReturn,tPrint,tBraceLeft,tId,tThis};
             error(tokens);
             break;
     }
@@ -260,7 +261,7 @@ void whileStmt(){
             eat(tWhile); eat(tParLeft); expr(); eat(tParRight); stmt();
             break;
         default:
-            Token tokens[] = {tWhile};
+            vector<Token> tokens = {tWhile};
             error(tokens);
             break;
     }
@@ -272,7 +273,7 @@ void forStmt(){
             eat(tFor); eat(tParLeft); exprAssignOrEmpty(); eat(tSemiColon); expr(); eat(tSemiColon); exprAssignOrEmpty(); eat(tParRight); stmt();
             break;
         default:
-            Token tokens[] = {tFor};
+            vector<Token> tokens = {tFor};
             error(tokens);
             break;
     }
@@ -284,7 +285,7 @@ void returnStmt(){
             eat(tReturn); exprOrEmpty(); eat(tSemiColon);
             break;
         default:
-            Token tokens[] = {tReturn};
+            vector<Token> tokens = {tReturn};
             error(tokens);
             break;
     }
@@ -296,7 +297,7 @@ void breakStmt(){
             eat(tBreak); eat(tSemiColon);
             break;
         default:
-            Token tokens[] = {tBreak};
+            vector<Token> tokens = {tBreak};
             error(tokens);
             break;
     }
@@ -308,7 +309,7 @@ void printStmt(){
             eat(tPrint); eat(tParLeft); expr(); printOtherStmt();
             break;
         default:
-            Token tokens[] = {tPrint};
+            vector<Token> tokens = {tPrint};
             error(tokens);
             break;
     }
@@ -322,7 +323,7 @@ void printOtherStmt(){
         case tComma:
             eat(tComma); expr(); printOtherStmt();
         default:
-            Token tokens[] = {tParRight, tComma};
+            vector<Token> tokens = {tParRight, tComma};
             error(tokens);
             break;
     }
@@ -334,7 +335,7 @@ void classDec(){
             eat(tClass); eat(tUserType); classDec1();
             break;
         default:
-            Token tokens[] = {tClass};
+            vector<Token> tokens = {tClass};
             error(tokens);
             break;
     }
@@ -360,7 +361,7 @@ void classDec2(){
             eat(tBraceLeft); field(); eat(tBraceRight);
             break;
         default:
-            Token tokens[] = {tImplements, tBraceLeft};
+            vector<Token> tokens = {tImplements, tBraceLeft};
             error(tokens);
             break;
     }
@@ -398,7 +399,7 @@ void interDec(){
             eat(tInterface); eat(tUserType); eat(tBraceLeft); prototype(); eat(tBraceRight);
             break;
         default:
-            Token tokens[] = {tInterface};
+            vector<Token> tokens = {tInterface};
             error(tokens);
             break;
     }
@@ -428,7 +429,7 @@ void exprAssign(){
             lValue(); variableForAssignment(); eat(tAssignment); expr();
             break;
         default:
-            Token tokens[] = {tId, tThis};
+            vector<Token> tokens = {tId, tThis};
             error(tokens);
             break;
     }
@@ -441,7 +442,7 @@ void exprAssignOrCall(){
             lValue(); variableForAssignment(); exprAssignOrCall1();
             break;
         default:
-            Token tokens[] = {tId, tThis};
+            vector<Token> tokens = {tId, tThis};
             error(tokens);
             break;
     }
@@ -456,7 +457,7 @@ void exprAssignOrCall1(){
             call();
             break;
         default:
-            Token tokens[] = {tAssignment, tParLeft};
+            vector<Token> tokens = {tAssignment, tParLeft};
             error(tokens);
             break;
     }
@@ -600,7 +601,7 @@ void term(){
             constant();
             break;
         default:
-            Token tokens[] = {tReadInteger,tReadLine,tNew,tNewArray,tParLeft,tId,tThis,tIntConstant,tDoubleConstant,tTrue,tFalse,tStringConstant,tNull};
+            vector<Token> tokens = {tReadInteger,tReadLine,tNew,tNewArray,tParLeft,tId,tThis,tIntConstant,tDoubleConstant,tTrue,tFalse,tStringConstant,tNull};
             error(tokens);
             break;
     }
@@ -626,7 +627,7 @@ void call(){
             eat(tParLeft); actual(); eat(tParRight); callVariable();
             break;
         default:
-            Token tokens[] = {tParLeft};
+            vector<Token> tokens = {tParLeft};
             error(tokens);
             break;
     }
@@ -652,7 +653,7 @@ void variableNotEmpty(){
             eat(tDot); lValue(); callAfterVariable();
             break;
         default:
-            Token tokens[] = {tBraceLeft, tDot};
+            vector<Token> tokens = {tBraceLeft, tDot};
             error(tokens);
             break;
     }
@@ -724,7 +725,7 @@ void lValue(){
             eat(tThis); eat(tDot); eat(tId);
             break;
         default:
-            Token tokens[] = {tId, tThis};
+            vector<Token> tokens = {tId, tThis};
             error(tokens);
             break;
     }
@@ -795,7 +796,7 @@ void constant(){
             eat(tNull);
             break;
         default:
-            Token tokens[] = {tIntConstant,tDoubleConstant,tTrue,tFalse,tStringConstant,tNull};
+            vector<Token> tokens = {tIntConstant,tDoubleConstant,tTrue,tFalse,tStringConstant,tNull};
             error(tokens);
             break;
     }
@@ -810,13 +811,22 @@ int main(int argc, char** args){
     return 0;
 }
 
-void error(Token expected_token[]){
-    cout << "Size: " << sizeof(expected_token)/sizeof(expected_token[0]) << endl;
+void error(vector<Token> expected_tokens){
+
+    cerr << "An error was found with lexema \"" << lexema << "\" at line " << row << ", column " << column << "." << endl;
     cerr << "Expected tokens: ";
-    for(int i = 0; i < sizeof(expected_token)/sizeof(expected_token[0]); ++i){
-        cerr << getTokenString(expected_token[i]) << ", ";
+    for(int i = 0; i < expected_tokens.size(); ++i){
+        cerr << getTokenString(expected_tokens[i]);
+        if(i + 2 == expected_tokens.size())
+            cerr << " or ";
+        else if(i + 1 < expected_tokens.size())
+            cerr << ", ";
+        else
+            cerr << ".";
     }
-    //cerr << "Error - Token: " << getTokenString(tok) << ", line: " << row << " column: " << column << endl;
+
+    cerr << endl;
+
     exit(0);
 }
 
@@ -828,7 +838,7 @@ void eat(Token t){
     if(t == tok){
         advance();
     }else{
-        Token tokens[] = {t};
+        vector<Token> tokens = {t};
         error(tokens);
     }
 }
