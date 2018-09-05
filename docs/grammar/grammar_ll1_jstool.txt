@@ -55,6 +55,7 @@ Implements -> ε
 Implements -> tComma tUserType Implements
 Field -> ε
 Field -> Var Dec1 Field
+Field -> tVoid tId FuncDec
 InterDec -> tInterface tUserType tBraceLeft Prototype tBraceRight
 Prototype -> ε
 Prototype -> Var tParLeft Formals tParRight tSemiColon
