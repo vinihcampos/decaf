@@ -1,128 +1,15 @@
 #include <iostream>
 #include <string>
 #include "recursive.h"
+#include "token.h"
 
 using namespace std;
 
 extern FILE* yyin;
 extern int yylex();
-extern int column, row;
+extern int row, column;
 extern Token tok;
-
-string getTokenString(Token token){
-    switch(token){
-    	case tVoid:
-    	    return "T_VOID";
-        case tInt:
-            return "T_INT";           
-        case tDouble:
-            return "T_DOUBLE";        
-        case tBool:
-            return "T_BOOL";          
-        case tString:
-            return "T_STRING";        
-        case tClass:
-            return "T_CLASS";         
-        case tInterface:
-            return "T_INTERFACE";     
-        case tNull:
-            return "T_NULL";          
-        case tThis:
-            return "T_THIS";       
-        case tExtends:
-            return "T_EXTENDS";       
-        case tImplements:
-            return "T_IMPLEMENTS";    
-        case tFor:
-            return "T_FOR";           
-        case tWhile:
-            return "T_WHILE";         
-        case tIf:
-            return "T_IF";            
-        case tElse:
-            return "T_ELSE";          
-        case tReturn:;
-            return "T_RETURN";        
-        case tBreak:
-            return "T_BREAK";         
-        case tNew:
-            return "T_NEW";           
-        case tNewArray:
-            return "T_NEW_ARRAY";      
-        case tPrint:
-            return "T_PRINT";         
-        case tReadInteger:
-            return "T_READ_INTEGER";   
-        case tReadLine:
-            return "T_READ_LINE";      
-        case tId:
-            return "T_ID";
-        case tUserType:
-            return "T_USER_TYPE";            
-        case tPlus:
-            return "T_+";
-        case tMinus:
-            return "T_-";
-        case tMulti:
-            return "T_*";
-        case tDiv:
-            return "T_/";
-        case tMod:
-            return "T_\%";
-        case tLess:
-            return "T_<";
-        case tLessEqual:
-            return "T_<=";
-        case tGreater:
-            return "T_>";
-        case tGreaterEqual:
-            return "T_>=";
-        case tEqual:
-            return "T_==";
-        case tDiff:
-            return "T_!=";
-        case tAssignment:
-            return "T_=";
-        case tAnd:
-            return "T_&&";
-        case tOr:
-            return "T_||";
-        case tNot:
-            return "T_!";
-        case tSemiColon:
-            return "T_;";
-        case tComma:
-            return "T_,";
-        case tDot:
-            return "T_.";
-        case tBracketLeft:
-            return "T_[";
-        case tBracketRight:
-            return "T_]";
-        case tParLeft:
-            return "T_(";
-        case tParRight:
-            return "T_)";  
-        case tBraceLeft:
-            return "T_{";
-        case tBraceRight:
-            return "T_}";
-        case tIntConstant:
-            return "T_INT_CONST";
-        case tDoubleConstant:
-            return "T_DOUBLE_CONST";
-        case tTrue:
-            return "T_TRUE";
-        case tFalse:
-            return "T_FALSE";
-        case tStringConstant:
-            return "T_STRING_CONST";
-        case tEOF:
-            return "T_END_OF_FILE";
-    	default:
-    		return "T_ERROR";
-    }
-}
+extern char * lexema;
 
 void prog(){
     switch(tok){
@@ -188,7 +75,8 @@ void type(){
             eat(tUserType); type1();
             break;
         default:
-            error();
+            vector<Token> tokens = {tInt,tDouble,tBool,tString,tUserType};
+            error(tokens, type);
             break;
     }
 }
@@ -209,7 +97,8 @@ void funcDec(){
             eat(tParLeft); formals(); eat(tParRight); stmtBlock();
             break;
         default:
-            error();
+            vector<Token> tokens = {tParLeft};
+            error(tokens, funcDec);
             break;
     }
 }
@@ -248,7 +137,8 @@ void stmtBlock(){
             eat(tBraceLeft); stmtBlock1(); eat(tBraceRight);
             break;
         default:
-            error();
+            vector<Token> tokens = {tBraceLeft};
+            error(tokens, stmtBlock);
             break;
     }
 }
@@ -304,7 +194,8 @@ void stmt(){
             otherStmt();
             break;
         default:
-            error();
+            vector<Token> tokens = {tIf,tSemiColon,tWhile,tFor,tBreak,tReturn,tPrint,tBraceLeft,tId,tThis};
+            error(tokens, stmt);
             break;
     }
 }
@@ -315,7 +206,8 @@ void conditionStmt(){
             eat(tIf); eat(tParLeft); expr(); eat(tParRight); stmtBlock(); opTail();
             break;
         default:
-            error();
+            vector<Token> tokens = {tIf};
+            error(tokens, conditionStmt);
             break;
     }
 }
@@ -357,7 +249,8 @@ void otherStmt(){
             eat(tSemiColon);
             break;
         default:
-            error();
+            vector<Token> tokens = {tSemiColon,tWhile,tFor,tBreak,tReturn,tPrint,tBraceLeft,tId,tThis};
+            error(tokens, otherStmt);
             break;
     }
 }
@@ -368,7 +261,8 @@ void whileStmt(){
             eat(tWhile); eat(tParLeft); expr(); eat(tParRight); stmt();
             break;
         default:
-            error();
+            vector<Token> tokens = {tWhile};
+            error(tokens, whileStmt);
             break;
     }
 }
@@ -379,7 +273,8 @@ void forStmt(){
             eat(tFor); eat(tParLeft); exprAssignOrEmpty(); eat(tSemiColon); expr(); eat(tSemiColon); exprAssignOrEmpty(); eat(tParRight); stmt();
             break;
         default:
-            error();
+            vector<Token> tokens = {tFor};
+            error(tokens, forStmt);
             break;
     }
 }
@@ -390,7 +285,8 @@ void returnStmt(){
             eat(tReturn); exprOrEmpty(); eat(tSemiColon);
             break;
         default:
-            error();
+            vector<Token> tokens = {tReturn};
+            error(tokens, returnStmt);
             break;
     }
 }
@@ -401,7 +297,8 @@ void breakStmt(){
             eat(tBreak); eat(tSemiColon);
             break;
         default:
-            error();
+            vector<Token> tokens = {tBreak};
+            error(tokens, breakStmt);
             break;
     }
 }
@@ -412,7 +309,8 @@ void printStmt(){
             eat(tPrint); eat(tParLeft); expr(); printOtherStmt();
             break;
         default:
-            error();
+            vector<Token> tokens = {tPrint};
+            error(tokens, printStmt);
             break;
     }
 }
@@ -425,7 +323,8 @@ void printOtherStmt(){
         case tComma:
             eat(tComma); expr(); printOtherStmt();
         default:
-            error();
+            vector<Token> tokens = {tParRight, tComma};
+            error(tokens, printOtherStmt);
             break;
     }
 }
@@ -436,7 +335,8 @@ void classDec(){
             eat(tClass); eat(tUserType); classDec1();
             break;
         default:
-            error();
+            vector<Token> tokens = {tClass};
+            error(tokens, classDec);
             break;
     }
 }
@@ -461,7 +361,8 @@ void classDec2(){
             eat(tBraceLeft); field(); eat(tBraceRight);
             break;
         default:
-            error();
+            vector<Token> tokens = {tImplements, tBraceLeft};
+            error(tokens, classDec2);
             break;
     }
 }
@@ -498,7 +399,8 @@ void interDec(){
             eat(tInterface); eat(tUserType); eat(tBraceLeft); prototype(); eat(tBraceRight);
             break;
         default:
-            error();
+            vector<Token> tokens = {tInterface};
+            error(tokens, interDec);
             break;
     }
 }
@@ -527,7 +429,8 @@ void exprAssign(){
             lValue(); variableForAssignment(); eat(tAssignment); expr();
             break;
         default:
-            error();
+            vector<Token> tokens = {tId, tThis};
+            error(tokens, exprAssign);
             break;
     }
 }
@@ -539,7 +442,8 @@ void exprAssignOrCall(){
             lValue(); variableForAssignment(); exprAssignOrCall1();
             break;
         default:
-            error();
+            vector<Token> tokens = {tId, tThis};
+            error(tokens, exprAssignOrCall);
             break;
     }
 }
@@ -553,7 +457,8 @@ void exprAssignOrCall1(){
             call();
             break;
         default:
-            error();
+            vector<Token> tokens = {tAssignment, tParLeft};
+            error(tokens, exprAssignOrCall1);
             break;
     }
 }
@@ -696,7 +601,8 @@ void term(){
             constant();
             break;
         default:
-            error();
+            vector<Token> tokens = {tReadInteger,tReadLine,tNew,tNewArray,tParLeft,tId,tThis,tIntConstant,tDoubleConstant,tTrue,tFalse,tStringConstant,tNull};
+            error(tokens, term);
             break;
     }
 }
@@ -721,7 +627,8 @@ void call(){
             eat(tParLeft); actual(); eat(tParRight); callVariable();
             break;
         default:
-            error();
+            vector<Token> tokens = {tParLeft};
+            error(tokens, call);
             break;
     }
 }
@@ -746,7 +653,8 @@ void variableNotEmpty(){
             eat(tDot); lValue(); callAfterVariable();
             break;
         default:
-            error();
+            vector<Token> tokens = {tBraceLeft, tDot};
+            error(tokens, variableNotEmpty);
             break;
     }
 }
@@ -817,7 +725,8 @@ void lValue(){
             eat(tThis); eat(tDot); eat(tId);
             break;
         default:
-            error();
+            vector<Token> tokens = {tId, tThis};
+            error(tokens, lValue);
             break;
     }
 }
@@ -887,7 +796,8 @@ void constant(){
             eat(tNull);
             break;
         default:
-            error();
+            vector<Token> tokens = {tIntConstant,tDoubleConstant,tTrue,tFalse,tStringConstant,tNull};
+            error(tokens, constant);
             break;
     }
 }
@@ -897,15 +807,45 @@ int main(int argc, char** args){
     	yyin = fopen(args[1], "r");
         advance();
         prog();
-    }else{
-    	error();
     }
     return 0;
 }
 
-void error(){
-    cerr << "Error - Token: " << getTokenString(tok) << ", line: " << row << " column: " << column << endl;
-    exit(0);
+void error(vector<Token> expected_tokens, void (*func)()){
+
+    cerr << "An error was found with lexema \"" << lexema << "\" at line " << row << ", column " << column << "." << endl;
+    cerr << "Expected tokens: ";
+    for(int i = 0; i < expected_tokens.size(); ++i){
+        cerr << getTokenString(expected_tokens[i]);
+        if(i + 2 == expected_tokens.size())
+            cerr << " or ";
+        else if(i + 1 < expected_tokens.size())
+            cerr << ", ";
+        else
+            cerr << ".";
+    }
+
+    cerr << endl << endl;
+
+    while(tok != tEOF){
+        advance();
+        bool found = false;
+        for(int i = 0; i < expected_tokens.size(); ++i){
+            if(tok == expected_tokens[i]){
+                if(func != nullptr){
+                    func();                    
+                }else{
+                    eat(expected_tokens[i]);
+                }
+                found = true;
+                break;
+            }
+        }
+
+        if(found) break;
+    }
+
+    if(tok == tEOF) exit(0);
 }
 
 void advance(){
@@ -916,6 +856,122 @@ void eat(Token t){
     if(t == tok){
         advance();
     }else{
-        error();
+        vector<Token> tokens = {t};
+        error(tokens, nullptr);
+    }
+}
+
+string getTokenString(Token token){
+    switch(token){
+        case tVoid:
+            return "T_VOID";
+        case tInt:
+            return "T_INT";           
+        case tDouble:
+            return "T_DOUBLE";        
+        case tBool:
+            return "T_BOOL";          
+        case tString:
+            return "T_STRING";        
+        case tClass:
+            return "T_CLASS";         
+        case tInterface:
+            return "T_INTERFACE";     
+        case tNull:
+            return "T_NULL";          
+        case tThis:
+            return "T_THIS";       
+        case tExtends:
+            return "T_EXTENDS";       
+        case tImplements:
+            return "T_IMPLEMENTS";    
+        case tFor:
+            return "T_FOR";           
+        case tWhile:
+            return "T_WHILE";         
+        case tIf:
+            return "T_IF";            
+        case tElse:
+            return "T_ELSE";          
+        case tReturn:;
+            return "T_RETURN";        
+        case tBreak:
+            return "T_BREAK";         
+        case tNew:
+            return "T_NEW";           
+        case tNewArray:
+            return "T_NEW_ARRAY";      
+        case tPrint:
+            return "T_PRINT";         
+        case tReadInteger:
+            return "T_READ_INTEGER";   
+        case tReadLine:
+            return "T_READ_LINE";      
+        case tId:
+            return "T_ID";
+        case tUserType:
+            return "T_USER_TYPE";            
+        case tPlus:
+            return "T_+";
+        case tMinus:
+            return "T_-";
+        case tMulti:
+            return "T_*";
+        case tDiv:
+            return "T_/";
+        case tMod:
+            return "T_\%";
+        case tLess:
+            return "T_<";
+        case tLessEqual:
+            return "T_<=";
+        case tGreater:
+            return "T_>";
+        case tGreaterEqual:
+            return "T_>=";
+        case tEqual:
+            return "T_==";
+        case tDiff:
+            return "T_!=";
+        case tAssignment:
+            return "T_=";
+        case tAnd:
+            return "T_&&";
+        case tOr:
+            return "T_||";
+        case tNot:
+            return "T_!";
+        case tSemiColon:
+            return "T_;";
+        case tComma:
+            return "T_,";
+        case tDot:
+            return "T_.";
+        case tBracketLeft:
+            return "T_[";
+        case tBracketRight:
+            return "T_]";
+        case tParLeft:
+            return "T_(";
+        case tParRight:
+            return "T_)";  
+        case tBraceLeft:
+            return "T_{";
+        case tBraceRight:
+            return "T_}";
+        case tIntConstant:
+            return "T_INT_CONST";
+        case tDoubleConstant:
+            return "T_DOUBLE_CONST";
+        case tTrue:
+            return "T_TRUE";
+        case tFalse:
+            return "T_FALSE";
+        case tStringConstant:
+            return "T_STRING_CONST";
+        case tEOF:
+            return "T_END_OF_FILE";
+        default:
+            return "T_ERROR";
     }
 }

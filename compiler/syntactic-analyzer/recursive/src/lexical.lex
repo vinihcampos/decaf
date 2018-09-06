@@ -6,11 +6,13 @@
 
     int row = 1;
     int column = 1;
+    char * lexema = "";
     Token tok;
  
     void updateToken(Token token){
         column += yyleng;
         tok = token;
+        lexema = yytext;
     }
 %}
 

@@ -2,6 +2,8 @@
 #define _RECURSIVE_
 
 #include "token.h"
+#include <string>
+#include <vector>
 
 void prog();
 void prog1();
@@ -63,8 +65,9 @@ void exprSeq();
 void actual();
 void constant();
 
-void error();
+void error(std::vector<Token> expected_tokens, void (*func)());
 void eat(Token t);
 void advance();
+std::string getTokenString(Token token);
 
 #endif
