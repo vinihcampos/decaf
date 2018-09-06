@@ -76,7 +76,7 @@ void type(){
             break;
         default:
             vector<Token> tokens = {tInt,tDouble,tBool,tString,tUserType};
-            error(tokens);
+            error(tokens, type);
             break;
     }
 }
@@ -98,7 +98,7 @@ void funcDec(){
             break;
         default:
             vector<Token> tokens = {tParLeft};
-            error(tokens);
+            error(tokens, funcDec);
             break;
     }
 }
@@ -138,7 +138,7 @@ void stmtBlock(){
             break;
         default:
             vector<Token> tokens = {tBraceLeft};
-            error(tokens);
+            error(tokens, stmtBlock);
             break;
     }
 }
@@ -195,7 +195,7 @@ void stmt(){
             break;
         default:
             vector<Token> tokens = {tIf,tSemiColon,tWhile,tFor,tBreak,tReturn,tPrint,tBraceLeft,tId,tThis};
-            error(tokens);
+            error(tokens, stmt);
             break;
     }
 }
@@ -207,7 +207,7 @@ void conditionStmt(){
             break;
         default:
             vector<Token> tokens = {tIf};
-            error(tokens);
+            error(tokens, conditionStmt);
             break;
     }
 }
@@ -250,7 +250,7 @@ void otherStmt(){
             break;
         default:
             vector<Token> tokens = {tSemiColon,tWhile,tFor,tBreak,tReturn,tPrint,tBraceLeft,tId,tThis};
-            error(tokens);
+            error(tokens, otherStmt);
             break;
     }
 }
@@ -262,7 +262,7 @@ void whileStmt(){
             break;
         default:
             vector<Token> tokens = {tWhile};
-            error(tokens);
+            error(tokens, whileStmt);
             break;
     }
 }
@@ -274,7 +274,7 @@ void forStmt(){
             break;
         default:
             vector<Token> tokens = {tFor};
-            error(tokens);
+            error(tokens, forStmt);
             break;
     }
 }
@@ -286,7 +286,7 @@ void returnStmt(){
             break;
         default:
             vector<Token> tokens = {tReturn};
-            error(tokens);
+            error(tokens, returnStmt);
             break;
     }
 }
@@ -298,7 +298,7 @@ void breakStmt(){
             break;
         default:
             vector<Token> tokens = {tBreak};
-            error(tokens);
+            error(tokens, breakStmt);
             break;
     }
 }
@@ -310,7 +310,7 @@ void printStmt(){
             break;
         default:
             vector<Token> tokens = {tPrint};
-            error(tokens);
+            error(tokens, printStmt);
             break;
     }
 }
@@ -324,7 +324,7 @@ void printOtherStmt(){
             eat(tComma); expr(); printOtherStmt();
         default:
             vector<Token> tokens = {tParRight, tComma};
-            error(tokens);
+            error(tokens, printOtherStmt);
             break;
     }
 }
@@ -336,7 +336,7 @@ void classDec(){
             break;
         default:
             vector<Token> tokens = {tClass};
-            error(tokens);
+            error(tokens, classDec);
             break;
     }
 }
@@ -362,7 +362,7 @@ void classDec2(){
             break;
         default:
             vector<Token> tokens = {tImplements, tBraceLeft};
-            error(tokens);
+            error(tokens, classDec2);
             break;
     }
 }
@@ -400,7 +400,7 @@ void interDec(){
             break;
         default:
             vector<Token> tokens = {tInterface};
-            error(tokens);
+            error(tokens, interDec);
             break;
     }
 }
@@ -430,7 +430,7 @@ void exprAssign(){
             break;
         default:
             vector<Token> tokens = {tId, tThis};
-            error(tokens);
+            error(tokens, exprAssign);
             break;
     }
 }
@@ -443,7 +443,7 @@ void exprAssignOrCall(){
             break;
         default:
             vector<Token> tokens = {tId, tThis};
-            error(tokens);
+            error(tokens, exprAssignOrCall);
             break;
     }
 }
@@ -458,7 +458,7 @@ void exprAssignOrCall1(){
             break;
         default:
             vector<Token> tokens = {tAssignment, tParLeft};
-            error(tokens);
+            error(tokens, exprAssignOrCall1);
             break;
     }
 }
@@ -602,7 +602,7 @@ void term(){
             break;
         default:
             vector<Token> tokens = {tReadInteger,tReadLine,tNew,tNewArray,tParLeft,tId,tThis,tIntConstant,tDoubleConstant,tTrue,tFalse,tStringConstant,tNull};
-            error(tokens);
+            error(tokens, term);
             break;
     }
 }
@@ -628,7 +628,7 @@ void call(){
             break;
         default:
             vector<Token> tokens = {tParLeft};
-            error(tokens);
+            error(tokens, call);
             break;
     }
 }
@@ -654,7 +654,7 @@ void variableNotEmpty(){
             break;
         default:
             vector<Token> tokens = {tBraceLeft, tDot};
-            error(tokens);
+            error(tokens, variableNotEmpty);
             break;
     }
 }
@@ -726,7 +726,7 @@ void lValue(){
             break;
         default:
             vector<Token> tokens = {tId, tThis};
-            error(tokens);
+            error(tokens, lValue);
             break;
     }
 }
@@ -797,7 +797,7 @@ void constant(){
             break;
         default:
             vector<Token> tokens = {tIntConstant,tDoubleConstant,tTrue,tFalse,tStringConstant,tNull};
-            error(tokens);
+            error(tokens, constant);
             break;
     }
 }
@@ -811,7 +811,7 @@ int main(int argc, char** args){
     return 0;
 }
 
-void error(vector<Token> expected_tokens){
+void error(vector<Token> expected_tokens, void (*func)()){
 
     cerr << "An error was found with lexema \"" << lexema << "\" at line " << row << ", column " << column << "." << endl;
     cerr << "Expected tokens: ";
@@ -825,9 +825,27 @@ void error(vector<Token> expected_tokens){
             cerr << ".";
     }
 
-    cerr << endl;
+    cerr << endl << endl;
 
-    exit(0);
+    while(tok != tEOF){
+        advance();
+        bool found = false;
+        for(int i = 0; i < expected_tokens.size(); ++i){
+            if(tok == expected_tokens[i]){
+                if(func != nullptr){
+                    func();                    
+                }else{
+                    eat(expected_tokens[i]);
+                }
+                found = true;
+                break;
+            }
+        }
+
+        if(found) break;
+    }
+
+    if(tok == tEOF) exit(0);
 }
 
 void advance(){
@@ -839,7 +857,7 @@ void eat(Token t){
         advance();
     }else{
         vector<Token> tokens = {t};
-        error(tokens);
+        error(tokens, nullptr);
     }
 }
 

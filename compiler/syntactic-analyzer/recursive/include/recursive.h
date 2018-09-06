@@ -65,7 +65,7 @@ void exprSeq();
 void actual();
 void constant();
 
-void error(std::vector<Token> expected_tokens);
+void error(std::vector<Token> expected_tokens, void (*func)());
 void eat(Token t);
 void advance();
 std::string getTokenString(Token token);
