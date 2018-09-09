@@ -1,8 +1,8 @@
-// #include <iostream>
-// #include <string>
-// #include "recursive.h"
-// #include "token.h"
+#include <iostream>
+#include <string>
+#include "token.h"
 #include "table_parser.h"
+#include <map>
 
 using namespace std;
 
@@ -31,24 +31,28 @@ void advance(){
 void table_parser(stack<int>& pilha) {
 	while(!pilha.empty()) {
 		int top = pilha.top();
-		if(top < PROGRAM) { 
+		if(top < Prog) { 
 			eat(top);
 			pilha.pop();
 		}
 		else {
-			if(table.find({top, tok}) == table.end()) { 
-				error();
+			std::pair <int,int> product1;
+			product1.first = top;
+			product1.second = tok;   
+			 
+			if(table.find(product1) != table.end()) { 
+				pilha.pop();
+				push_rule(table[product1], pilha);
 			}
 			else {
-				pilha.pop();
-				push_rule(table[{top, tok}], pilha);
+				error();
 			}
 		}
 	}
 
 }
 
-void eat(Token t){
+void eat(int t){
     if(t == tok){
         advance();
     }else{
@@ -57,7 +61,7 @@ void eat(Token t){
 }
 
 void error(){
-	cout << "Deu erro, amigo" << endl;
+	cout << "Deu erro, amigo\n";
 }
 
 void push_rule(std::vector<int>& regra, std::stack<int>& pilha) {

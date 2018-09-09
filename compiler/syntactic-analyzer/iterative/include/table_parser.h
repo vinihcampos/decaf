@@ -5,6 +5,7 @@
 #include "table.h"
 #include <string>
 #include <vector>
+#include <stack>
 
 
 void error();

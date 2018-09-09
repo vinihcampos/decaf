@@ -1,7 +1,7 @@
 #ifndef _TABLE_H_
 #define _TABLE_H_
 
-#include "tokens.h"
+#include "token.h"
 #include <map>
 #include <vector>
 #include <utility>
@@ -67,7 +67,7 @@ enum NonTerminals {
 
 };
 
-std::map<std::pair<int, Token>, std::vector<int>> table;
+std::map<std::pair<int, int>, std::vector<int>> table;
 
 
 void init_table() {
@@ -94,10 +94,10 @@ void init_table() {
     table[{Dec, tInterface}] = {InterDec};
     table[{Dec, tInt}] = {Var, Dec1};
     table[{Dec, tDouble}] = {Var, Dec1};
-    table[{Dec, tBool}] = {Var, Dec1}};
+    table[{Dec, tBool}] = {Var, Dec1};
     table[{Dec, tString}] = {Var, Dec1};
     table[{Dec, tUserType}] = {Var, Dec1};
-    table[{Dec, tVoid}] = {tVoid tId FuncDec};
+    table[{Dec, tVoid}] = {tVoid, tId, FuncDec};
 
     table[{Dec1, tSemiColon}] = {tSemiColon};
     table[{Dec1, tParLeft}] = {FuncDec};
@@ -147,7 +147,7 @@ void init_table() {
     table[{StmtBlock1, tBraceRight}] = {};
     table[{StmtBlock1, tInt}] = {Var, tSemiColon, StmtBlock1};
     table[{StmtBlock1, tDouble}] = {Var, tSemiColon, StmtBlock1};
-    table[{StmtBlock1, tBool}] = {Var, Formals2;
+    table[{StmtBlock1, tBool}] = {Var, Formals2};
     table[{StmtBlock1, tString}] = {Var, Formals2};
     table[{StmtBlock1, tUserType}] = {Var, Formals2};
     table[{StmtBlock1, tIf}] = {StatementList};
