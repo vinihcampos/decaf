@@ -1,0 +1,27 @@
+class Veiculo{
+	string nome;
+	string cor;
+	int num_rodas;
+}
+
+class Moto extends Veiculo{
+	double cilindradas;
+
+	string toString(){
+		return "";
+	}
+}
+
+interface Calculo{
+	bool calculavel();
+	double calcular();
+}
+
+class Multiplicacao implements Calculo{
+	bool calculavel(){
+		return true;
+	}
+	double calcular(){
+		return 5 * 5;
+	}
+}
