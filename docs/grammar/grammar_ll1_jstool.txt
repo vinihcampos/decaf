@@ -58,8 +58,8 @@ Field -> Var Dec1 Field
 Field -> tVoid tId FuncDec Field
 InterDec -> tInterface tUserType tBraceLeft Prototype tBraceRight
 Prototype -> ε
-Prototype -> Var tParLeft Formals tParRight tSemiColon
-Prototype -> tVoid tId tParLeft Formals tParRight tSemiColon
+Prototype -> Var tParLeft Formals tParRight tSemiColon Prototype
+Prototype -> tVoid tId tParLeft Formals tParRight tSemiColon Prototype
 ExprAssign -> LValue VariableForAssignment tAssignment Expr
 ExprAssignOrCall -> LValue VariableForAssignment ExprAssignOrCall1
 ExprAssignOrCall1 -> tAssignment Expr

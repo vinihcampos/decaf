@@ -408,14 +408,14 @@ void interDec(){
 void prototype(){
     switch(tok){
         case tVoid:
-            eat(tVoid); eat(tId); eat(tParLeft); formals(); eat(tParRight); eat(tSemiColon);
+            eat(tVoid); eat(tId); eat(tParLeft); formals(); eat(tParRight); eat(tSemiColon); prototype();
             break;
         case tInt:
         case tDouble:
         case tBool:
         case tString:
         case tUserType:
-            var(); eat(tParLeft); formals(); eat(tParRight); eat(tSemiColon);
+            var(); eat(tParLeft); formals(); eat(tParRight); eat(tSemiColon); prototype();
             break;
         default:
             break;
