@@ -167,6 +167,7 @@ newArray        { updateToken(tNewArray); return 0; }
 
 [\t ]+          { column += yyleng; /* check whitespaces */ }
 "\n"            { column = 1; row++; /* detect new row */ }
+"\r\n"          { column = 1; row++; /* detect new row */ }
 
  /* Errors  */
 

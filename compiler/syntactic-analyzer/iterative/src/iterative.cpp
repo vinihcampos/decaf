@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include "token.h"
-#include "table_parser.h"
+#include "iterative.h"
 #include <map>
 
 using namespace std;
@@ -29,11 +29,13 @@ void advance(){
 }
 
 void table_parser(stack<int>& pilha) {
+	//imprime_pilha(pilha);
 	while(!pilha.empty()) {
 		int top = pilha.top();
 		if(top < Prog) { 
 			eat(top);
 			pilha.pop();
+			//imprime_pilha(pilha);
 		}
 		else {
 			std::pair <int,int> product1;
@@ -43,25 +45,40 @@ void table_parser(stack<int>& pilha) {
 			if(table.find(product1) != table.end()) { 
 				pilha.pop();
 				push_rule(table[product1], pilha);
+				//imprime_pilha(pilha);
 			}
 			else {
-				error();
+				error(top, tok, 1);
+				break;
 			}
 		}
 	}
 
 }
 
+void imprime_pilha(stack<int>& pilha){
+	stack<int> temp = pilha;
+	while (!temp.empty())
+	{
+		cout << temp.top() << " ";
+		temp.pop();
+	}
+	cout << "\n";
+}
+
 void eat(int t){
     if(t == tok){
         advance();
     }else{
-        error();
+        error(t, tok);
    }
 }
 
-void error(){
-	cout << "Deu erro, amigo\n";
+void error(int t, int tt){
+	cout << "esperava " << tt << ", mas veio " << t << "\n";
+}
+void error(int rule, int t, int a){
+	cout << "Não achou: " << rule << ", " << t << "\n";
 }
 
 void push_rule(std::vector<int>& regra, std::stack<int>& pilha) {
