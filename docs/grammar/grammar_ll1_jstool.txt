@@ -60,8 +60,8 @@ InterDec -> tInterface tUserType tBraceLeft Prototype tBraceRight
 Prototype -> ε
 Prototype -> Var tParLeft Formals tParRight tSemiColon
 Prototype -> tVoid tId tParLeft Formals tParRight tSemiColon
-ExprAssign -> LValue Variable tAssignment Expr
-ExprAssignOrCall -> LValue Variable ExprAssignOrCall1
+ExprAssign -> LValue VariableForAssignment tAssignment Expr
+ExprAssignOrCall -> LValue VariableForAssignment ExprAssignOrCall1
 ExprAssignOrCall1 -> tAssignment Expr
 ExprAssignOrCall1 -> Call
 ExprAssignOrEmpty -> ExprAssign
@@ -107,9 +107,16 @@ VariableNotEmpty -> tDot LValue CallAfterVariable
 CallAfterVariable -> ε
 CallAfterVariable -> VariableNotEmpty
 CallAfterVariable -> Call
+VariableForAssignment -> ε
+VariableForAssignment -> tBracketLeft Expr tBracketRight VariableForAssignment
+VariableForAssignment -> tDot LValue VariableForAssignment
 Variable -> ε
-Variable -> tBracketLeft Expr tBracketRight Variable
-Variable -> tDot LValue Variable
+Variable -> tBracketLeft Expr tBracketRight Variable1
+Variable -> tDot LValue Variable1
+Variable1 -> ε
+Variable1 -> tBracketLeft Expr tBracketRight Variable1
+Variable1 -> tDot LValue Variable1
+Variable1 -> Call
 LValue -> tId
 LValue -> tThis tDot tId
 ExprOrEmpty -> ε
