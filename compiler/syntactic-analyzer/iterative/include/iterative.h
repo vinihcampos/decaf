@@ -1,5 +1,5 @@
-#ifndef _INTERACTIVE_
-#define _INTERACTIVE_
+#ifndef _ITERACTIVE_
+#define _ITERACTIVE_
 
 #include "token.h"
 #include "table.h"
