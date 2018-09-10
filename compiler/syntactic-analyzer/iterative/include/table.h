@@ -68,7 +68,7 @@ enum NonTerminals {
     Constant
 };
 
-std::map<std::pair<int, int>, std::vector<int>> table;
+std::map<std::pair<int, Token>, std::vector<int>> table;
 
 
 void init_table() {

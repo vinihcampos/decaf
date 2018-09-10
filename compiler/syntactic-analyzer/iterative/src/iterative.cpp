@@ -9,7 +9,7 @@ using namespace std;
 extern FILE* yyin;
 extern int yylex();
 extern int row, column;
-extern int tok;
+extern Token tok;
 extern char * lexema;
 
 int main(int argc, char** args){
@@ -38,7 +38,7 @@ void table_parser(stack<int>& pilha) {
 			//imprime_pilha(pilha);
 		}
 		else {
-			std::pair <int,int> product1;
+			std::pair <int,Token> product1;
 			product1.first = top;
 			product1.second = tok;   
 			 
@@ -48,7 +48,7 @@ void table_parser(stack<int>& pilha) {
 				//imprime_pilha(pilha);
 			}
 			else {
-				error(top, tok, 1);
+				error();
 				break;
 			}
 		}
@@ -70,15 +70,12 @@ void eat(int t){
     if(t == tok){
         advance();
     }else{
-        error(t, tok);
+        error();
    }
 }
 
-void error(int t, int tt){
-	cout << "esperava " << tt << ", mas veio " << t << "\n";
-}
-void error(int rule, int t, int a){
-	cout << "Não achou: " << rule << ", " << t << "\n";
+void error(){
+	cout << "ERROR: Not expected symbol: " << lexema <<"\n    At row " << row << " column " << column << endl;
 }
 
 void push_rule(std::vector<int>& regra, std::stack<int>& pilha) {

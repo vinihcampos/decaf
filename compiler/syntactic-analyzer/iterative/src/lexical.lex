@@ -7,9 +7,9 @@
     int row = 1;
     int column = 1;
     char * lexema = "";
-    int tok;
+    Token tok;
  
-    void updateToken(int token){
+    void updateToken(Token token){
         column += yyleng;
         tok = token;
         lexema = yytext;
