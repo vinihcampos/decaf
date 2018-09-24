@@ -3,7 +3,19 @@
 	void yyerror(char *s) { EM_error(EM_tokPos, "%s", s); }
 %}
 %token VOID INT DOUBLE BOOL STRING CLASS INTERFACE NULL THIS EXTENDS IMPLEMENTS FOR WHILE IF ELSE RETURN BREAK NEW NEWARRAY PRINT READINTEGER READLINE ID USERTYPE INTCONSTANT DOUBLECONSTANT TRUE FALSE STRINGCONSTANT UMINUS L LEQ G GEQ EQ NEQ AND OR EOF
-%start program
+
+%start program	
+%right '='
+%nonassoc OR AND
+%nonassoc L LEQ G GEQ EQ NEQ
+%left '+' '-'
+%left '*' '/' '%'
+%right '!' UMINUS
+%left ')'
+%right '('
+%nonassoc '[' ']'
+%left '.'
+
 %%
 
 program:	decl
@@ -30,7 +42,7 @@ type:	INT
 	|	DOUBLE
 	|	BOOL
 	|	STRING
-	|	ID
+	|	USERTYPE
 	|	type '[' ']'
 	;
 
@@ -46,18 +58,18 @@ formals1:	',' variable
 	|		%empty
 	;
 
-classDecl:	CLASS ID extends implements '{' field '}'
+classDecl:	CLASS USERTYPE extends implements '{' field '}'
 	;
 
-extends:	EXTENDS ID
+extends:	EXTENDS USERTYPE
 	|		%empty
 	;
 
-implements:	IMPLEMENTS ID implements1
+implements:	IMPLEMENTS USERTYPE implements1
 	|		%empty
 	;
 
-implements1:	',' ID implements1
+implements1:	',' USERTYPE implements1
 	|			%empty
 	;
 
@@ -66,7 +78,7 @@ field:	variableDecl
 	|	%empty
 	;
 
-interfaceDecl:	INTERFACE ID '{' prototype '}'
+interfaceDecl:	INTERFACE USERTYPE '{' prototype '}'
 	;
 
 prototype:	type ID '(' formals ')' ';' prototype
@@ -122,7 +134,7 @@ expr:	lValue '=' expr
 	|	expr '/' expr
 	|	expr '%' expr
 	|	expr '-' expr
-	|	'-' expr
+	|	'-' expr 	%prec UMINUS
 	|	expr L expr
 	|	expr LEQ expr
 	|	expr G expr
