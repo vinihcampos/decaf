@@ -2,7 +2,7 @@
 	int yylex();
 	void yyerror(char *s) { EM_error(EM_tokPos, "%s", s); }
 %}
-%token VOID INT DOUBLE BOOL STRING CLASS INTERFACE NULL THIS EXTENDS IMPLEMENTS FOR WHILE IF ELSE RETURN BREAK NEW NEWARRAY PRINT READINTEGER READLINE ID USERTYPE INTCONSTANT DOUBLECONSTANT TRUE FALSE STRINGCONSTANT EOF
+%token VOID INT DOUBLE BOOL STRING CLASS INTERFACE NULL THIS EXTENDS IMPLEMENTS FOR WHILE IF ELSE RETURN BREAK NEW NEWARRAY PRINT READINTEGER READLINE ID USERTYPE INTCONSTANT DOUBLECONSTANT TRUE FALSE STRINGCONSTANT UMINUS L LEQ G GEQ EQ NEQ AND OR EOF
 %start program
 %%
 
@@ -123,14 +123,14 @@ expr:	lValue '=' expr
 	|	expr '%' expr
 	|	expr '-' expr
 	|	'-' expr
-	|	expr '<' expr
-	|	expr "<=" expr
-	|	expr '>' expr
-	|	expr ">=" expr
-	|	expr "==" expr
-	|	expr "!=" expr
-	|	expr "&&" expr
-	|	expr "||" expr
+	|	expr L expr
+	|	expr LEQ expr
+	|	expr G expr
+	|	expr GEQ expr
+	|	expr EQ expr
+	|	expr NEQ expr
+	|	expr AND expr
+	|	expr OR expr
 	|	'!' expr
 	|	READINTEGER '(' ')'
 	|	READLINE '(' ')'
