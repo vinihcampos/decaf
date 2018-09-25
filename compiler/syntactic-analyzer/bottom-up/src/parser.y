@@ -12,8 +12,7 @@
 %left '*' '/' '%'
 %right '!' UMINUS
 %left ')'
-%right '('
-%nonassoc '[' ']'
+%nonassoc '['
 %left '.'
 
 %%
@@ -133,8 +132,7 @@ expr:	lValue '=' expr
 	|	expr '*' expr
 	|	expr '/' expr
 	|	expr '%' expr
-	|	expr '-' expr
-	|	'-' expr 	%prec UMINUS
+	|	'-' expr %prec UMINUS
 	|	expr L expr
 	|	expr LEQ expr
 	|	expr G expr
