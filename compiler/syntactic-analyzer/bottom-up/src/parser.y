@@ -1,6 +1,10 @@
 %{
+	#include <stdio.h>
 	int yylex();
-	void yyerror(char *s) { printf("Error\n"); }
+	extern int yylval;
+	void yyerror(char *);
+
+
 %}
 %token VOID INT DOUBLE BOOL STRING CLASS INTERFACE TNULL THIS EXTENDS IMPLEMENTS FOR WHILE IF ELSE RETURN BREAK NEW NEWARRAY PRINT READINTEGER READLINE ID USERTYPE INTCONSTANT DOUBLECONSTANT TRUE FALSE STRINGCONSTANT UMINUS L LEQ G GEQ EQ NEQ AND OR
 
@@ -17,7 +21,7 @@
 
 %%
 
-program:	decl
+program:	decl program
 	|		%empty
 	;
 
@@ -53,7 +57,7 @@ formals:	variable formals1
 	|		%empty
 	;
 
-formals1:	',' variable
+formals1:	',' variable formals1
 	|		%empty
 	;
 
@@ -72,8 +76,8 @@ implements1:	',' USERTYPE implements1
 	|			%empty
 	;
 
-field:	variableDecl
-	|	functionDecl
+field:	variableDecl field
+	|	functionDecl field
 	|	%empty
 	;
 
@@ -176,5 +180,13 @@ constant:	INTCONSTANT
 	|		STRINGCONSTANT
 	|		TNULL
 	;
-
 %%
+
+void yyerror(char *s) {
+    fprintf(stderr, "%s\n", s);
+}
+
+int main(){
+	yyparse();
+	return 0;
+}
