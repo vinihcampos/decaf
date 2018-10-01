@@ -37,18 +37,18 @@ commentLine [/][/].*
 
  /* Constants */
 
-{hex}|{digit}+  { column += yyleng; yylval = strtol(yytext, 0, 10); return INTCONSTANT; }
-\".*\"          { column += yyleng; yylval = strdup(yytext); return STRINGCONSTANT; }
+{hex}|{digit}+  { column += yyleng; return INTCONSTANT; }
+\".*\"          { column += yyleng; return STRINGCONSTANT; }
 false           { column += yyleng; return FALSE; }
 true            { column += yyleng; return TRUE; }
-{real}{exp}*    { column += yyleng; yylval = atof(yytext); return DOUBLECONSTANT; }
+{real}{exp}*    { column += yyleng; return DOUBLECONSTANT; }
 null            { column += yyleng; return TNULL; }
 
  /* Errors  */
 {id}            {   
                     if(yyleng > ID_MAX_SZ){
                         fprintf(stderr, "Warning: the %s will be truncated, because it exceeded maximum size of an identifier\n", yytext);
-				        column += yyleng; yylval = strdup(yytext); return ID; 
+				        column += yyleng; return ID; 
                     }else{
                         REJECT;
                     }
@@ -57,7 +57,7 @@ null            { column += yyleng; return TNULL; }
 {userType}      {   
                     if(yyleng > ID_MAX_SZ){
                         fprintf(stderr, "Warning: the %s will be truncated, because it exceeded maximum size of an identifier\n", yytext);
-                        column += yyleng; yylval = strdup(yytext); return USERTYPE; 
+                        column += yyleng; return USERTYPE; 
                     }else{
                         REJECT;
                     }
@@ -116,8 +116,8 @@ newArray        { column += yyleng; return NEWARRAY; }
 
  /* Identifier */
 
-{id}            { column += yyleng; yylval = strdup(yytext); return ID; }
-{userType}      { column += yyleng; yylval = strdup(yytext); return USERTYPE; }
+{id}            { column += yyleng; return ID; }
+{userType}      { column += yyleng; return USERTYPE; }
 
  /*** Operators ***/
  /* Arithmetic */

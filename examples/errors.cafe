@@ -1,8 +1,10 @@
 int main(){
 	
-    while(){
+    while(5){
     
     }
 
 	return 0;
 }
+
+int a;

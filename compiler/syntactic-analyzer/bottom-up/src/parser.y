@@ -1,9 +1,11 @@
 %{
 	#include <stdio.h>
-	int yylex();
 	extern int yylval;
+	extern int row, column;
+	int yylex();
 	void yyerror(char *);
 
+	int error_found = 0;
 
 %}
 %token VOID INT DOUBLE BOOL STRING CLASS INTERFACE TNULL THIS EXTENDS IMPLEMENTS FOR WHILE IF ELSE RETURN BREAK NEW NEWARRAY PRINT READINTEGER READLINE ID USERTYPE INTCONSTANT DOUBLECONSTANT TRUE FALSE STRINGCONSTANT UMINUS L LEQ G GEQ EQ NEQ AND OR
@@ -29,6 +31,7 @@ decl:	variableDecl
 	|	functionDecl
 	|	classDecl
 	|	interfaceDecl
+	|	error
 	;
 
 variableDecl:	variable ';'
@@ -100,6 +103,7 @@ stmt:	expr1 ';'
 	|	returnStmt
 	|	printStmt
 	|	stmtBlock
+	|	error
 	;
 
 stmtList:	stmt stmtList
@@ -183,10 +187,18 @@ constant:	INTCONSTANT
 %%
 
 void yyerror(char *s) {
-    fprintf(stderr, "%s\n", s);
+    fprintf(stderr, "An error was found in row %d and column %d!\n", row, column);
+    error_found++;
 }
 
 int main(){
 	yyparse();
+
+	if(!error_found){
+		printf("Program compiled successfully!\n");
+	}else{
+		printf("Program finished with %d error(s)!\n", error_found);
+	}
+
 	return 0;
 }
