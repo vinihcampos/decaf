@@ -8,17 +8,17 @@
 %}
 %token VOID INT DOUBLE BOOL STRING CLASS INTERFACE TNULL THIS EXTENDS IMPLEMENTS FOR WHILE IF ELSE RETURN BREAK NEW NEWARRAY PRINT READINTEGER READLINE ID USERTYPE INTCONSTANT DOUBLECONSTANT TRUE FALSE STRINGCONSTANT UMINUS L LEQ G GEQ EQ NEQ AND OR
 
-%start program	
+%start program
+
 %right '='
-%nonassoc OR AND
-%nonassoc L LEQ G GEQ EQ NEQ
+%left OR AND
+%left L LEQ G GEQ EQ NEQ
 %left '+' '-'
 %left '*' '/' '%'
 %right '!' UMINUS
 %left ')'
 %nonassoc '['
 %left '.'
-
 %%
 
 program:	decl program
@@ -148,7 +148,7 @@ expr:	lValue '=' expr
 	|	'!' expr
 	|	READINTEGER '(' ')'
 	|	READLINE '(' ')'
-	|	NEW '(' ID ')'
+	|	NEW '(' USERTYPE ')'
 	|	NEWARRAY '(' expr ',' type ')'
 	;
 
