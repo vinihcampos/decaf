@@ -2,6 +2,7 @@
 	#include <stdio.h>
 	extern int yylval;
 	extern int row, column;
+	extern FILE* yyin;
 	int yylex();
 	void yyerror(char *);
 
@@ -191,14 +192,20 @@ void yyerror(char *s) {
     error_found++;
 }
 
-int main(){
-	yyparse();
+int main(int argc, char** args){
+	if(argc > 1){
+    	yyin = fopen(args[1], "r");
+        yyparse();
 
-	if(!error_found){
-		printf("Program compiled successfully!\n");
-	}else{
-		printf("Program finished with %d error(s)!\n", error_found);
-	}
+		if(!error_found){
+			printf("Program compiled successfully!\n");
+		}else{
+			printf("Program finished with %d error(s)!\n", error_found);
+		}
+		
+    }else{
+    	fprintf(stderr, "ERROR: There is no file to analyze!\n");
+    }
 
 	return 0;
 }
