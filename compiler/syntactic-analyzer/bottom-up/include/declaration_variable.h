@@ -1,7 +1,7 @@
 #ifndef _DEC_VARIABLE_
 #define _DEC_VARIABLE_
 
-#import <string>
+#include <string>
 #import "declaration.h"
 #import "type.h"
 
