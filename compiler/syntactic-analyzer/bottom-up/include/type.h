@@ -1,14 +1,13 @@
-#ifndef _TYPE_
-#define _TYPE_
+#ifndef _BASE_TYPE_
+#define _BASE_TYPE_
 
-enum Type{
+enum BaseType{
 	INT,
 	DOUBLE,
 	BOOL,
 	STRING,
 	USERTYPE,
-	VOID,
-	ARRAY
+	VOID
 };
 
 #endif
