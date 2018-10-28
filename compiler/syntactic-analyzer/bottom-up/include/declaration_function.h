@@ -1,12 +1,12 @@
 #ifndef _DEC_FUNCTION_
 #define _DEC_FUNCTION_
 
-#import <string>
-#import <vector>
-#import "declaration.h"
-#import "type.h"
-#import "formal.h"
-#import "stmt_block.h"
+#include <string>
+#include <vector>
+#include "declaration.h"
+#include "type.h"
+#include "formal.h"
+#include "stmt_block.h"
 
 class DeclarationFunction : Declaration{
 

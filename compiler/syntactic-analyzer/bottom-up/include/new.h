@@ -1,7 +1,7 @@
 #ifndef _NEW_
 #define _NEW_
 
-#import <string>
+#include <string>
 #include "expression.h"
 
 class New : Expression{

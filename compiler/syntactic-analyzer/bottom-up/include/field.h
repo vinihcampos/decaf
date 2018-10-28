@@ -1,9 +1,9 @@
 #ifndef _FIELD_
 #define _FIELD__
 
-#import <vector>
-#import "declaration_variable.h"
-#import "declaration_function.h"
+#include <vector>
+#include "declaration_variable.h"
+#include "declaration_function.h"
 
 class Field{
 

@@ -1,9 +1,9 @@
 #ifndef _PROGRAM_
 #define _PROGRAM_
 
-#import <vector>
-#import <string>
-#import "declaration.h"
+#include <vector>
+#include <string>
+#include "declaration.h"
 
 class Program{
 

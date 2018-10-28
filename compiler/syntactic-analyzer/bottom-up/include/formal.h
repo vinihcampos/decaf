@@ -1,8 +1,8 @@
 #ifndef _FORMAL_
 #define _FORMAL_
 
-#import <vector>
-#import "declaration_variable.h"
+#include <vector>
+#include "declaration_variable.h"
 
 class Formal{
 

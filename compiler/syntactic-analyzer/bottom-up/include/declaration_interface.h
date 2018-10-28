@@ -1,10 +1,10 @@
 #ifndef _DEC_INTERFACE_
 #define _DEC_INTERFACE_
 
-#import <string>
-#import <vector>
-#import "declaration.h"
-#import "prototype.h"
+#include <string>
+#include <vector>
+#include "declaration.h"
+#include "prototype.h"
 
 class DeclarationInterface : Declaration{
 

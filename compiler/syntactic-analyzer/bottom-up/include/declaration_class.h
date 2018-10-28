@@ -1,10 +1,10 @@
 #ifndef _DEC_CLASS_
 #define _DEC_CLASS_
 
-#import <string>
-#import <vector>
-#import "declaration.h"
-#import "field.h"
+#include <string>
+#include <vector>
+#include "declaration.h"
+#include "field.h"
 
 class DeclarationClass : Declaration{
 

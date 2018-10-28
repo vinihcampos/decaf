@@ -2,8 +2,8 @@
 #define _DEC_VARIABLE_
 
 #include <string>
-#import "declaration.h"
-#import "type.h"
+#include "declaration.h"
+#include "type.h"
 
 class DeclarationVariable : Declaration{
 

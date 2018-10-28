@@ -1,9 +1,9 @@
 #ifndef _DEC_PROTOTYPE_
 #define _DEC_PROTOTYPE_
 
-#import <string>
-#import "type.h"
-#import "formal.h"
+#include <string>
+#include "type.h"
+#include "formal.h"
 
 class Prototype{
 
