@@ -1,5 +1,5 @@
 %{
-	#include <stdio.h>
+	#include <cstdio>
 	extern int yylval;
 	extern int row, column;
 	int yylex();

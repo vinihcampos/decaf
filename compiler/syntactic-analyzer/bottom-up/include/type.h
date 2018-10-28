@@ -1,5 +1,5 @@
-#ifndef _BASE_TYPE_
-#define _BASE_TYPE_
+#ifndef _TYPE_
+#define _TYPE_
 
 enum BaseType{
 	INT,
@@ -8,6 +8,14 @@ enum BaseType{
 	STRING,
 	USERTYPE,
 	VOID
+};
+
+class Type{
+	
+	public:
+		int size;
+		BaseType type;
+
 };
 
 #endif
