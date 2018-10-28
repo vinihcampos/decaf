@@ -1,0 +1,15 @@
+// Este é um comentário de linha
+
+int a;
+
+/* 
+	Este é um comentário de bloco!
+*/
+
+int main(){
+	
+
+	return 0;
+}
+
+

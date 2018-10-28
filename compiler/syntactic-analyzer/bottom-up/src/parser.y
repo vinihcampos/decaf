@@ -3,6 +3,7 @@
 	#include "program.h"
 	extern int yylval;
 	extern int row, column;
+	extern FILE* yyin;
 	int yylex();
 	void yyerror(char *);
 	extern FILE* yyin;
@@ -193,7 +194,6 @@ void yyerror(char *s) {
 }
 
 int main(int argc, char** args){
-
 	if(argc > 1){
     	yyin = fopen(args[1], "r");
         yyparse();
