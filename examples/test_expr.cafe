@@ -1,4 +1,4 @@
-int a;
+int [] a;
 
 double a(){
 	if(a < 32)

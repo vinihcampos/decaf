@@ -1,15 +1,24 @@
 #ifndef _STMT_BLOCK_
 #define _STMT_BLOCK_
 
-#include <vector>
+#include <deque>
+#include <iostream>
 #include "declaration_variable.h"
 #include "stmt.h"
 
-class StatementBlock{
+class StatementBlock : public Statement{
 
 	public:
-		std::vector<DeclarationVariable> variables;
-		std::vector<Statement> statements;
+		std::deque<DeclarationVariable*> variables;
+		std::deque<Statement*> statements;
+
+		StatementBlock(){}
+		StatementBlock(std::deque<DeclarationVariable*> variables_, std::deque<Statement*> statements_) : 
+			variables{variables_}, statements{statements_}{}
+
+		void toString() override{
+			std::cout << "{}";
+		}
 };
 
 #endif

@@ -3,14 +3,20 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
+#include <iostream>
 #include "declaration.h"
 #include "prototype.h"
 
-class DeclarationInterface : Declaration{
+class DeclarationInterface : public Declaration{
 
 	public:
 		std::string userType;
 		std::vector<Prototype> prototypes;
+
+		void toString() override{
+			
+		}
 };
 
 #endif
