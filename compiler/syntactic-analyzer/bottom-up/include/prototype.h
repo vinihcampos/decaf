@@ -12,6 +12,9 @@ class Prototype{
 		std::string id;
 		Formal formals;
 
+		Prototype(Type type_, std::string id_, Formal formals_) :
+			type{type_}, id{id_}, formals{formals_}{}
+
 };
 
 #endif

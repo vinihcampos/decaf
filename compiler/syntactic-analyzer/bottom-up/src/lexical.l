@@ -9,6 +9,8 @@
     #include "declaration_class.h"
     #include "declaration_interface.h"
     #include "formal.h"
+    #include "field.h"
+    #include "prototype.h"
     #include "stmt_block.h"
     #include "stmt.h"
     #include "type.h"

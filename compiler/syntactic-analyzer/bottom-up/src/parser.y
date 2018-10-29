@@ -7,6 +7,8 @@
 	#include "declaration_interface.h"
 	#include "declaration_variable.h"
 	#include "formal.h"
+	#include "field.h"
+	#include "prototype.h"
 	#include "stmt_block.h"
 	#include "stmt.h"
 	#include "type.h"
@@ -29,12 +31,18 @@
 	DeclarationVariable * variableDecl;
 	std::deque<DeclarationVariable*> * variableDeclList;
 	DeclarationFunction * functionDecl;
+	DeclarationInterface * interfaceDecl;
+	DeclarationClass * classDecl;
+	std::deque<Prototype*> * prototype;
 	Formal * formal;
+	Field * field;
 	Statement * stmt;
 	StatementBlock * stmtBlock;
 	std::deque<Statement*> * stmtList;
 	Type * type;
 	char * lexeme;
+	char * extends;
+	std::deque<std::string> * implements;
 }
 
 %type <decl> decl
@@ -46,6 +54,12 @@
 %type <variableDeclList> variableDeclList
 %type <stmt> stmt
 %type <stmtList> stmtList
+%type <interfaceDecl> interfaceDecl
+%type <prototype> prototype
+%type <classDecl> classDecl
+%type <extends> extends
+%type <implements> implements implements1
+%type <field> field
 
 %start program
 
@@ -66,8 +80,8 @@ program:	decl program {program.declarations.push_front($1);}
 
 decl:	variableDecl  {$$ = $1;}
 	|	functionDecl  {$$ = $1;}
-	|	classDecl     {DeclarationClass class_; Declaration * dec = &class_; $$ = dec; }
-	|	interfaceDecl {DeclarationInterface interface; Declaration * dec = &interface; $$ = dec; }
+	|	classDecl     {$$ = $1;}
+	|	interfaceDecl {$$ = $1;}
 	|	error
 	;
 
@@ -117,32 +131,53 @@ formals1:	',' variable formals1 {
 	|		%empty {$$ = new Formal();}
 	;
 
-classDecl:	CLASS USERTYPE extends implements '{' field '}'
+classDecl:	CLASS USERTYPE extends implements '{' field '}' {
+				$$ = new DeclarationClass($2, $3, *$4, *$6);
+			}
 	;
 
-extends:	EXTENDS USERTYPE
-	|		%empty
+extends:	EXTENDS USERTYPE {$$ = $2;}
+	|		%empty {$$ = "";}
 	;
 
-implements:	IMPLEMENTS USERTYPE implements1
-	|		%empty
+implements:	IMPLEMENTS USERTYPE implements1 {
+				$3->push_front($2);
+				$$ = $3;
+			}
+	|		%empty {std::deque<std::string> impl; $$ = &impl;}
 	;
 
-implements1:	',' USERTYPE implements1
-	|			%empty
+implements1:	',' USERTYPE implements1{
+					$3->push_front($2);
+					$$ = $3;
+				}
+	|			%empty {std::deque<std::string> impl; $$ = &impl;}
 	;
 
-field:	variableDecl field
-	|	functionDecl field
-	|	%empty
+field:	variableDecl field { $2->variables.push_front($1); $$ = $2; }
+	|	functionDecl field { $2->functions.push_front($1); $$ = $2; }
+	|	%empty {
+			std::deque<DeclarationVariable*> vars;
+			std::deque<DeclarationFunction*> funs;
+			$$ = new Field(vars, funs);
+		}
 	;
 
-interfaceDecl:	INTERFACE USERTYPE '{' prototype '}'
+interfaceDecl:	INTERFACE USERTYPE '{' prototype '}' {
+			$$ = new DeclarationInterface($2, *$4);
+		}
 	;
 
-prototype:	type ID '(' formals ')' ';' prototype
-	|		VOID ID '(' formals ')' ';' prototype
-	|		%empty
+prototype:	type ID '(' formals ')' ';' prototype {
+				$7->push_front(new Prototype(*$1, $2, *$4));
+				$$ = $7;
+			}
+	|		VOID ID '(' formals ')' ';' prototype {
+				Type t = Type(VOID_T, 0);
+				$7->push_front(new Prototype(t, $2, *$4));
+				$$ = $7;
+			}
+	|		%empty {std::deque<Prototype*> proto; $$ = &proto;}
 	;
 
 stmtBlock:	'{' variableDeclList stmtList '}' {
