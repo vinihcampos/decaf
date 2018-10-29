@@ -46,7 +46,12 @@
 	#include "read_line.h"
 	#include "new.h"
 	#include "new_array.h"
-
+	#include "stmt_print.h"
+	#include "stmt_return.h"
+	#include "stmt_break.h"
+	#include "stmt_if.h"
+	#include "stmt_while.h"
+	#include "stmt_for.h"
 	
 	extern int row, column;
 	extern char * lexeme;
@@ -83,6 +88,12 @@
 	LValue * lValue;
 	Call * call;
 	Constant * constant;
+	StatementIf * ifStmt;
+	StatementWhile * whileStmt;
+	StatementFor * forStmt;
+	StatementBreak * breakStmt;
+	StatementReturn * returnStmt;
+	StatementPrint * printStmt;
 }
 
 %type <decl> decl
@@ -105,6 +116,12 @@
 %type <constant> constant
 %type <call> call
 %type <exprList> exprList exprList1
+%type <breakStmt> breakStmt
+%type <returnStmt> returnStmt
+%type <printStmt> printStmt
+%type <ifStmt> ifStmt
+%type <whileStmt> whileStmt
+%type <forStmt> forStmt
 
 %start program
 
@@ -226,43 +243,42 @@ prototype:	type ID '(' formals ')' ';' prototype {
 	;
 
 stmtBlock:	'{' variableDeclList stmtList '}' {
-			StatementBlock * block = new StatementBlock(*$2, *$3);
-			$$ = block;
-		}
+				$$ = new StatementBlock(*$2, *$3);
+			}
 	;
 
 stmt:	expr1 ';' { $$ = $1; }
-	|	ifStmt
-	|	whileStmt
-	|	forStmt
-	|	breakStmt
-	|	returnStmt
-	|	printStmt
-	|	stmtBlock
+	|	ifStmt { $$ = $1; }
+	|	whileStmt { $$ = $1; }
+	|	forStmt { $$ = $1; }
+	|	breakStmt { $$ = $1; }
+	|	returnStmt { $$ = $1; }
+	|	printStmt { $$ = $1; }
+	|	stmtBlock { $$ = $1; }
 	|	error
 	;
 
-stmtList:	stmt stmtList {$$ = $2;}
+stmtList:	stmt stmtList {$2->push_front($1); $$ = $2;}
 	|		%empty { std::deque<Statement*> stmts; $$ = &stmts;}
 	;
 
-ifStmt:	IF '(' expr ')' stmt
-	|	IF '(' expr ')' stmt ELSE stmt
+ifStmt:	IF '(' expr ')' stmt { $$ = new StatementIf($3, $5, nullptr); }
+	|	IF '(' expr ')' stmt ELSE stmt { $$ = new StatementIf($3, $5, $7); }
 	;
 
-whileStmt:	WHILE '(' expr ')' stmt
+whileStmt:	WHILE '(' expr ')' stmt { $$ = new StatementWhile($3, $5); }
 	;
 
-forStmt:	FOR '(' expr1 ';' expr ';' expr1 ')' stmt
+forStmt:	FOR '(' expr1 ';' expr ';' expr1 ')' stmt { $$ = new StatementFor($3, $5, $7, $9); }
 	;
 
-returnStmt:	RETURN expr1 ';'
+returnStmt:	RETURN expr1 ';' { $$ = new StatementReturn($2); }
 	;
 
-breakStmt:	BREAK ';'
+breakStmt:	BREAK ';' { $$ = new StatementBreak(); }
 	;
 
-printStmt:	PRINT '(' exprList ')' ';'
+printStmt:	PRINT '(' exprList ')' ';' { $$ = new StatementPrint(*$3); }
 	;
 
 expr:	lValue '=' expr { $$ = new OperatorAssignment($1, $3); }

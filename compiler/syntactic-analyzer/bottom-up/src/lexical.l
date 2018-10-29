@@ -19,6 +19,12 @@
     #include "lvalue.h"
     #include "call.h"
     #include "constant.h"
+    #include "stmt_print.h"
+    #include "stmt_return.h"
+    #include "stmt_break.h"
+    #include "stmt_if.h"
+    #include "stmt_while.h"
+    #include "stmt_for.h"
 
     // Remaining include
     #include "y.tab.h"

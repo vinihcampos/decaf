@@ -4,10 +4,14 @@
 #include "stmt.h"
 #include "expression.h"
 
-class StatementReturn : Statement{
+class StatementReturn : public Statement{
 	
 	public:
-		Expression expression;
+		Expression * expression;
+		StatementReturn(Expression * expression_) : expression{expression_} {}
+		void toString(){
+			
+		}
 };
 
 #endif

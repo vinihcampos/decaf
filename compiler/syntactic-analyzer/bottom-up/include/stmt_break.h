@@ -4,8 +4,11 @@
 #include "stmt.h"
 
 
-class StatementBreak : Statement{
-	
+class StatementBreak : public Statement{
+	public:
+		void toString(){
+			
+		}
 };
 
 #endif

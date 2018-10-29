@@ -9,6 +9,10 @@ class StatementPrint : public Statement{
 	
 	public:
 		std::deque<Expression*> expressions;
+		StatementPrint(std::deque<Expression*> expressions_) : expressions{expressions_} {}
+		void toString(){
+			
+		}
 };
 
 #endif
