@@ -2,11 +2,13 @@
 #define _ACTUAL_
 
 #include "expression.h"
+#include <deque>
 
 class Actual {
 
 	public:
-		Expression expression;
+		std::deque<Expression*> expressions;
+		Actual(std::deque<Expression*> expressions_) : expressions{expressions_} {}
 
 };
 

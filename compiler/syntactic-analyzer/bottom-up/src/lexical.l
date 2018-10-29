@@ -14,6 +14,11 @@
     #include "stmt_block.h"
     #include "stmt.h"
     #include "type.h"
+    #include "expression.h"
+    #include "operator_assignment.h"
+    #include "lvalue.h"
+    #include "call.h"
+    #include "constant.h"
 
     // Remaining include
     #include "y.tab.h"

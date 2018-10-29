@@ -3,9 +3,13 @@
 
 #include "constant.h"
 
-class BoolConstant : Constant {
+class BoolConstant : public Constant {
 	public:
 		bool value;
+		BoolConstant(bool value_) : value{value_} {}
+		void toString(){
+			
+		}
 };
 
 #endif

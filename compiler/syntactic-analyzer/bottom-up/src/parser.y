@@ -1,6 +1,7 @@
 %{
 	#include <cstdio>
 	#include <deque>
+	#include <string>
 	#include "program.h"
 	#include "declaration_class.h"
 	#include "declaration_function.h"
@@ -12,6 +13,40 @@
 	#include "stmt_block.h"
 	#include "stmt.h"
 	#include "type.h"
+	#include "expression.h"
+	#include "expression_this.h"
+	#include "operator_assignment.h"
+	#include "operator_plus.h"
+	#include "operator_minus.h"
+	#include "operator_multi.h"
+	#include "operator_div.h"
+	#include "operator_mod.h"
+	#include "operator_less.h"
+	#include "operator_less_equal.h"
+	#include "operator_greater.h"
+	#include "operator_greater_equal.h"
+	#include "operator_equal.h"
+	#include "operator_diff.h"
+	#include "operator_and.h"
+	#include "operator_or.h"
+	#include "operator_minus_unary.h"
+	#include "operator_not.h"
+	#include "call.h"
+	#include "lvalue.h"
+	#include "lvalue_id.h"
+	#include "lvalue_attr.h"
+	#include "lvalue_array.h"
+	#include "constant.h"
+	#include "constant_int.h"
+	#include "constant_double.h"
+	#include "constant_string.h"
+	#include "constant_bool.h"
+	#include "constant_null.h"
+	#include "read_integer.h"
+	#include "read_line.h"
+	#include "new.h"
+	#include "new_array.h"
+
 	
 	extern int row, column;
 	extern char * lexeme;
@@ -43,6 +78,11 @@
 	char * lexeme;
 	char * extends;
 	std::deque<std::string> * implements;
+	Expression * expr;
+	std::deque<Expression*> * exprList;
+	LValue * lValue;
+	Call * call;
+	Constant * constant;
 }
 
 %type <decl> decl
@@ -60,6 +100,11 @@
 %type <extends> extends
 %type <implements> implements implements1
 %type <field> field
+%type <expr> expr expr1
+%type <lValue> lValue
+%type <constant> constant
+%type <call> call
+%type <exprList> exprList exprList1
 
 %start program
 
@@ -186,7 +231,7 @@ stmtBlock:	'{' variableDeclList stmtList '}' {
 		}
 	;
 
-stmt:	expr1 ';'
+stmt:	expr1 ';' { $$ = $1; }
 	|	ifStmt
 	|	whileStmt
 	|	forStmt
@@ -220,60 +265,60 @@ breakStmt:	BREAK ';'
 printStmt:	PRINT '(' exprList ')' ';'
 	;
 
-expr:	lValue '=' expr
-	|	constant
-	|	lValue
-	|	THIS
-	|	call
-	|	'(' expr ')'
-	|	expr '+' expr
-	|	expr '-' expr
-	|	expr '*' expr
-	|	expr '/' expr
-	|	expr '%' expr
-	|	'-' expr %prec UMINUS
-	|	expr L expr
-	|	expr LEQ expr
-	|	expr G expr
-	|	expr GEQ expr
-	|	expr EQ expr
-	|	expr NEQ expr
-	|	expr AND expr
-	|	expr OR expr
-	|	'!' expr
-	|	READINTEGER '(' ')'
-	|	READLINE '(' ')'
-	|	NEW '(' USERTYPE ')'
-	|	NEWARRAY '(' expr ',' type ')'
+expr:	lValue '=' expr { $$ = new OperatorAssignment($1, $3); }
+	|	constant { $$ = $1; }
+	|	lValue { $$ = $1; }
+	|	THIS { $$ = new ThisExpression(); }
+	|	call { $$ = $1; }
+	|	'(' expr ')' { $$ = $2; }
+	|	expr '+' expr { $$ = new OperatorPlus($1, $3); }
+	|	expr '-' expr { $$ = new OperatorMinus($1, $3); }
+	|	expr '*' expr { $$ = new OperatorMulti($1, $3); }
+	|	expr '/' expr { $$ = new OperatorDiv($1, $3); }
+	|	expr '%' expr { $$ = new OperatorMod($1, $3); }
+	|	'-' expr %prec UMINUS { $$ = new OperatorMinusUnary($2); }
+	|	expr L expr { $$ = new OperatorLess($1, $3); }
+	|	expr LEQ expr { $$ = new OperatorLessEqual($1, $3); }
+	|	expr G expr { $$ = new OperatorGreater($1, $3); }
+	|	expr GEQ expr { $$ = new OperatorGreaterEqual($1, $3); }
+	|	expr EQ expr { $$ = new OperatorEqual($1, $3); }
+	|	expr NEQ expr { $$ = new OperatorDiff($1, $3); }
+	|	expr AND expr { $$ = new OperatorAnd($1, $3); }
+	|	expr OR expr { $$ = new OperatorOr($1, $3); }
+	|	'!' expr { $$ = new OperatorNot($2); }
+	|	READINTEGER '(' ')' { $$ = new ReadInteger(); }
+	|	READLINE '(' ')' { $$ = new ReadLine(); }
+	|	NEW '(' USERTYPE ')' { $$ = new New($3); }
+	|	NEWARRAY '(' expr ',' type ')' { $$ = new NewArray(*$5, $3); }
 	;
 
-exprList:	expr exprList1
-	|		%empty
+exprList:	expr exprList1 { $2->push_front($1); $$ = $2; }
+	|		%empty { std::deque<Expression*> exprs; $$ = &exprs; }
 	;
 
-exprList1:	',' expr exprList1
-	|		%empty
+exprList1:	',' expr exprList1 { $3->push_front($2); $$ = $3; }
+	|		%empty { std::deque<Expression*> exprs; $$ = &exprs; }
 	;
 
-expr1:	expr
-	|	%empty
+expr1:	expr { $$ = $1; }
+	|	%empty { $$ = nullptr; }
 	;
 
-lValue:	ID
-	|	expr '.' ID
-	|	expr '[' expr ']'
+lValue:	ID { $$ = new LValueId($1); }
+	|	expr '.' ID { $$ = new LValueAttribute($3, $1); }
+	|	expr '[' expr ']' {$$ = new LValueArray($1, $3);}
 	;
 
-call:	ID '(' exprList ')'
-	|	expr '.' ID '(' exprList ')'
+call:	ID '(' exprList ')' { $$ = new Call($1, nullptr, *$3); }
+	|	expr '.' ID '(' exprList ')' { $$ = new Call($3, $1, *$5); }
 	;
 
-constant:	INTCONSTANT
-	|		DOUBLECONSTANT
-	|		TRUE
-	|		FALSE
-	|		STRINGCONSTANT
-	|		TNULL
+constant:	INTCONSTANT { $$ = new IntConstant(std::stoi($1)); }
+	|		DOUBLECONSTANT { $$ = new DoubleConstant(std::stod($1)); }
+	|		TRUE { $$ = new BoolConstant(true); }
+	|		FALSE { $$ = new BoolConstant(false); }
+	|		STRINGCONSTANT { $$ = new StringConstant($1); }
+	|		TNULL { $$ = new NullConstant(); }
 	;
 %%
 

@@ -3,9 +3,13 @@
 
 #include "constant.h"
 
-class IntConstant : Constant {
+class IntConstant : public Constant {
 	public:
 		int value;
+		IntConstant(int value_) : value{value_} {}
+		void toString(){
+			
+		}
 };
 
 #endif

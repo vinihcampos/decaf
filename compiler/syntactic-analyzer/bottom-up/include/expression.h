@@ -1,8 +1,13 @@
 #ifndef _EXPRESSION_
 #define _EXPRESSION_
 
-class Expression{
-	
+#include "stmt.h"
+
+class Expression : public Statement{
+	public:
+		virtual void toString(){
+
+		}
 };
 
 #endif

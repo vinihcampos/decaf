@@ -3,8 +3,11 @@
 
 #include "expression.h"
 
-class ReadInteger : Expression{
-	
+class ReadInteger : public Expression{
+	public:
+		void toString(){
+			
+		}
 };
 
 #endif

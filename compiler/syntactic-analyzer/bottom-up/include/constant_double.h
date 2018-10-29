@@ -3,9 +3,14 @@
 
 #include "constant.h"
 
-class DoubleConstant : Constant {
+class DoubleConstant : public Constant {
 	public:
 		double value;
+
+		DoubleConstant(double value_) : value{value_} {}
+		void toString(){
+			
+		}
 };
 
 #endif

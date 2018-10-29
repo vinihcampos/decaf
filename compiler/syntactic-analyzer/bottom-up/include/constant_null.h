@@ -3,7 +3,7 @@
 
 #include "constant.h"
 
-class NullConstant : Constant {
+class NullConstant : public Constant {
 	public:
 		std::string value = "NULL";
 };

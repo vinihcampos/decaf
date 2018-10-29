@@ -1,14 +1,14 @@
 #ifndef _STMT_PRINT_
 #define _STMT_PRINT_
 
-#include <vector>
+#include <deque>
 #include "stmt.h"
 #include "expression.h"
 
-class StatementPrint : Statement{
+class StatementPrint : public Statement{
 	
 	public:
-		std::vector<Expression> expressions;
+		std::deque<Expression*> expressions;
 };
 
 #endif

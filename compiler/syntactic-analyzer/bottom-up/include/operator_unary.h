@@ -3,10 +3,14 @@
 
 #include "expression.h"
 
-class OperatorUnary : Expression{
+class OperatorUnary : public Expression{
 	
 	public:
-		Expression expression;
+		Expression * expression;
+		OperatorUnary(Expression * expression_) : expression{expression_} {}
+		virtual void toString(){
+
+		}
 };
 
 #endif

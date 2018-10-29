@@ -3,8 +3,11 @@
 
 #include "expression.h"
 
-class ReadLine : Expression{
-	
+class ReadLine : public Expression{
+	public:
+		void toString(){
+			
+		}
 };
 
 #endif

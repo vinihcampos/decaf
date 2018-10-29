@@ -4,9 +4,13 @@
 #include "constant.h"
 #include <string>
 
-class StringConstant : Constant {
+class StringConstant : public Constant {
 	public:
 		std::string value;
+		StringConstant(std::string value_) : value{value_} {}
+		void toString(){
+			
+		}
 };
 
 #endif

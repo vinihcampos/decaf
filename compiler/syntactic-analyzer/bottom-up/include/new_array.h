@@ -4,11 +4,15 @@
 #include "expression.h"
 #include "type.h"
 
-class NewArray : Expression{
+class NewArray : public Expression{
 
 	public:
 		Type type;
-		Expression expression;
+		Expression * expression;
+		NewArray(Type type_, Expression * expression_) : type{type_}, expression{expression_} {}
+		void toString(){
+			
+		}
 };
 
 #endif

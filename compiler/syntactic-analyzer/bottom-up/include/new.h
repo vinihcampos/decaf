@@ -4,9 +4,13 @@
 #include <string>
 #include "expression.h"
 
-class New : Expression{
+class New : public Expression{
 	public:
-		std::string userType;	
+		std::string userType;
+		New(std::string userType_) : userType{userType_} {}
+		void toString(){
+			
+		}
 };
 
 #endif

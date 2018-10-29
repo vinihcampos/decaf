@@ -4,12 +4,7 @@
 #include <string>
 #include "expression.h"
 
-class LValue : Expression{
-
-	public:
-		std::string id;
-		Expression expression1;
-		Expression expression2;
+class LValue : public Expression{
 
 };
 

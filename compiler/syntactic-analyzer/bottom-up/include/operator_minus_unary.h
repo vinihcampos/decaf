@@ -3,9 +3,13 @@
 
 #include "operator_unary.h"
 
-class OperatorMinusUnary: OperatorUnary{
-	
+class OperatorMinusUnary : public OperatorUnary{
+	public:
+		Expression * expression;
+		OperatorMinusUnary(Expression * expression_) : OperatorUnary(expression_) {}
+		virtual void toString(){
 
+		}
 };
 
 #endif
