@@ -3,15 +3,18 @@
 
 #include <deque>
 #include "stmt.h"
-#include "expression.h"
+#include "expression_list.h"
 
 class StatementPrint : public Statement{
 	
 	public:
-		std::deque<Expression*> expressions;
-		StatementPrint(std::deque<Expression*> expressions_) : expressions{expressions_} {}
+		ExpressionList expressions;
+		StatementPrint(ExpressionList expressions_) : expressions{expressions_} {}
 		void toString(){
-			
+			std::cout << "StatementPrint: {";
+			std::cout << "expressions: ";
+			expressions.toString();
+			std::cout << "}";
 		}
 };
 

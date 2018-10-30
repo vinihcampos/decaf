@@ -15,16 +15,12 @@ class DeclarationVariableList{
 			std::cout << "[";
 			if(variables.size() > 0){
 				for(int i = 0; i < variables.size(); ++i){
-					std::cout << "{ ";
+					std::cout << "{";
 					variables[i].toString();
-					if(i + 1 >= variables.size()){
-						std::cout << " }";
-					}else{
-						std::cout << " },";
-					}
+					std::cout << "}";
 				}
 			}
-			std::cout << "]," << std::endl;
+			std::cout << "]" ;
 		}
 
 };

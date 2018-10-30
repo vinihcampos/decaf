@@ -11,7 +11,7 @@
     #include "declaration_variable_list.h"
     #include "formal.h"
     #include "field.h"
-    #include "prototype.h"
+    #include "prototype_list.h"
     #include "stmt_block.h"
     #include "stmt.h"
     #include "type.h"
@@ -26,6 +26,9 @@
     #include "stmt_if.h"
     #include "stmt_while.h"
     #include "stmt_for.h"
+    #include "stmt_list.h"
+    #include "expression_list.h"
+    #include "implements.h"
 
     // Remaining include
     #include "y.tab.h"

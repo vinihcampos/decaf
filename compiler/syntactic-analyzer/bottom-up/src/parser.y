@@ -53,6 +53,10 @@
 	#include "stmt_if.h"
 	#include "stmt_while.h"
 	#include "stmt_for.h"
+	#include "prototype_list.h"
+	#include "stmt_list.h"
+	#include "expression_list.h"
+	#include "implements.h"
 	
 	extern int row, column;
 	extern char * lexeme;
@@ -74,18 +78,18 @@
 	DeclarationFunction * functionDecl;
 	DeclarationInterface * interfaceDecl;
 	DeclarationClass * classDecl;
-	std::deque<Prototype*> * prototype;
+	PrototypeList * prototypes;
 	Formal * formal;
 	Field * field;
 	Statement * stmt;
 	StatementBlock * stmtBlock;
-	std::deque<Statement*> * stmtList;
+	StatementList * stmtList;
 	Type * type;
 	char * lexeme;
 	char * extends;
-	std::deque<std::string> * implements;
+	Implements * implements;
 	Expression * expr;
-	std::deque<Expression*> * exprList;
+	ExpressionList * exprList;
 	LValue * lValue;
 	Call * call;
 	Constant * constant;
@@ -107,7 +111,7 @@
 %type <stmt> stmt
 %type <stmtList> stmtList
 %type <interfaceDecl> interfaceDecl
-%type <prototype> prototype
+%type <prototypes> prototype
 %type <classDecl> classDecl
 %type <extends> extends
 %type <implements> implements implements1
@@ -207,17 +211,17 @@ extends:	EXTENDS USERTYPE {$$ = $2;}
 	;
 
 implements:	IMPLEMENTS USERTYPE implements1 {
-				$3->push_front($2);
+				$3->implements.push_front($2);
 				$$ = $3;
 			}
-	|		%empty {std::deque<std::string> impl; $$ = &impl;}
+	|		%empty {std::deque<std::string> impl; $$ = new Implements(impl);}
 	;
 
 implements1:	',' USERTYPE implements1{
-					$3->push_front($2);
+					$3->implements.push_front($2);
 					$$ = $3;
 				}
-	|			%empty {std::deque<std::string> impl; $$ = &impl;}
+	|			%empty {std::deque<std::string> impl; $$ = new Implements(impl);}
 	;
 
 field:	variableDecl field { $2->variables.push_front($1); $$ = $2; }
@@ -235,15 +239,15 @@ interfaceDecl:	INTERFACE USERTYPE '{' prototype '}' {
 	;
 
 prototype:	type ID '(' formals ')' ';' prototype {
-				$7->push_front(new Prototype(*$1, $2, *$4));
+				$7->prototypes.push_front(Prototype(*$1, $2, *$4));
 				$$ = $7;
 			}
 	|		VOID ID '(' formals ')' ';' prototype {
 				Type t = Type(VOID_T, 0);
-				$7->push_front(new Prototype(t, $2, *$4));
+				$7->prototypes.push_front(Prototype(t, $2, *$4));
 				$$ = $7;
 			}
-	|		%empty {std::deque<Prototype*> proto; $$ = &proto;}
+	|		%empty { std::deque<Prototype> proto; $$ = new PrototypeList(proto); }
 	;
 
 stmtBlock:	'{' variableDeclList stmtList '}' {
@@ -262,8 +266,8 @@ stmt:	expr1 ';' { $$ = $1; }
 	|	error
 	;
 
-stmtList:	stmt stmtList {$2->push_front($1); $$ = $2;}
-	|		%empty { std::deque<Statement*> stmts; $$ = &stmts;}
+stmtList:	stmt stmtList {$2->stmts.push_front($1); $$ = $2;}
+	|		%empty { std::deque<Statement*> stmts; $$ = new StatementList(stmts);}
 	;
 
 ifStmt:	IF '(' expr ')' stmt { $$ = new StatementIf($3, $5, nullptr); }
@@ -312,12 +316,12 @@ expr:	lValue '=' expr { $$ = new OperatorAssignment($1, $3); }
 	|	NEWARRAY '(' expr ',' type ')' { $$ = new NewArray(*$5, $3); }
 	;
 
-exprList:	expr exprList1 { $2->push_front($1); $$ = $2; }
-	|		%empty { std::deque<Expression*> exprs; $$ = &exprs; }
+exprList:	expr exprList1 { $2->expressions.push_front($1); $$ = $2; }
+	|		%empty { std::deque<Expression*> exprs; $$ = new ExpressionList(exprs); }
 	;
 
-exprList1:	',' expr exprList1 { $3->push_front($2); $$ = $3; }
-	|		%empty { std::deque<Expression*> exprs; $$ = &exprs; }
+exprList1:	',' expr exprList1 { $3->expressions.push_front($2); $$ = $3; }
+	|		%empty { std::deque<Expression*> exprs; $$ = new ExpressionList(exprs); }
 	;
 
 expr1:	expr { $$ = $1; }

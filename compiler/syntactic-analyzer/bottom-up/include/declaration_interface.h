@@ -6,15 +6,15 @@
 #include <iostream>
 #include <iostream>
 #include "declaration.h"
-#include "prototype.h"
+#include "prototype_list.h"
 
 class DeclarationInterface : public Declaration{
 
 	public:
 		std::string userType;
-		std::deque<Prototype*> prototypes;
+		PrototypeList prototypes;
 
-		DeclarationInterface(std::string userType_, std::deque<Prototype*> prototypes_) :
+		DeclarationInterface(std::string userType_, PrototypeList prototypes_) :
 			userType{userType_}, prototypes{prototypes_} {}
 
 		void toString() override{

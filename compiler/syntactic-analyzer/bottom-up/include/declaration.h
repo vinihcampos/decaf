@@ -6,7 +6,6 @@
 class Declaration{
 	public:
 		virtual void toString(){
-			std::cout << "Declaration" << std::endl;
 		}
 };
 

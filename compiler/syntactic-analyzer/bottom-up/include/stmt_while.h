@@ -12,7 +12,18 @@ class StatementWhile : public Statement{
 		StatementWhile(Expression * expression_, Statement * whileStatement_) :
 			expression{expression_}, whileStatement{whileStatement_} {}
 		void toString(){
-			
+			std::cout << "StatementWhile: {";
+			if(expression != nullptr){
+				std::cout << "condition: "; 
+				expression->toString();
+				std::cout << ",";
+			}
+			if(whileStatement != nullptr){
+				std::cout << "statement: ";
+				whileStatement->toString();
+				std::cout << ",";
+			}	
+			std::cout << "}";
 		}
 };
 

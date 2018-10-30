@@ -7,7 +7,7 @@
 class StatementBreak : public Statement{
 	public:
 		void toString(){
-			
+			std::cout << "StatementBreak: { break }";
 		}
 };
 

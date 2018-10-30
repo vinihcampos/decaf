@@ -21,13 +21,13 @@ class DeclarationFunction : public Declaration{
 		type{type_}, id{id_}, formals{formals_}, stmtBlock{stmtBlock_}{}
 		
 		void toString() override{
-			std::cout << "\"DeclarationFunction\": { " << std::endl;
-			std::cout << "\"id\": \"" << id << "\"," << std::endl;
+			std::cout << "DeclarationFunction: { " ;
+			std::cout << "id: " << id << "," ;
 			type.toString();
-			std::cout << "," << std::endl;
-			std::cout << "\"formals\": "; formals.toString();
-			std::cout << "," << std::endl;
-			std::cout << "\"StatementBlock\": "; stmtBlock.toString();
+			std::cout << "," ;
+			std::cout << "formals: "; formals.toString();
+			std::cout << "," ;
+			std::cout << "StatementBlock: "; stmtBlock.toString();
 			std::cout << "}";
 		}
 };

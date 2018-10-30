@@ -12,15 +12,11 @@ class Formal{
 		void toString(){
 			std::cout << "[";
 			for(int i = 0; i < variables.size(); ++i){
-				std::cout << "{ ";
-				variables[i].toString();
-				if(i + 1 >= variables.size()){
-					std::cout << " }";
-				}else{
-					std::cout << " },";
-				}
+				std::cout << "{";
+ 				variables[i].toString();
+				std::cout << "},";
 			}
-			std::cout << "]";
+			std::cout << "],";
 		}
 
 };

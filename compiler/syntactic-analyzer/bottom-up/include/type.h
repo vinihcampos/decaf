@@ -23,28 +23,28 @@ class Type{
 		Type(BaseType base_, int size_) : size{size_}, base{base_} {}
 
 		void toString(){
-			std::cout << "\"type\": {" <<std::endl;
-			std::cout << "\"base\": " << BaseTypeToString() << "," << std::endl;
-			std::cout << "\"size\": " << size << std::endl;
+			std::cout << "type: {";
+			std::cout << "base: " << BaseTypeToString() << "," ;
+			std::cout << "size: " << size ;
 			std::cout << "}";
 		}
 
 		std::string BaseTypeToString(){
 			switch(base){
 				case INT_T:
-					return "\"INT\"";
+					return "INT";
 				case DOUBLE_T:
-					return "\"DOUBLE\"";
+					return "DOUBLE";
 				case BOOL_T:
-					return "\"BOOL\"";
+					return "BOOL";
 				case STRING_T:
-					return "\"STRING\"";
+					return "STRING";
 				case USERTYPE_T:
-					return "\"USERTYPE\"";
+					return "USERTYPE";
 				case VOID_T :
-					return "\"VOID\"";
+					return "VOID";
 				default:
-					return "\"ERROR\"";
+					return "ERROR";
 			}
 		}
 

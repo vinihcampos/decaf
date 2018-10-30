@@ -5,36 +5,25 @@
 #include <iostream>
 #include "declaration_variable.h"
 #include "declaration_variable_list.h"
-#include "stmt.h"
+#include "stmt_list.h"
 
 class StatementBlock : public Statement{
 
 	public:
 		DeclarationVariableList variables;
-		std::deque<Statement*> statements;
+		StatementList statements;
 
-		StatementBlock(DeclarationVariableList variables_, std::deque<Statement*> statements_) : 
+		StatementBlock(DeclarationVariableList variables_, StatementList statements_) : 
 			variables{variables_}, statements{statements_}{}
 
 		void toString() override{
-			std::cout << "{" << std::endl;
-			std::cout << "\"DeclarationVariables\": ";
+			std::cout << "{" ;
+			std::cout << "DeclarationVariables: ";
 			variables.toString();
-			std::cout << "\"Statements\": ";
-			std::cout << "[";
-			/*if(statements.size() > 0){
-				for(int i = 0; i < statements.size(); ++i){
-					std::cout << "{ ";
-					statements[i]->toString();
-					if(i + 1 >= statements.size()){
-						std::cout << " }";
-					}else{
-						std::cout << " },";
-					}
-				}
-			}*/
-			std::cout << "]" << std::endl;
-			std::cout << "}" << std::endl;
+			std::cout << ",";
+			std::cout << "Statements: ";
+			statements.toString();
+			std::cout << "}" ;
 		}
 };
 

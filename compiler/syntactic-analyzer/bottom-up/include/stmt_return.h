@@ -10,7 +10,12 @@ class StatementReturn : public Statement{
 		Expression * expression;
 		StatementReturn(Expression * expression_) : expression{expression_} {}
 		void toString(){
-			
+			std::cout << "StatementReturn: {";
+			if(expression != nullptr){
+				std::cout << "expression: ";
+				expression->toString();
+			}
+			std::cout << "}";
 		}
 };
 
