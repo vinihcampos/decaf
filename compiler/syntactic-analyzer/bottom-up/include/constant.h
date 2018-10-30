@@ -6,7 +6,7 @@
 class Constant : public Expression{
 	public:
 		virtual void toString(){
-			
+			std::cout << "CONSTANT!";
 		}
 };
 

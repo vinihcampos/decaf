@@ -8,7 +8,9 @@ class IntConstant : public Constant {
 		int value;
 		IntConstant(int value_) : value{value_} {}
 		void toString(){
-			
+			std::cout << "IntConstant: {";
+			std::cout << "value: " << value;
+			std::cout << "}";
 		}
 };
 

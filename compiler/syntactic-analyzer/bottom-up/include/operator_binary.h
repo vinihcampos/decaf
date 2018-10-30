@@ -13,7 +13,7 @@ class OperatorBinary : public Expression{
 			expression1{expression1_}, expression2{expression2_} {}
 
 		virtual void toString(){
-
+			std::cout << "binary!";
 		}
 };
 
