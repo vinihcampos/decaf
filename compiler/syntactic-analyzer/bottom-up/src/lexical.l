@@ -8,6 +8,7 @@
     #include "declaration_function.h"
     #include "declaration_class.h"
     #include "declaration_interface.h"
+    #include "declaration_variable_list.h"
     #include "formal.h"
     #include "field.h"
     #include "prototype.h"
@@ -55,26 +56,26 @@ commentLine [/][/].*
 %%
 
  /* Comment */
-{commentLine}           { yylval.lexeme = yytext; column = 1; }
-[/][*]                  { yylval.lexeme = yytext; column += yyleng; BEGIN(BLOCK_COMMENT); }
-<BLOCK_COMMENT>"*/"     { yylval.lexeme = yytext; column += yyleng; BEGIN 0; }
-<BLOCK_COMMENT>[^*\n]+  { yylval.lexeme = yytext; column += yyleng; }
-<BLOCK_COMMENT>"*"      { yylval.lexeme = yytext; column += yyleng; }
+{commentLine}           { yylval.lexeme = strdup(yytext); column = 1; }
+[/][*]                  { yylval.lexeme = strdup(yytext); column += yyleng; BEGIN(BLOCK_COMMENT); }
+<BLOCK_COMMENT>"*/"     { yylval.lexeme = strdup(yytext); column += yyleng; BEGIN 0; }
+<BLOCK_COMMENT>[^*\n]+  { yylval.lexeme = strdup(yytext); column += yyleng; }
+<BLOCK_COMMENT>"*"      { yylval.lexeme = strdup(yytext); column += yyleng; }
 
  /* Constants */
 
-{hex}|{digit}+  { yylval.lexeme = yytext; column += yyleng; return INTCONSTANT; }
-\".*\"          { yylval.lexeme = yytext; column += yyleng; return STRINGCONSTANT; }
-false           { yylval.lexeme = yytext; column += yyleng; return FALSE; }
-true            { yylval.lexeme = yytext; column += yyleng; return TRUE; }
-{real}{exp}*    { yylval.lexeme = yytext; column += yyleng; return DOUBLECONSTANT; }
-null            { yylval.lexeme = yytext; column += yyleng; return TNULL; }
+{hex}|{digit}+  { yylval.lexeme = strdup(yytext); column += yyleng; return INTCONSTANT; }
+\".*\"          { yylval.lexeme = strdup(yytext); column += yyleng; return STRINGCONSTANT; }
+false           { yylval.lexeme = strdup(yytext); column += yyleng; return FALSE; }
+true            { yylval.lexeme = strdup(yytext); column += yyleng; return TRUE; }
+{real}{exp}*    { yylval.lexeme = strdup(yytext); column += yyleng; return DOUBLECONSTANT; }
+null            { yylval.lexeme = strdup(yytext); column += yyleng; return TNULL; }
 
  /* Errors  */
 {id}            {   
                     if(yyleng > ID_MAX_SZ){
                         fprintf(stderr, "Warning: the %s will be truncated, because it exceeded maximum size of an identifier\n", yytext);
-				        yylval.lexeme = yytext; column += yyleng; return ID; 
+				        yylval.lexeme = strdup(yytext); column += yyleng; return ID; 
                     }else{
                         REJECT;
                     }
@@ -83,7 +84,7 @@ null            { yylval.lexeme = yytext; column += yyleng; return TNULL; }
 {userType}      {   
                     if(yyleng > ID_MAX_SZ){
                         fprintf(stderr, "Warning: the %s will be truncated, because it exceeded maximum size of an identifier\n", yytext);
-                        yylval.lexeme = yytext; column += yyleng; return USERTYPE; 
+                        yylval.lexeme = strdup(yytext); column += yyleng; return USERTYPE; 
                     }else{
                         REJECT;
                     }
@@ -96,92 +97,92 @@ null            { yylval.lexeme = yytext; column += yyleng; return TNULL; }
  
  /* Base types  */
 
-void            { yylval.lexeme = yytext; column += yyleng; return VOID; }
-int             { yylval.lexeme = yytext; column += yyleng; return INT; }
-double          { yylval.lexeme = yytext; column += yyleng; return DOUBLE; }
-bool            { yylval.lexeme = yytext; column += yyleng; return BOOL; }
-string          { yylval.lexeme = yytext; column += yyleng; return STRING; }
+void            { yylval.lexeme = strdup(yytext); column += yyleng; return VOID; }
+int             { yylval.lexeme = strdup(yytext); column += yyleng; return INT; }
+double          { yylval.lexeme = strdup(yytext); column += yyleng; return DOUBLE; }
+bool            { yylval.lexeme = strdup(yytext); column += yyleng; return BOOL; }
+string          { yylval.lexeme = strdup(yytext); column += yyleng; return STRING; }
 
  /* Loops */
 
-for             { yylval.lexeme = yytext; column += yyleng; return FOR; }
-while           { yylval.lexeme = yytext; column += yyleng; return WHILE; }
+for             { yylval.lexeme = strdup(yytext); column += yyleng; return FOR; }
+while           { yylval.lexeme = strdup(yytext); column += yyleng; return WHILE; }
 
  /* Control statements */
 
-if              { yylval.lexeme = yytext; column += yyleng; return IF; }
-else            { yylval.lexeme = yytext; column += yyleng; return ELSE; }
+if              { yylval.lexeme = strdup(yytext); column += yyleng; return IF; }
+else            { yylval.lexeme = strdup(yytext); column += yyleng; return ELSE; }
 
  /* Class patterns */
 
-class           { yylval.lexeme = yytext; column += yyleng; return CLASS; }
-extends         { yylval.lexeme = yytext; column += yyleng; return EXTENDS; }
-this            { yylval.lexeme = yytext; column += yyleng; return THIS; }
-"\."            { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
+class           { yylval.lexeme = strdup(yytext); column += yyleng; return CLASS; }
+extends         { yylval.lexeme = strdup(yytext); column += yyleng; return EXTENDS; }
+this            { yylval.lexeme = strdup(yytext); column += yyleng; return THIS; }
+"\."            { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
 
  /* Interface patterns */
 
-interface       { yylval.lexeme = yytext; column += yyleng; return INTERFACE; }
-implements      { yylval.lexeme = yytext; column += yyleng; return IMPLEMENTS; }
+interface       { yylval.lexeme = strdup(yytext); column += yyleng; return INTERFACE; }
+implements      { yylval.lexeme = strdup(yytext); column += yyleng; return IMPLEMENTS; }
 
  /* Exit scope */
 
-break           { yylval.lexeme = yytext; column += yyleng; return BREAK; }
-return          { yylval.lexeme = yytext; column += yyleng; return RETURN; }
+break           { yylval.lexeme = strdup(yytext); column += yyleng; return BREAK; }
+return          { yylval.lexeme = strdup(yytext); column += yyleng; return RETURN; }
 
  /* IO */
 
-print           { yylval.lexeme = yytext; column += yyleng; return PRINT; }
-readLine        { yylval.lexeme = yytext; column += yyleng; return READLINE; }
-readInteger     { yylval.lexeme = yytext; column += yyleng; return READINTEGER; }
+print           { yylval.lexeme = strdup(yytext); column += yyleng; return PRINT; }
+readLine        { yylval.lexeme = strdup(yytext); column += yyleng; return READLINE; }
+readInteger     { yylval.lexeme = strdup(yytext); column += yyleng; return READINTEGER; }
 
  /* News  */
 
-new             { yylval.lexeme = yytext; column += yyleng; return NEW; }
-newArray        { yylval.lexeme = yytext; column += yyleng; return NEWARRAY; }
+new             { yylval.lexeme = strdup(yytext); column += yyleng; return NEW; }
+newArray        { yylval.lexeme = strdup(yytext); column += yyleng; return NEWARRAY; }
 
  /* Identifier */
 
-{id}            { yylval.lexeme = yytext; column += yyleng; return ID; }
-{userType}      { yylval.lexeme = yytext; column += yyleng; return USERTYPE; }
+{id}            { yylval.lexeme = strdup(yytext); column += yyleng; return ID; }
+{userType}      { yylval.lexeme = strdup(yytext); column += yyleng; return USERTYPE; }
 
  /*** Operators ***/
  /* Arithmetic */
 
-"+"             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
-"-"             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
-"*"             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
-"/"             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
-"%"             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
+"+"             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
+"-"             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
+"*"             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
+"/"             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
+"%"             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
 
  /* Relational */
 
-"<"             { yylval.lexeme = yytext; column += yyleng; return L; }
-"<="            { yylval.lexeme = yytext; column += yyleng; return LEQ; }
-">"             { yylval.lexeme = yytext; column += yyleng; return G; }
-">="            { yylval.lexeme = yytext; column += yyleng; return GEQ; }
-"="             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
-"=="            { yylval.lexeme = yytext; column += yyleng; return EQ; }
-"!="            { yylval.lexeme = yytext; column += yyleng; return NEQ; }
+"<"             { yylval.lexeme = strdup(yytext); column += yyleng; return L; }
+"<="            { yylval.lexeme = strdup(yytext); column += yyleng; return LEQ; }
+">"             { yylval.lexeme = strdup(yytext); column += yyleng; return G; }
+">="            { yylval.lexeme = strdup(yytext); column += yyleng; return GEQ; }
+"="             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
+"=="            { yylval.lexeme = strdup(yytext); column += yyleng; return EQ; }
+"!="            { yylval.lexeme = strdup(yytext); column += yyleng; return NEQ; }
 
  /* Logic */
 
-"&&"            { yylval.lexeme = yytext; column += yyleng; return AND; }
-"||"            { yylval.lexeme = yytext; column += yyleng; return OR; }
-"!"             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
+"&&"            { yylval.lexeme = strdup(yytext); column += yyleng; return AND; }
+"||"            { yylval.lexeme = strdup(yytext); column += yyleng; return OR; }
+"!"             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
 
  /* Symbols  */
-";"             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
-","             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
-"["             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
-"]"             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
-"("             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
-")"             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
-"{"             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
-"}"             { yylval.lexeme = yytext; column += yyleng; return yytext[0]; }
+";"             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
+","             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
+"["             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
+"]"             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
+"("             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
+")"             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
+"{"             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
+"}"             { yylval.lexeme = strdup(yytext); column += yyleng; return yytext[0]; }
 
  /* EOF */
- <<EOF>>        { yylval.lexeme = yytext; column += yyleng; return EOF; yyterminate(); }
+ <<EOF>>        { yylval.lexeme = strdup(yytext); column += yyleng; return EOF; yyterminate(); }
 
 
  /* Lines */

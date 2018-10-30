@@ -13,8 +13,10 @@ class DeclarationVariable : public Declaration{
 		std::string id;
 		DeclarationVariable(Type type_, std::string id_) : type{type_}, id{id_}{}
 		void toString() override{
+			std::cout << "\"DeclarationVariable\": { " << std::endl;
+			std::cout << "\"id\": \"" << id << "\"," << std::endl;
 			type.toString();
-			std::cout << id << std::endl;
+			std::cout << std::endl << "}";
 		}
 
 };

@@ -10,15 +10,17 @@ class Formal{
 	public:
 		std::deque<DeclarationVariable> variables;
 		void toString(){
-			if(variables.size() > 0){
-				std::cout << "(";
-				for(int i = 0; i < variables.size(); ++i){
-					variables[i].toString();
+			std::cout << "[";
+			for(int i = 0; i < variables.size(); ++i){
+				std::cout << "{ ";
+				variables[i].toString();
+				if(i + 1 >= variables.size()){
+					std::cout << " }";
+				}else{
+					std::cout << " },";
 				}
-				std::cout << ")";
-			}else{
-				std::cout << "()";
 			}
+			std::cout << "]";
 		}
 
 };

@@ -7,6 +7,7 @@
 	#include "declaration_function.h"
 	#include "declaration_interface.h"
 	#include "declaration_variable.h"
+	#include "declaration_variable_list.h"
 	#include "formal.h"
 	#include "field.h"
 	#include "prototype.h"
@@ -69,7 +70,7 @@
 %union{
 	Declaration * decl;
 	DeclarationVariable * variableDecl;
-	std::deque<DeclarationVariable*> * variableDeclList;
+	DeclarationVariableList * variableDeclList;
 	DeclarationFunction * functionDecl;
 	DeclarationInterface * interfaceDecl;
 	DeclarationClass * classDecl;
@@ -151,10 +152,13 @@ variableDecl:	variable ';' {$$ = $1;}
 	;
 
 variableDeclList:	variableDecl variableDeclList{
-						$2->push_front($1);
+						$2->variables.push_front(*$1);
 						$$ = $2;
 					}
-	|				%empty {std::deque<DeclarationVariable*> decs; $$ = &decs; }
+	|				%empty { 
+						std::deque<DeclarationVariable> vars; 
+						$$ = new DeclarationVariableList(vars); 
+					}
 	;
 
 variable:	type ID {DeclarationVariable * var = new DeclarationVariable(*$1, $2); $$ = var;}
@@ -359,9 +363,7 @@ int main(int argc, char** args){
     }
 
     printf("Program size: %d\n", program.declarations.size());
-    for(int i = 0; i < program.declarations.size(); ++i){
-    	program.declarations[i]->toString();
-    }
+    program.toString();
 
 	return 0;
 }
