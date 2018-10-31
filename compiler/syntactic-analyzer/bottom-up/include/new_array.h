@@ -11,7 +11,14 @@ class NewArray : public Expression{
 		Expression * expression;
 		NewArray(Type type_, Expression * expression_) : type{type_}, expression{expression_} {}
 		void toString(){
-			
+			std::cout << "NewArray: {";
+			if(expression != nullptr){
+				std::cout << "expression: ";
+				expression->toString();
+				std::cout << ",";
+			}
+			type.toString();
+			std::cout << "}";
 		}
 };
 

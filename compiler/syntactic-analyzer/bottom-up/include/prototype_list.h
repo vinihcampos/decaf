@@ -12,7 +12,12 @@ class PrototypeList{
 		PrototypeList(std::deque<Prototype> prototypes_) :
 			prototypes{prototypes_}{}
 		void toString(){
-			
+			std::cout << "[";
+			for(int i = 0; i < prototypes.size(); ++i){
+				prototypes[i].toString();
+				std::cout << ",";
+			}
+			std::cout << "]";
 		}
 
 };

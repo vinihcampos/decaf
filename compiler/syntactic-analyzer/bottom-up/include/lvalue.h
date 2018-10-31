@@ -5,7 +5,10 @@
 #include "expression.h"
 
 class LValue : public Expression{
-
+	public:
+		virtual void toString(){
+			
+		}
 };
 
 #endif

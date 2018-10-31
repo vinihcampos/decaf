@@ -9,7 +9,9 @@ class New : public Expression{
 		std::string userType;
 		New(std::string userType_) : userType{userType_} {}
 		void toString(){
-			
+			std::cout << "New: {";
+			std::cout << "userType: " << userType;
+			std::cout << "}";
 		}
 };
 

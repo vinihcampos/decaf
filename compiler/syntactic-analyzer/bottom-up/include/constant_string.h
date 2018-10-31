@@ -9,7 +9,9 @@ class StringConstant : public Constant {
 		std::string value;
 		StringConstant(std::string value_) : value{value_} {}
 		void toString(){
-			
+			std::cout << "StringConstant: {";
+			std::cout << "value: " << value;
+			std::cout << "}";
 		}
 };
 

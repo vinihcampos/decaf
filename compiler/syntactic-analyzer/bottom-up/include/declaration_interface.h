@@ -18,7 +18,11 @@ class DeclarationInterface : public Declaration{
 			userType{userType_}, prototypes{prototypes_} {}
 
 		void toString() override{
-			
+			std::cout << "DeclarationInterface: {";
+			std::cout << "userType: " << userType << ",";
+			std::cout << "prototypes: ";
+			prototypes.toString();
+			std::cout << "}";
 		}
 };
 

@@ -10,6 +10,11 @@ class LValueId : public LValue{
 		std::string id;
 
 		LValueId(std::string id_) : id{id_} {}
+		void toString(){
+			std::cout << "LValueId: {";
+			std::cout << "id: " << id;
+			std::cout << "}";
+		}
 
 };
 

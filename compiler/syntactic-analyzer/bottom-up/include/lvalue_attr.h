@@ -11,7 +11,16 @@ class LValueAttribute : public LValue{
 		Expression * expression1;
 
 		LValueAttribute(std::string id_, Expression * expression1_) : id{id_}, expression1{expression1_} {}
-
+		void toString(){
+			std::cout << "LValueAttribute: {";
+			if(expression1 != nullptr){
+				std::cout << "expression: ";
+				expression1->toString();
+				std::cout << ",";
+			}
+			std::cout << "id: " << id;
+			std::cout << "}";
+		}
 };
 
 #endif

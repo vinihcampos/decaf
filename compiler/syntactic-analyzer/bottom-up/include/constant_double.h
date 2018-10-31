@@ -9,7 +9,9 @@ class DoubleConstant : public Constant {
 
 		DoubleConstant(double value_) : value{value_} {}
 		void toString(){
-			
+			std::cout << "DoubleConstant: {";
+			std::cout << "value: " << value;
+			std::cout << "}";
 		}
 };
 

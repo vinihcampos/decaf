@@ -21,7 +21,14 @@ class DeclarationClass : public Declaration{
 						 userType{userType_}, parent{parent_}, interfaces{interfaces_}, fields{fields_}{}
 
 		void toString() override{
-			
+			std::cout << "DeclarationClass: {";
+			std::cout << "userType: " << userType << ",";
+			std::cout << "parent: " << parent << ",";
+			std::cout << "Interfaces: ";
+			interfaces.toString();
+			std::cout << ",";
+			fields.toString();
+			std::cout << "}";
 		}
 };
 

@@ -14,6 +14,13 @@ class Prototype{
 
 		Prototype(Type type_, std::string id_, Formal formals_) :
 			type{type_}, id{id_}, formals{formals_}{}
+		void toString(){
+			std::cout << "{";
+			type.toString();
+			std::cout << ", id: " << id << ",";
+			formals.toString();
+			std::cout << "}";
+		}
 
 };
 

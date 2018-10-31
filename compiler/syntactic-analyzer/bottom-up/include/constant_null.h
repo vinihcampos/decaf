@@ -6,6 +6,11 @@
 class NullConstant : public Constant {
 	public:
 		std::string value = "NULL";
+		void toString(){
+			std::cout << "NullConstant: {";
+			std::cout << "value: " << value;
+			std::cout << "}";
+		}
 };
 
 #endif

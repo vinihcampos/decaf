@@ -6,7 +6,7 @@
 class ThisExpression : public Expression{
 	public:
 		void toString(){
-
+			std::cout << "ThisExpression: { this }"; 
 		}
 };
 

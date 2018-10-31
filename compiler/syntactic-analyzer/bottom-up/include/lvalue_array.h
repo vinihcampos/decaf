@@ -12,6 +12,20 @@ class LValueArray : public LValue{
 
 		LValueArray(Expression * expression1_, Expression * expression2_) : 
 			expression1{expression1_}, expression2{expression2_} {}
+		void toString(){
+			std::cout << "LValueArray: {";
+			if(expression1 != nullptr){
+				std::cout << "leftExpression: ";
+				expression1->toString();
+				std::cout << ",";
+			}
+			if(expression2 != nullptr){
+				std::cout << "rightExpression: ";
+				expression2->toString();
+				std::cout << ",";
+			}
+			std::cout << "}";
+		}
 
 };
 

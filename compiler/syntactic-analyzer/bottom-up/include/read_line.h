@@ -6,7 +6,7 @@
 class ReadLine : public Expression{
 	public:
 		void toString(){
-			
+			std::cout << "ReadLine()";
 		}
 };
 

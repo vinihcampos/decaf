@@ -15,7 +15,22 @@ class Field{
 			variables{variables_}, functions{functions_} {}
 
 		void toString(){
-
+			std::cout << "variables: [";
+			for(int i = 0; i < variables.size(); ++i){
+				if(variables[i] != nullptr){
+					variables[i]->toString();
+					std::cout << ",";
+				}
+			}
+			std::cout << "],";
+			std::cout << "functions: [";
+			for(int i = 0; i < functions.size(); ++i){
+				if(functions[i] != nullptr){
+					functions[i]->toString();
+					std::cout << ",";
+				}
+			}
+			std::cout << "],";
 		}
 
 };

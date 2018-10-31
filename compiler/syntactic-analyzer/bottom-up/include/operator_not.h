@@ -5,10 +5,15 @@
 
 class OperatorNot : public OperatorUnary{
 	public:
-		Expression * expression;
 		OperatorNot(Expression * expression_) : OperatorUnary(expression_) {}
-		virtual void toString(){
-
+		void toString(){
+			std::cout << "OperatorNot: {";
+			if(expression != nullptr){
+				std::cout << "expression: ";
+				expression->toString();
+				std::cout << ",";
+			}
+			std::cout << "}";
 		}
 };
 

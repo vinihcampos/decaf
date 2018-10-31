@@ -16,7 +16,16 @@ class Call : public Expression{
 			id{id_}, expression1{expression1_}, actuals{actuals_} {}
 
 		void toString(){
-
+			std::cout << "Call: {";
+			if(expression1 != nullptr){
+				std::cout << "leftExpression: ";
+				expression1->toString();
+				std::cout << ",";
+			}
+			std::cout << "id: " << id << ",";
+			std::cout << "actuals: ";
+			actuals.toString();
+			std::cout << "}";
 		}
 
 };

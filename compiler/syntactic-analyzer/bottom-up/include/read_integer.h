@@ -6,7 +6,7 @@
 class ReadInteger : public Expression{
 	public:
 		void toString(){
-			
+			std::cout << "ReadInteger()";
 		}
 };
 
