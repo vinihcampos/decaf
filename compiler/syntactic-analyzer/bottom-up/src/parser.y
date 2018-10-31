@@ -1,5 +1,6 @@
 %{
 	#include <cstdio>
+	#include <iostream>
 	#include <deque>
 	#include <string>
 	#include "program.h"
@@ -357,17 +358,19 @@ int main(int argc, char** args){
         yyparse();
 
 		if(!error_found){
-			printf("Program compiled successfully!\n");
+			std::clog << "Program compiled successfully!\n";
+			if(argc > 2){
+				std::string ast = args[2];
+				if(ast.compare("ast") == 0){
+					program.toString();
+				}
+			}
 		}else{
-			printf("Program finished with %d error(s)!\n", error_found);
-		}
-		
+			std::clog << "Program finished with " << error_found << " error(s)!\n";
+		}		
     }else{
     	fprintf(stderr, "ERROR: There is no file to analyze!\n");
     }
-
-    printf("Program size: %d\n", program.declarations.size());
-    program.toString();
 
 	return 0;
 }
