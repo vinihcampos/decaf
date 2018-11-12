@@ -1,6 +1,17 @@
 int main(){
 	a = readinteger();
 
+	while(x){
+		int a;
+		a = 3;
+		if(a < 5){
+			int a = 4;
+			print("SIM");
+		}else{
+			print("NÃO")
+		}
+	}
+
 	print(a * 10);
 
 	return 0;
