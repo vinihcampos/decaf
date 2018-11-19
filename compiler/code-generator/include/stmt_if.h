@@ -6,6 +6,7 @@
 #include "frame.h"
 #include "program.h"
 #include <iostream>
+#include <string>
 
 class StatementIf : public Statement{
 	
@@ -35,28 +36,32 @@ class StatementIf : public Statement{
 			std::cout << "}";
 		}
 
-		void generate() override{
+		std::string generate() override{
+			std::string code = "";
 			std::vector<std::string> formals;
 			Frame f1("if" + std::to_string(Program::pc), Program::pc++, formals);
 			Program::update_frames(f1);
 			
 			if(expression != nullptr){
-				std::cout << "eval = ";
-				expression->generate();
-				std::cout << ";" << std::endl;
+				code += "eval = ";
+				code += expression->generate();
+				code += ";\n";
 			}else{
-				std::cout << "eval = false;";
+				code += "eval = false;\n";
 			}
 
-			std::cout << "pc = " << f1.id << ";" << std::endl;
-			std::cout << "if(eval)" << std::endl;
-			std::cout << "goto d;" << std::endl;
+			code += "pc = " + f1.id; 
+			code += ";\n";
+			code += "if(eval)\n";
+			code += "goto d;\n";
 			if(elseStatement != nullptr){
 				Frame f2("else" + std::to_string(Program::pc), Program::pc++, formals); 
 				Program::update_frames(f2);
-				std::cout << "pc = " << f2.id << ";" << std::endl;
-				std::cout << "goto d;" << std::endl;
-			}			
+				code += "pc = " + f2.id;
+				code += ";\n";
+				code += "goto d;\n";
+			}
+			return code;	
 		}
 };
 

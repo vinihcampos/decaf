@@ -1,6 +1,8 @@
 #ifndef _OPERATOR_UNARY_
 #define _OPERATOR_UNARY_
 
+#include <string>
+
 #include "expression.h"
 
 class OperatorUnary : public Expression{
@@ -12,7 +14,7 @@ class OperatorUnary : public Expression{
 
 		}
 
-		virtual void generate(){
+		virtual std::string generate(){
 		}
 };
 

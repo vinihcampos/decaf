@@ -1,6 +1,7 @@
 #ifndef _STMT_RETURN_
 #define _STMT_RETURN_
 
+#include <string>
 #include "stmt.h"
 #include "stmt_expression.h"
 
@@ -17,7 +18,8 @@ class StatementReturn : public Statement{
 			}
 			std::cout << "}";
 		}
-		void generate() override{
+		std::string generate() override{
+			return "";
 		}
 };
 

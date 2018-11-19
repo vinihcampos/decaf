@@ -1,6 +1,8 @@
 #ifndef _STMT_BREAK_
 #define _STMT_BREAK_
 
+#include <string>
+
 #include "stmt.h"
 
 
@@ -10,7 +12,8 @@ class StatementBreak : public Statement{
 			std::cout << "StatementBreak: { break }";
 		}
 
-		void generate() override{
+		std::string generate() override{
+			return "";
 		}
 };
 

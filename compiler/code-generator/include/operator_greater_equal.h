@@ -23,10 +23,13 @@ class OperatorGreaterEqual : public OperatorBinary{
 			std::cout << "}";
 		}
 
-		void generate() override{
-			expression1->generate();
-			std::cout << ">=";
-			expression2->generate();
+		std::string generate() override{
+			std::string code = "";
+			code += expression1->generate();
+			code += ">=";
+			code += expression2->generate();
+
+			return code;
 		}
 };
 

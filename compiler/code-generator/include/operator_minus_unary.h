@@ -1,6 +1,8 @@
 #ifndef _OPERATOR_MINUS_UNARY_
 #define _OPERATOR_MINUS_UNARY_
 
+#include <string>
+
 #include "operator_unary.h"
 
 class OperatorMinusUnary : public OperatorUnary{
@@ -16,9 +18,10 @@ class OperatorMinusUnary : public OperatorUnary{
 			std::cout << "}";
 		}
 
-		void generate() override{
-			std::cout << "-";
-			expression->generate();
+		std::string generate() override{
+		 	std::string code = "-";
+			code += expression->generate();
+			return code;
 		}
 };
 

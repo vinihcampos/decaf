@@ -35,12 +35,12 @@ class Program{
 			std::cout << std::endl;
 		}
 
-		void generate(){
-
-			std::cout << "#include <stdio.h>" << std::endl << std::endl;
-			std::cout << "int main(){" << std::endl;
-			std::cout << "int pc = 0;" << std::endl;
-			std::cout << "bool eval = false;" << std::endl;
+		std::string generate(){
+			std::string code = "";
+			code += "#include <stdio.h>\n\n";
+			code += "int main(){\n";
+			code += "int pc = 0;\n";
+			code += "bool eval = false;\n";
 
 			for(int i = 0; i < declarations.size(); ++i){
 				declarations[i]->generate();
@@ -51,10 +51,12 @@ class Program{
 			d += "\t}\n";
 			d += "}";
 
-			std::cout << d << std::endl;
+			code += d + "\n";
 
-			std::cout << "\treturn 0;" << std::endl;
-			std::cout << "}";
+			code += "\treturn 0;\n";
+			code += "}";
+
+			return code;
 		}
 
 		static void update_frames(Frame f){

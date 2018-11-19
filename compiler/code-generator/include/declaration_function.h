@@ -31,8 +31,11 @@ class DeclarationFunction : public Declaration{
 			std::cout << "}";
 		}
 
-		void generate() override{
-			stmtBlock.generate();
+		std::string generate() override{
+			std::string code = "";
+			code += stmtBlock.generate();
+
+			return code;
 		}
 };
 

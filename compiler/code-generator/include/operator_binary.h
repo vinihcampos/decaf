@@ -1,6 +1,8 @@
 #ifndef _OPERATOR_BINARY_
 #define _OPERATOR_BINARY_
 
+#include <string>
+
 #include "expression.h"
 
 class OperatorBinary : public Expression{
@@ -15,7 +17,7 @@ class OperatorBinary : public Expression{
 		virtual void toString(){
 			std::cout << "binary!";
 		}
-		virtual void generate(){}
+		virtual std::string generate(){}
 };
 
 #endif

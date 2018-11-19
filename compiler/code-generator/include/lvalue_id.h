@@ -16,8 +16,11 @@ class LValueId : public LValue{
 			std::cout << "}";
 		}
 
-		void generate() override{
-			std::cout << id;
+		std::string generate() override{
+			std::string code = "";
+			code += id;
+
+			return code;
 		}
 
 };

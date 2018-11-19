@@ -8,7 +8,7 @@ class Constant : public Expression{
 		virtual void toString(){
 			std::cout << "CONSTANT!";
 		}
-		virtual void generate() override{}
+		virtual std::string generate() override{}
 };
 
 #endif

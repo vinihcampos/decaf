@@ -1,6 +1,8 @@
 #ifndef _OPERATOR_PLUS_
 #define _OPERATOR_PLUS_
 
+#include <string>
+
 #include "operator_binary.h"
 
 class OperatorPlus : public OperatorBinary{
@@ -22,10 +24,13 @@ class OperatorPlus : public OperatorBinary{
 			}
 			std::cout << "}";
 		}
-		void generate() override{
-			expression1->generate();
-			std::cout << "+";
-			expression2->generate();
+		std::string generate() override{
+			std::string code = "";
+			code += expression1->generate();
+			code += "+";
+			code += expression2->generate();
+
+			return code;
 		}
 };
 

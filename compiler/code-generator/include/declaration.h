@@ -2,12 +2,13 @@
 #define _DECLARATION_
 
 #include <iostream>
+#include <string.h>
 
 class Declaration{
 	public:
 		virtual void toString(){
 		}
-		virtual void generate(){
+		virtual std::string generate(){
 		}
 };
 

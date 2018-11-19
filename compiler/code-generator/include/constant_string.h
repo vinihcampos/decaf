@@ -13,8 +13,9 @@ class StringConstant : public Constant {
 			std::cout << "value: " << value;
 			std::cout << "}";
 		}
-		void generate() override{
-			std::cout << value; 
+		std::string generate() override{
+			std::string code = value; 
+			return code;
 		}
 };
 

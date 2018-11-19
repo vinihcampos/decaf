@@ -1,6 +1,8 @@
 #ifndef _EXPRESSION_LIST_
 #define _EXPRESSION_LIST_
 
+#include <string>
+
 #include "expression.h"
 
 class ExpressionList{
@@ -15,10 +17,13 @@ class ExpressionList{
 			}
 			std::cout << "]";
 		}
-		void generate(){
+		std::string generate(){
+			std::string code = "";
 			for(int i = 0; i < expressions.size(); ++i){
-				expressions[i]->generate();
+				code += expressions[i]->generate();
 			}
+			
+			return code;
 		}
 
 };

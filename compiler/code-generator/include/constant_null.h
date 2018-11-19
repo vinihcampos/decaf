@@ -11,8 +11,11 @@ class NullConstant : public Constant {
 			std::cout << "value: " << value;
 			std::cout << "}";
 		}
-		void generate() override{
-			std::cout << "nullptr"; 
+		std::string generate() override{
+			std::string code = "";
+			code += "nullptr"; 
+
+			return code;
 		}
 };
 

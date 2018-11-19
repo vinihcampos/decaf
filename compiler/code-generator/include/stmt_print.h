@@ -1,6 +1,7 @@
 #ifndef _STMT_PRINT_
 #define _STMT_PRINT_
 
+#include <string>
 #include <deque>
 #include "stmt.h"
 #include "expression_list.h"
@@ -16,7 +17,8 @@ class StatementPrint : public Statement{
 			expressions.toString();
 			std::cout << "}";
 		}
-		void generate() override{
+		std::string generate() override{
+			return "";
 		}
 };
 

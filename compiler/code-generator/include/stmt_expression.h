@@ -1,6 +1,8 @@
 #ifndef _STMT_EXPRESSION_
 #define _STMT_EXPRESSION_
 
+#include <string>
+
 #include "stmt.h"
 #include "expression.h"
 
@@ -16,12 +18,15 @@ class StatementExpression : public Statement{
 			}
 			std::cout << "}";
 		}
-		void generate(){
-			std::cout << "\t";
+		std::string generate(){
+			std::string code = "";
+			code += "\t";
 			if(expression != nullptr){
-				expression->generate();
+				code += expression->generate();
 			}
-			std::cout << ";" << std::endl;
+			code +=";\n";
+
+			return code;
 		}
 };
 

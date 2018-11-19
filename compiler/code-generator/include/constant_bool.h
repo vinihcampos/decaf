@@ -14,8 +14,11 @@ class BoolConstant : public Constant {
 			std::cout << "}";
 		}
 
-		void generate() override{
-			std::cout << std::to_string(value); 
+		std::string generate() override{
+			std::string code = "";
+			code += std::to_string(value); 
+
+			return code;
 		}
 };
 

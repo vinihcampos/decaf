@@ -1,6 +1,7 @@
 #ifndef _STMT_LIST_
 #define _STMT_LIST_
 
+#include <string>
 #include "stmt.h"
 
 class StatementList{
@@ -19,10 +20,12 @@ class StatementList{
 			std::cout << "],";
 		}
 
-		void generate(){
+		std::string generate(){
+			std::string code = "";
 			for(int i = 0; i < stmts.size(); ++i){
-				stmts[i]->generate();
+				code += stmts[i]->generate();
 			}
+			return code;
 		}
 };
 

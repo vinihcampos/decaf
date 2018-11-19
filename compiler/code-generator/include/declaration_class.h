@@ -31,7 +31,10 @@ class DeclarationClass : public Declaration{
 			std::cout << "}";
 		}
 
-		void generate() override{
+		std::string generate() override{
+			std::string code = "";
+
+			return code;
 		}
 };
 

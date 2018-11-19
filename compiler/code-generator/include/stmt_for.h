@@ -1,6 +1,7 @@
 #ifndef _STMT_FOR_
 #define _STMT_FOR_
 
+#include <string>
 #include "stmt.h"
 #include "expression.h"
 #include "stmt_expression.h"
@@ -41,7 +42,8 @@ class StatementFor : public Statement{
 			std::cout << "}";
 		}
 
-		void generate() override{
+		std::string generate() override{
+			return "";
 		}
 };
 

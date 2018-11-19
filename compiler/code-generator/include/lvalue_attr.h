@@ -21,9 +21,12 @@ class LValueAttribute : public LValue{
 			std::cout << "id: " << id;
 			std::cout << "}";
 		}
-		void generate() override{
-			std::cout << id << ".";
-			expression1->generate();
+		std::string generate() override{
+			std::string code = "";
+			code += id + ".";
+			code += expression1->generate();
+
+			return code;
 		}
 };
 

@@ -1,6 +1,7 @@
 #ifndef _STMT_WHILE_
 #define _STMT_WHILE_
 
+#include <string>
 #include "stmt.h"
 #include "expression.h"
 
@@ -25,7 +26,8 @@ class StatementWhile : public Statement{
 			}	
 			std::cout << "}";
 		}
-		void generate() override{
+		std::string generate() override{
+			return "";
 		}
 };
 

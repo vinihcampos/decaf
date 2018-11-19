@@ -2,7 +2,9 @@
 #define _STMT_BLOCK_
 
 #include <deque>
+#include <string>
 #include <iostream>
+
 #include "declaration_variable.h"
 #include "declaration_variable_list.h"
 #include "stmt_list.h"
@@ -26,8 +28,10 @@ class StatementBlock : public Statement{
 			std::cout << "}" ;
 		}
 
-		void generate() override{
-			statements.generate();
+		std::string generate() override{
+			std::string code = "";
+			code += statements.generate();
+			return code;
 		}
 };
 

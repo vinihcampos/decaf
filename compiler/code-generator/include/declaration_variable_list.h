@@ -23,7 +23,8 @@ class DeclarationVariableList{
 			std::cout << "]" ;
 		}
 
-		void generate(){
+		std::string generate(){
+			return "";
 		}
 
 };

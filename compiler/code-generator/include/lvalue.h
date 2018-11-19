@@ -8,7 +8,7 @@ class LValue : public Expression{
 	public:
 		virtual void toString(){			
 		}
-		virtual void generate() override{}
+		virtual std::string generate() override{}
 };
 
 #endif
