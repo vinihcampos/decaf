@@ -1,7 +1,10 @@
 int main(){
-	a = readinteger();
+	//a = readinteger();
+	//print(a * 10);
 
-	print(a * 10);
+	5 + 5;
+	-10;
+	10 + 5 - 9 * 99 / 45 % (558 - 9);
 
 	return 0;
 }
