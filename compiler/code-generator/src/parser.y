@@ -60,6 +60,7 @@
 	#include "stmt_list.h"
 	#include "expression_list.h"
 	#include "implements.h"
+	#include "frame.h"
 	
 	extern int row, column;
 	extern char * lexeme;
@@ -69,6 +70,9 @@
 	extern FILE* yyin;
 	int error_found = 0;
 
+	int Program::pc = 0;
+	std::string Program::d = "";
+	std::vector<std::string> Program::blocks;
 	Program program;
 
 %}
