@@ -2,7 +2,6 @@
 #define _OPERATOR_PLUS_
 
 #include <string>
-
 #include "operator_binary.h"
 
 class OperatorPlus : public OperatorBinary{

@@ -372,7 +372,7 @@ int main(int argc, char** args){
 				if(option.compare("ast") == 0){
 					program.toString();
 				}else if(option.compare("code") == 0){
-					program.generate();
+					std::cout << program.generate();
 				}
 			}
 		}else{

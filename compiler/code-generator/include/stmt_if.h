@@ -38,9 +38,6 @@ class StatementIf : public Statement{
 
 		std::string generate() override{
 			std::string code = "";
-			std::vector<std::string> formals;
-			Frame f1("if" + std::to_string(Program::pc), Program::pc++, formals);
-			Program::update_frames(f1);
 			
 			if(expression != nullptr){
 				code += "eval = ";
@@ -50,17 +47,29 @@ class StatementIf : public Statement{
 				code += "eval = false;\n";
 			}
 
-			code += "pc = " + f1.id; 
-			code += ";\n";
-			code += "if(eval)\n";
-			code += "goto d;\n";
+			std::string block1;
+			std::string block2 = ""; 
+			block1 = "if" + std::to_string(Program::pc++);
+			code += "if(eval) goto " + block1 + ";\n";
 			if(elseStatement != nullptr){
-				Frame f2("else" + std::to_string(Program::pc), Program::pc++, formals); 
-				Program::update_frames(f2);
-				code += "pc = " + f2.id;
-				code += ";\n";
-				code += "goto d;\n";
+				block2 = "else" + std::to_string(Program::pc++);
+				code += "if(!eval) goto " + block2 + ";\n";
 			}
+
+			std::string continues = "continue" + std::to_string(Program::pc++);
+
+			code += continues + ":\n";
+
+			Program::d += block1 + ":{\n";
+			Program::d += ifStatement->generate() + "\n";
+			Program::d += "goto " + continues + ";\n}";
+
+			if(block2.compare("") != 0){
+				Program::d += block2 + ":{\n";
+				Program::d += elseStatement->generate() + "\n";
+				Program::d += "goto " + continues + ";\n}\n";
+			}
+
 			return code;	
 		}
 };

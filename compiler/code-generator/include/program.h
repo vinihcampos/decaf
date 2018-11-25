@@ -18,8 +18,6 @@ class Program{
 		
 		Program(){
 			pc = 0;
-			d = "d:{\n";
-			d += "\tswitch(pc){\n";
 		}	
 
 		void toString(){
@@ -37,23 +35,19 @@ class Program{
 
 		std::string generate(){
 			std::string code = "";
-			code += "#include <stdio.h>\n\n";
+			code += "#include <cstdio>\n";
+			code += "#include <string>\n\n";
+			code += "using namespace std;\n\n";
 			code += "int main(){\n";
 			code += "int pc = 0;\n";
 			code += "bool eval = false;\n";
 
 			for(int i = 0; i < declarations.size(); ++i){
-				declarations[i]->generate();
+				code += declarations[i]->generate();
 			}
-			
-			d += "\tdefault:\n";
-			d += "\t\treturn 0;\n";
-			d += "\t}\n";
-			d += "}";
-
-			code += d + "\n";
 
 			code += "\treturn 0;\n";
+			code += d + "\n";
 			code += "}";
 
 			return code;

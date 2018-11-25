@@ -27,7 +27,29 @@ class StatementWhile : public Statement{
 			std::cout << "}";
 		}
 		std::string generate() override{
-			return "";
+			std::string code = "";
+			
+			std::string block1;
+			block1 = "while" + std::to_string(Program::pc++);
+			std::string continues = "continue" + std::to_string(Program::pc++);
+			code += "goto " + block1 + ";\n";
+			code += continues + ":\n";
+
+			Program::d += block1 + ":{\n";
+
+			if(expression != nullptr){
+				Program::d += "eval = ";
+				Program::d += expression->generate();
+				Program::d += ";\n";
+			}else{
+				Program::d += "eval = false;\n";
+			}
+
+			Program::d += "if(!eval) goto " + continues + ";\n";
+			Program::d += whileStatement->generate() + "\n";
+			Program::d += "goto " + block1 + ";\n}\n";
+
+			return code;
 		}
 };
 

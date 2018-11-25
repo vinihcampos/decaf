@@ -30,6 +30,7 @@ class StatementBlock : public Statement{
 
 		std::string generate() override{
 			std::string code = "";
+			code += variables.generate();
 			code += statements.generate();
 			return code;
 		}

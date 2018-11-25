@@ -14,8 +14,7 @@ class OperatorUnary : public Expression{
 
 		}
 
-		virtual std::string generate(){
-		}
+		virtual std::string generate(){ return ""; }
 };
 
 #endif

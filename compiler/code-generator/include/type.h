@@ -24,12 +24,19 @@ class Type{
 
 		void toString(){
 			std::cout << "type: {";
-			std::cout << "base: " << BaseTypeToString() << "," ;
+			std::cout << "base: " << baseTypeToString() << "," ;
 			std::cout << "size: " << size ;
 			std::cout << "}";
 		}
 
-		std::string BaseTypeToString(){
+		std::string generate(){
+			std::string squares = "";
+			for(int i = 0; i < size; ++i)
+				squares += "[]";
+			return baseTypeToCType() + squares;
+		}
+
+		std::string baseTypeToString(){
 			switch(base){
 				case INT_T:
 					return "INT";
@@ -43,6 +50,25 @@ class Type{
 					return "USERTYPE";
 				case VOID_T :
 					return "VOID";
+				default:
+					return "ERROR";
+			}
+		}
+
+		std::string baseTypeToCType(){
+			switch(base){
+				case INT_T:
+					return "int";
+				case DOUBLE_T:
+					return "double";
+				case BOOL_T:
+					return "bool";
+				case STRING_T:
+					return "string";
+				case USERTYPE_T:
+					return "USERTYPE";
+				case VOID_T :
+					return "void";
 				default:
 					return "ERROR";
 			}

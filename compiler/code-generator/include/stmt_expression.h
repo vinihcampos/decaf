@@ -20,7 +20,6 @@ class StatementExpression : public Statement{
 		}
 		std::string generate(){
 			std::string code = "";
-			code += "\t";
 			if(expression != nullptr){
 				code += expression->generate();
 			}

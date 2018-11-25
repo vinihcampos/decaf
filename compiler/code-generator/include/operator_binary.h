@@ -17,7 +17,7 @@ class OperatorBinary : public Expression{
 		virtual void toString(){
 			std::cout << "binary!";
 		}
-		virtual std::string generate(){}
+		virtual std::string generate(){ return ""; }
 };
 
 #endif

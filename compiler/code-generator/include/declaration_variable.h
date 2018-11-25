@@ -19,9 +19,8 @@ class DeclarationVariable : public Declaration{
 			std::cout  << "}";
 		}
 
-		std::string generate() override{
-			std::string code = "";
-			return code;
+		std::string generate(){
+			return type.generate() + " " + id + ";";
 		}
 
 };

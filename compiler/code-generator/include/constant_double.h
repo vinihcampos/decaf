@@ -15,7 +15,7 @@ class DoubleConstant : public Constant {
 		}
 		std::string generate() override{
 			std::string code = "";
-			code += value; 
+			code += std::to_string(value);; 
 
 			return code;
 		}

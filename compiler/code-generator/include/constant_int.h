@@ -2,6 +2,7 @@
 #define _INT_CONSTANT_
 
 #include "constant.h"
+#include <string>
 
 class IntConstant : public Constant {
 	public:
@@ -14,7 +15,7 @@ class IntConstant : public Constant {
 		}
 		std::string generate() override{
 			std::string code = "";
-			code += value; 
+			code += std::to_string(value); 
 
 			return code;
 		}

@@ -24,7 +24,11 @@ class DeclarationVariableList{
 		}
 
 		std::string generate(){
-			return "";
+			std::string code = "";
+			for (int i = 0; i < variables.size(); ++i){
+				code += variables[i].generate() + "\n";
+			}
+			return code;
 		}
 
 };
