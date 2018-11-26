@@ -1,0 +1,9 @@
+int main(){
+	
+	int a;
+	string x;
+	x = readLine();
+	a = readInteger();
+	print(a, x);
+	return 0;
+}

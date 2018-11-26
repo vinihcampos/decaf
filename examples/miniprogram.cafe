@@ -1,7 +1,34 @@
 int main(){
-	a = readinteger();
+	//a = readinteger();
+	//print(a * 10);
 
-	print(a * 10);
+	int a;
+	int c;
+	int i;
+	c = 20;
+	a = 15;
+
+	if(0){
+		10 + 35;
+	}else{
+		if(c + a){
+			50;
+		}else{
+			10;
+		}
+	}
+
+	for(i = 0; i < 10; i = i+1){
+		a = a+1;
+		while(a > 10){
+			a = a - 1;
+			if(a > 0){
+				a;
+			}else{
+				c;
+			}
+		}
+	}
 
 	return 0;
 }
