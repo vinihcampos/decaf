@@ -4,17 +4,30 @@ int main(){
 
 	int a;
 	int c;
+	int i;
 	c = 20;
 	a = 15;
 
 	if(0){
 		10 + 35;
 	}else{
-		50;
+		if(c + a){
+			50;
+		}else{
+			10;
+		}
 	}
 
-	while(a > 10){
-		a = a-1;
+	for(i = 0; i < 10; i = i+1){
+		a = a+1;
+		while(a > 10){
+			a = a - 1;
+			if(a > 0){
+				a;
+			}else{
+				c;
+			}
+		}
 	}
 
 	return 0;

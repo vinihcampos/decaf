@@ -8,6 +8,10 @@ class ReadInteger : public Expression{
 		void toString(){
 			std::cout << "ReadInteger()";
 		}
+
+		std::string generate(){
+			return "";
+		}
 };
 
 #endif

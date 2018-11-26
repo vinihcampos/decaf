@@ -30,7 +30,6 @@ class Call : public Expression{
 
 		std::string generate() override{
 			std::string code = "";
-
 			return code;
 		}
 

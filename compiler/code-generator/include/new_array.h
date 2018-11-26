@@ -3,6 +3,7 @@
 
 #include "expression.h"
 #include "type.h"
+#include <string>
 
 class NewArray : public Expression{
 
@@ -19,6 +20,10 @@ class NewArray : public Expression{
 			}
 			type.toString();
 			std::cout << "}";
+		}
+
+		std::string generate(){
+			return "new " + type.generate() + "[" + expression->generate() + "]";
 		}
 };
 

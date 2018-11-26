@@ -36,17 +36,22 @@ class Program{
 		std::string generate(){
 			std::string code = "";
 			code += "#include <cstdio>\n";
+			code += "#include <iostream>\n";
 			code += "#include <string>\n\n";
 			code += "using namespace std;\n\n";
-			code += "int main(){\n";
+
 			code += "int pc = 0;\n";
 			code += "bool eval = false;\n";
+			code += "int readIntAux;\n";
+			code += "std::string readStringAux;\n\n";
+
+			code += "int main(){\n";
 
 			for(int i = 0; i < declarations.size(); ++i){
 				code += declarations[i]->generate();
 			}
 
-			code += "\treturn 0;\n";
+			code += "return 0;\n";
 			code += d + "\n";
 			code += "}";
 

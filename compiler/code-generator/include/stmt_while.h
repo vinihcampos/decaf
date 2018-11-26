@@ -33,21 +33,22 @@ class StatementWhile : public Statement{
 			block1 = "while" + std::to_string(Program::pc++);
 			std::string continues = "continue" + std::to_string(Program::pc++);
 			code += "goto " + block1 + ";\n";
-			code += continues + ":\n";
 
-			Program::d += block1 + ":{\n";
+			code += block1 + ":{\n";
 
 			if(expression != nullptr){
-				Program::d += "eval = ";
-				Program::d += expression->generate();
-				Program::d += ";\n";
+				code += "eval = ";
+				code += expression->generate();
+				code += ";\n";
 			}else{
-				Program::d += "eval = false;\n";
+				code += "eval = false;\n";
 			}
 
-			Program::d += "if(!eval) goto " + continues + ";\n";
-			Program::d += whileStatement->generate() + "\n";
-			Program::d += "goto " + block1 + ";\n}\n";
+			code += "if(!eval) goto " + continues + ";\n";
+			code += whileStatement->generate() + "\n";
+			code += "goto " + block1 + ";\n}\n";
+
+			code += continues + ":\n";
 
 			return code;
 		}

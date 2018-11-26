@@ -23,7 +23,7 @@ class StatementList{
 		std::string generate(){
 			std::string code = "";
 			for(int i = 0; i < stmts.size(); ++i){
-				code += stmts[i]->generate();
+				code += stmts[i]->generate() + "\n";
 			}
 			return code;
 		}

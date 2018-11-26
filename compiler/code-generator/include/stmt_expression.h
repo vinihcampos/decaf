@@ -23,7 +23,7 @@ class StatementExpression : public Statement{
 			if(expression != nullptr){
 				code += expression->generate();
 			}
-			code +=";\n";
+			code +=";";
 
 			return code;
 		}

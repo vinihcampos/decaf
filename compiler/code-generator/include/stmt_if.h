@@ -55,20 +55,20 @@ class StatementIf : public Statement{
 				block2 = "else" + std::to_string(Program::pc++);
 				code += "if(!eval) goto " + block2 + ";\n";
 			}
-
 			std::string continues = "continue" + std::to_string(Program::pc++);
-
-			code += continues + ":\n";
-
-			Program::d += block1 + ":{\n";
-			Program::d += ifStatement->generate() + "\n";
-			Program::d += "goto " + continues + ";\n}";
+			code += "goto " + continues + ";\n";
+			
+			code += block1 + ":{\n";
+			code += ifStatement->generate() + "\n";
+			code += "goto " + continues + ";\n}\n";
 
 			if(block2.compare("") != 0){
-				Program::d += block2 + ":{\n";
-				Program::d += elseStatement->generate() + "\n";
-				Program::d += "goto " + continues + ";\n}\n";
+				code += block2 + ":{\n";
+				code += elseStatement->generate() + "\n";
+				code += "goto " + continues + ";\n}\n";
 			}
+
+			code += continues + ":\n";
 
 			return code;	
 		}

@@ -18,7 +18,16 @@ class StatementPrint : public Statement{
 			std::cout << "}";
 		}
 		std::string generate() override{
-			return "";
+			std::string code = "";
+			code += "cout ";
+
+			for (int i = 0; i < expressions.expressions.size(); ++i){
+				code += "<< " + expressions.expressions[i]->generate() + "<< \" \"";
+			}
+
+			code += "<< endl;";
+
+			return code;
 		}
 };
 

@@ -43,7 +43,39 @@ class StatementFor : public Statement{
 		}
 
 		std::string generate() override{
-			return "";
+			std::string code = "";
+
+			if(expression1 != nullptr){
+				code += expression1->generate();
+			}
+
+			std::string block1;
+			block1 = "for" + std::to_string(Program::pc++);
+			std::string continues = "continue" + std::to_string(Program::pc++);
+			code += "goto " + block1 + ";\n";
+
+			code += block1 + ":{\n";
+
+			if(expression2 != nullptr){
+				code += "eval = ";
+				code += expression2->generate();
+				code += ";\n";
+			}else{
+				code += "eval = false;\n";
+			}
+
+			code += "if(!eval) goto " + continues + ";\n";
+			code += forStatement->generate() + "\n";
+
+			if(expression3 != nullptr){
+				code += expression3->generate();
+			}
+
+			code += "goto " + block1 + ";\n}\n";
+
+			code += continues + ":\n";
+
+			return code;
 		}
 };
 

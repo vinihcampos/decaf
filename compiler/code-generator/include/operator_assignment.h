@@ -4,6 +4,8 @@
 #include <string>
 
 #include "operator_binary.h"
+#include "read_integer.h"
+#include "read_line.h"
 
 class OperatorAssignment: public OperatorBinary{
 	public:
@@ -27,9 +29,20 @@ class OperatorAssignment: public OperatorBinary{
 
 		std::string generate() override{
 			std::string code = "";
-			code += expression1->generate();
-			code += "=";
-			code += expression2->generate();
+
+			if (ReadInteger* t = dynamic_cast<ReadInteger*>(expression2)) {
+		        code += "scanf(\"\%d\", &readIntAux);\n";
+		        code += expression1->generate();
+				code += "= readIntAux";
+		    }else if (ReadLine* t = dynamic_cast<ReadLine*>(expression2)) {
+		        code += "getline(cin, readStringAux);\n";
+		        code += expression1->generate();
+				code += "= readStringAux";
+		    }else{
+		    	code += expression1->generate();
+				code += "=";
+				code += expression2->generate();	
+		    }			
 
 			return code;
 		}
