@@ -17,11 +17,14 @@ class Program{
 		std::deque<Declaration*> declarations;
 		static int pc;
 		static std::string d;
-		static std::vector<std::string> blocks;
+		static std::string structs;
+		static std::string blocks;
+		static std::string stacks;
 		static std::map<std::string, Symbol> table;
 		
 		Program(){
 			pc = 0;
+			d = "labels: \nswitch(label){\n";
 		}	
 
 		void toString(){
@@ -45,6 +48,7 @@ class Program{
 			code += "using namespace std;\n\n";
 
 			code += "int pc = 0;\n";
+			code += "int label;\n";
 			code += "bool eval = false;\n";
 			code += "int readIntAux;\n";
 			code += "std::string readStringAux;\n\n";
@@ -54,6 +58,9 @@ class Program{
 			for(int i = 0; i < declarations.size(); ++i){
 				code += declarations[i]->generate();
 			}
+
+			d += "default:\n";
+			d += "return 0;\n}\n";
 
 			code += "return 0;\n";
 			code += d + "\n";

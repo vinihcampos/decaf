@@ -49,10 +49,19 @@ class StatementFor : public Statement{
 				code += expression1->generate();
 			}
 
-			std::string block1;
-			block1 = "for" + std::to_string(Program::pc++);
-			std::string continues = "continue" + std::to_string(Program::pc++);
-			code += "goto " + block1 + ";\n";
+			int block1N = Program::pc++;
+			int continuesN = Program::pc++;
+
+			std::string block1 = "for" + std::to_string(block1N);
+			Program::d += "case(" + std::to_string(block1N) + "):\n";
+			Program::d += "goto " + block1 + ";\n";
+
+			std::string continues = "continue" + std::to_string(continuesN);
+			Program::d += "case(" + std::to_string(continuesN) + "):\n";
+			Program::d += "goto " + continues + ";\n";
+
+			code += "label = " + std::to_string(block1N) + ";\n";
+			code += "goto labels;\n";
 
 			code += block1 + ":{\n";
 
@@ -64,14 +73,16 @@ class StatementFor : public Statement{
 				code += "eval = false;\n";
 			}
 
-			code += "if(!eval) goto " + continues + ";\n";
+			code += "label = " + std::to_string(continuesN) + ";\n";
+			code += "if(!eval) goto labels;\n";
 			code += forStatement->generate() + "\n";
 
 			if(expression3 != nullptr){
 				code += expression3->generate();
 			}
 
-			code += "goto " + block1 + ";\n}\n";
+			code += "label = " + std::to_string(block1N) + ";\n";
+			code += "goto labels;\n}\n";
 
 			code += continues + ":\n";
 

@@ -74,7 +74,11 @@
 
 	int Program::pc = 0;
 	std::string Program::d = "";
-	std::vector<std::string> Program::blocks;
+
+	std::string Program::structs;
+	std::string Program::blocks;
+	std::string Program::stacks;
+	
 	std::map<std::string, Symbol> Program::table;
 	Program program;
 

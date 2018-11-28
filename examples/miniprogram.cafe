@@ -9,12 +9,12 @@ int main(){
 	a = 15;
 
 	if(0){
-		10 + 35;
+		print(10 + 35);
 	}else{
 		if(c + a){
-			50;
+			print(50);
 		}else{
-			10;
+			print(10);
 		}
 	}
 
@@ -23,9 +23,9 @@ int main(){
 		while(a > 10){
 			a = a - 1;
 			if(a > 0){
-				a;
+				print(a);
 			}else{
-				c;
+				print(c);
 			}
 		}
 	}
