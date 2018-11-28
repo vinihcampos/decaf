@@ -5,8 +5,11 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <map>
 #include "declaration.h"
+#include "declaration_function.h"
 #include "frame.h"
+#include "symbol.h"
 
 class Program{
 
@@ -15,6 +18,7 @@ class Program{
 		static int pc;
 		static std::string d;
 		static std::vector<std::string> blocks;
+		static std::map<std::string, Symbol> table;
 		
 		Program(){
 			pc = 0;
@@ -58,11 +62,33 @@ class Program{
 			return code;
 		}
 
+		void tableGeneration(){
+			for(int i = 0; i < declarations.size(); ++i){
+				if (DeclarationFunction* t = dynamic_cast<DeclarationFunction*>(declarations[i])){
+					Symbol s = t->table();
+					s.parent = "_GLOBAL_";
+					table[s.id] = s;
+				}
+			}			
+		}
+
+		void tablePrint(){
+			for (auto& kv : table) {
+			    std::cout << kv.first << ": ";
+			    for(int i = 0; i < kv.second.params.size(); ++i){
+			    	std:: cout << kv.second.params[i] << ",";
+			    }
+			    std::cout << std::endl;
+			}
+		}
+
 		static void update_frames(Frame f){
 			d += "\tcase " + std::to_string(f.id) + ":\n";
 			d += "\t\tgoto " + f.label + ";\n";
 			d += "\t\tbreak;\n";
 		}
+
+
 
 };
 

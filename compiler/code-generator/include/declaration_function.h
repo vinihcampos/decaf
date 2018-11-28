@@ -34,6 +34,16 @@ class DeclarationFunction : public Declaration{
 		std::string generate() override{ 
 			return stmtBlock.generate();
 		}
+
+		Symbol table(){
+			Symbol s; std::vector<std::string> parameters;
+			for(int i = 0; i < formals.variables.size(); ++i){
+				parameters.push_back(formals.variables[i].id);
+			}
+			s.id = id;
+			s.params = parameters;
+			return s;
+		}
 };
 
 #endif
