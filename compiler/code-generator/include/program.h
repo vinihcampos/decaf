@@ -60,6 +60,8 @@ class Program{
 			Static::d += "default:\n";
 			Static::d += "return 0;\n}\n";
 
+			remainCode += Static::blocks;
+
 			remainCode += "return 0;\n";
 			remainCode += Static::d + "\n";
 			remainCode += "}";

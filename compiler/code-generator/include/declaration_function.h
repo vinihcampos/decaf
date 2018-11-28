@@ -36,7 +36,6 @@ class DeclarationFunction : public Declaration{
 			if(id.compare("main") == 0)
 				return stmtBlock.generate();
 			else{
-
 				std::string structName = "fun" + id;
 				std::string structFunc = "struct " + structName + "{\n";
 				structFunc += formals.generate();
@@ -46,7 +45,19 @@ class DeclarationFunction : public Declaration{
 				Static::structs += structFunc;
 				Static::stacks += "stack<" + structName + "> stack" + id + ";\n";
 
-				std::string code = stmtBlock.generate();
+				std::string code = "proc_" + id + ":{\n";
+
+				code += structName + " " + structName + "_ = " + "stack" + id + ".head();\n";
+
+				for(int i = 0; i < formals.variables.size(); ++i){
+					code += formals.variables[i].type.generate() + " " + formals.variables[i].id + " = " + structName + "_." + formals.variables[i].id + ";\n";
+				}
+
+				code += stmtBlock.generate();
+				code += "stack" + id + ".pop();\n";
+				code += "}\n";
+
+				Static::blocks += code;
 				return "";
 			}
 		}
