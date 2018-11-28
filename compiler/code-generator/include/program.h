@@ -10,21 +10,16 @@
 #include "declaration_function.h"
 #include "frame.h"
 #include "symbol.h"
+#include "static.h"
 
 class Program{
 
 	public:
 		std::deque<Declaration*> declarations;
-		static int pc;
-		static std::string d;
-		static std::string structs;
-		static std::string blocks;
-		static std::string stacks;
-		static std::map<std::string, Symbol> table;
 		
 		Program(){
-			pc = 0;
-			d = "labels: \nswitch(label){\n";
+			Static::pc = 0;
+			Static::d = "labels: \nswitch(label){\n";
 		}	
 
 		void toString(){
@@ -44,27 +39,36 @@ class Program{
 			std::string code = "";
 			code += "#include <cstdio>\n";
 			code += "#include <iostream>\n";
+			code += "#include <stack>\n";
 			code += "#include <string>\n\n";
 			code += "using namespace std;\n\n";
 
-			code += "int pc = 0;\n";
-			code += "int label;\n";
-			code += "bool eval = false;\n";
-			code += "int readIntAux;\n";
-			code += "std::string readStringAux;\n\n";
+			std::string remainCode = "";
 
-			code += "int main(){\n";
+			remainCode += "int pc = 0;\n";
+			remainCode += "int label;\n";
+			remainCode += "bool eval = false;\n";
+			remainCode += "int readIntAux;\n";
+			remainCode += "std::string readStringAux;\n\n";
+
+			remainCode += "int main(){\n";
 
 			for(int i = 0; i < declarations.size(); ++i){
-				code += declarations[i]->generate();
+				remainCode += declarations[i]->generate();
 			}
 
-			d += "default:\n";
-			d += "return 0;\n}\n";
+			Static::d += "default:\n";
+			Static::d += "return 0;\n}\n";
 
-			code += "return 0;\n";
-			code += d + "\n";
-			code += "}";
+			remainCode += "return 0;\n";
+			remainCode += Static::d + "\n";
+			remainCode += "}";
+
+			code += "\n// Struts' definitions\n";
+			code += Static::structs;
+			code += "\n// Stacks' definitions\n";
+			code += Static::stacks;
+			code += remainCode;
 
 			return code;
 		}
@@ -74,13 +78,13 @@ class Program{
 				if (DeclarationFunction* t = dynamic_cast<DeclarationFunction*>(declarations[i])){
 					Symbol s = t->table();
 					s.parent = "_GLOBAL_";
-					table[s.id] = s;
+					Static::table[s.id] = s;
 				}
 			}			
 		}
 
 		void tablePrint(){
-			for (auto& kv : table) {
+			for (auto& kv : Static::table) {
 			    std::cout << kv.first << ": ";
 			    for(int i = 0; i < kv.second.params.size(); ++i){
 			    	std:: cout << kv.second.params[i] << ",";
@@ -88,15 +92,6 @@ class Program{
 			    std::cout << std::endl;
 			}
 		}
-
-		static void update_frames(Frame f){
-			d += "\tcase " + std::to_string(f.id) + ":\n";
-			d += "\t\tgoto " + f.label + ";\n";
-			d += "\t\tbreak;\n";
-		}
-
-
-
 };
 
 #endif

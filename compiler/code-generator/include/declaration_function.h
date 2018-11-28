@@ -8,6 +8,7 @@
 #include "type.h"
 #include "formal.h"
 #include "stmt_block.h"
+#include "static.h"
 
 class DeclarationFunction : public Declaration{
 
@@ -31,8 +32,23 @@ class DeclarationFunction : public Declaration{
 			std::cout << "}";
 		}
 
-		std::string generate() override{
-			return stmtBlock.generate();
+		std::string generate(){
+			if(id.compare("main") == 0)
+				return stmtBlock.generate();
+			else{
+
+				std::string structName = "fun" + id;
+				std::string structFunc = "struct " + structName + "{\n";
+				structFunc += formals.generate();
+				structFunc += "int label;\n";
+				structFunc += "};\n";
+
+				Static::structs += structFunc;
+				Static::stacks += "stack<" + structName + "> stack" + id + ";\n";
+
+				std::string code = stmtBlock.generate();
+				return "";
+			}
 		}
 
 		Symbol table(){

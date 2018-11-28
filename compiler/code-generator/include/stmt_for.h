@@ -5,6 +5,7 @@
 #include "stmt.h"
 #include "expression.h"
 #include "stmt_expression.h"
+#include "static.h"
 
 class StatementFor : public Statement{
 	
@@ -49,16 +50,16 @@ class StatementFor : public Statement{
 				code += expression1->generate();
 			}
 
-			int block1N = Program::pc++;
-			int continuesN = Program::pc++;
+			int block1N = Static::pc++;
+			int continuesN = Static::pc++;
 
 			std::string block1 = "for" + std::to_string(block1N);
-			Program::d += "case(" + std::to_string(block1N) + "):\n";
-			Program::d += "goto " + block1 + ";\n";
+			Static::d += "case(" + std::to_string(block1N) + "):\n";
+			Static::d += "goto " + block1 + ";\n";
 
 			std::string continues = "continue" + std::to_string(continuesN);
-			Program::d += "case(" + std::to_string(continuesN) + "):\n";
-			Program::d += "goto " + continues + ";\n";
+			Static::d += "case(" + std::to_string(continuesN) + "):\n";
+			Static::d += "goto " + continues + ";\n";
 
 			code += "label = " + std::to_string(block1N) + ";\n";
 			code += "goto labels;\n";

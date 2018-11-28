@@ -4,7 +4,7 @@
 #include "stmt.h"
 #include "expression.h"
 #include "frame.h"
-#include "program.h"
+#include "static.h"
 #include <iostream>
 #include <string>
 
@@ -49,30 +49,30 @@ class StatementIf : public Statement{
 
 			std::string block1;
 			std::string block2 = "";
-			int label = Program::pc++;
+			int label = Static::pc++;
 			block1 = "if" + std::to_string(label);
 
-			Program::d += "case(" + std::to_string(label) + "):\n";
-			Program::d += "goto " + block1 + ";\n";
+			Static::d += "case(" + std::to_string(label) + "):\n";
+			Static::d += "goto " + block1 + ";\n";
 
 			code += "label = " + std::to_string(label) + ";\n";
 			code += "if(eval) goto labels;\n";
 			if(elseStatement != nullptr){
-				label = Program::pc++;
+				label = Static::pc++;
 				block2 = "else" + std::to_string(label);
 
-				Program::d += "case(" + std::to_string(label) + "):\n";
-				Program::d += "goto " + block2 + ";\n";
+				Static::d += "case(" + std::to_string(label) + "):\n";
+				Static::d += "goto " + block2 + ";\n";
 
 				code += "label = " + std::to_string(label) + ";\n";
 				code += "if(!eval) goto labels;\n";
 			}
-			label = Program::pc++;
+			label = Static::pc++;
 			int continueN = label;
 			std::string continues = "continue" + std::to_string(label);
 
-			Program::d += "case(" + std::to_string(label) + "):\n";
-			Program::d += "goto " + continues + ";\n";
+			Static::d += "case(" + std::to_string(label) + "):\n";
+			Static::d += "goto " + continues + ";\n";
 
 			code += "label = " + std::to_string(label) + ";\n";
 			code += "goto labels;\n";

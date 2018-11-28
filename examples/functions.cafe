@@ -1,0 +1,20 @@
+void soma()	{
+	int a;
+	int b;
+	a = 2;
+	b = 3;
+
+	print("Soma: ");
+	print(a + b);
+}
+
+void multi(int a, int b){
+	return a * b;
+}
+
+void main(){
+	if(0){
+		"oi";
+	}
+	soma();
+}

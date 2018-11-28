@@ -29,18 +29,18 @@ class StatementWhile : public Statement{
 		std::string generate() override{
 			std::string code = "";
 			
-			int label = Program::pc++;
+			int label = Static::pc++;
 			int block1N = label;
 			std::string block1;
 			block1 = "while" + std::to_string(block1N);
-			Program::d += "case(" + std::to_string(block1N) + "):\n";
-			Program::d += "goto " + block1 + ";\n";
+			Static::d += "case(" + std::to_string(block1N) + "):\n";
+			Static::d += "goto " + block1 + ";\n";
 
-			int continueN = Program::pc++;
+			int continueN = Static::pc++;
 			std::string continues = "continue" + std::to_string(continueN);
 
-			Program::d += "case(" + std::to_string(continueN) + "):\n";
-			Program::d += "goto " + continues + ";\n";
+			Static::d += "case(" + std::to_string(continueN) + "):\n";
+			Static::d += "goto " + continues + ";\n";
 
 			code += "label = " + std::to_string(block1N) + ";\n";
 			code += "goto labels;\n";

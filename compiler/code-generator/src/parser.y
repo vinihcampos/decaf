@@ -63,6 +63,7 @@
 	#include "implements.h"
 	#include "frame.h"
 	#include "symbol.h"
+	#include "static.h"
 	
 	extern int row, column;
 	extern char * lexeme;
@@ -72,14 +73,14 @@
 	extern FILE* yyin;
 	int error_found = 0;
 
-	int Program::pc = 0;
-	std::string Program::d = "";
+	int Static::pc = 0;
+	std::string Static::d = "";
 
-	std::string Program::structs;
-	std::string Program::blocks;
-	std::string Program::stacks;
+	std::string Static::structs = "";
+	std::string Static::blocks = "";
+	std::string Static::stacks = "";
 	
-	std::map<std::string, Symbol> Program::table;
+	std::map<std::string, Symbol> Static::table;
 	Program program;
 
 %}
