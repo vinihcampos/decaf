@@ -4,6 +4,7 @@
 #include <string>
 #include "stmt.h"
 #include "stmt_expression.h"
+#include "static.h"
 
 class StatementReturn : public Statement{
 	
@@ -19,7 +20,7 @@ class StatementReturn : public Statement{
 			std::cout << "}";
 		}
 		std::string generate() override{
-			return "";
+			return !Static::currFun.compare("") ? "" : "return_" + Static::currFun + " = " + expression->generate();
 		}
 };
 

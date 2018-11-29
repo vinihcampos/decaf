@@ -12,7 +12,10 @@ class Static{
 		static std::string structs;
 		static std::string blocks;
 		static std::string stacks;
-		static std::map<std::string, Symbol> table;	
+		static std::string returns;
+		static std::string currFun;
+		static std::map<std::string, Symbol> table;
+		static std::map<std::string, int> funId;	
 };
 
 #endif

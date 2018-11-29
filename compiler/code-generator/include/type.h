@@ -19,7 +19,7 @@ class Type{
 		int size;
 		BaseType base;
 
-		Type();
+		Type(){}
 		Type(BaseType base_, int size_) : size{size_}, base{base_} {}
 
 		void toString(){

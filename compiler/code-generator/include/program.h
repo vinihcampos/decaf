@@ -41,10 +41,11 @@ class Program{
 			code += "#include <iostream>\n";
 			code += "#include <stack>\n";
 			code += "#include <string>\n\n";
-			code += "using namespace std;\n\n";
+			code += "using namespace std;\n";
 
 			std::string remainCode = "";
 
+			remainCode += "\n// Auxiliar variables";
 			remainCode += "int pc = 0;\n";
 			remainCode += "int label;\n";
 			remainCode += "bool eval = false;\n";
@@ -66,10 +67,12 @@ class Program{
 			remainCode += Static::d + "\n";
 			remainCode += "}";
 
-			code += "\n// Struts' definitions\n";
+			code += "\n// Structs' definitions\n";
 			code += Static::structs;
 			code += "\n// Stacks' definitions\n";
 			code += Static::stacks;
+			code += "\n// Returns' definitions\n";
+			code += Static::returns;
 			code += remainCode;
 
 			return code;

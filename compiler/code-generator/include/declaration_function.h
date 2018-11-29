@@ -36,25 +36,37 @@ class DeclarationFunction : public Declaration{
 			if(id.compare("main") == 0)
 				return stmtBlock.generate();
 			else{
-				std::string structName = "fun" + id;
+				std::string structName = "fun_" + id;
 				std::string structFunc = "struct " + structName + "{\n";
 				structFunc += formals.generate();
 				structFunc += "int label;\n";
 				structFunc += "};\n";
 
+				int label = Static::pc++;
+				Static::d += "case(" + std::to_string(label) + "):\n";
+				Static::d += "goto " + structName + ";\n";
+
+				Static::funId[structName] = label;
+
 				Static::structs += structFunc;
-				Static::stacks += "stack<" + structName + "> stack" + id + ";\n";
+				Static::stacks += "stack<" + structName + "> stack_" + id + ";\n";
+				Static::returns += type.generate() + " return_" + structName + ";\n";
 
 				std::string code = "proc_" + id + ":{\n";
 
-				code += structName + " " + structName + "_ = " + "stack" + id + ".head();\n";
+				code += structName + " " + structName + "_ = " + "stack_" + id + ".head();\n";
 
 				for(int i = 0; i < formals.variables.size(); ++i){
 					code += formals.variables[i].type.generate() + " " + formals.variables[i].id + " = " + structName + "_." + formals.variables[i].id + ";\n";
 				}
 
+				Static::currFun = type.base == VOID_T ? "" : structName;
 				code += stmtBlock.generate();
-				code += "stack" + id + ".pop();\n";
+				Static::currFun = "";
+
+				code += "stack_" + id + ".pop();\n";
+				code += "label = " + structName + "_.label;\n";
+				code += "goto labels;\n";
 				code += "}\n";
 
 				Static::blocks += code;
@@ -69,6 +81,7 @@ class DeclarationFunction : public Declaration{
 			}
 			s.id = id;
 			s.params = parameters;
+			s.type = type;
 			return s;
 		}
 };

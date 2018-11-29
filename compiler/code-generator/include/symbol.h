@@ -3,12 +3,14 @@
 
 #include <string>
 #include <vector>
+#include "type.h"
 
 class Symbol{
 	public:
+		Type type;
 		std::string id;
 		std::string parent;
-		std::vector<std::string> params;	
+		std::vector<std::string> params;
 };
 
 #endif

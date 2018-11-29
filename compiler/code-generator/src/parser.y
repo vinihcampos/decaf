@@ -79,8 +79,11 @@
 	std::string Static::structs = "";
 	std::string Static::blocks = "";
 	std::string Static::stacks = "";
+	std::string Static::returns = "";
+	std::string Static::currFun = "";
 	
 	std::map<std::string, Symbol> Static::table;
+	std::map<std::string, int> Static::funId;
 	Program program;
 
 %}
