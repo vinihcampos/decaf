@@ -1,0 +1,12 @@
+int[] changeArray(int[] array){
+	array[0] = 10;
+	return array;
+}
+
+void main(){
+	int[] array;
+	array = newArray(1, int);
+
+	array = changeArray(array);
+	print(array[0], array[1]);
+}

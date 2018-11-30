@@ -19,7 +19,7 @@ class Program{
 		
 		Program(){
 			Static::pc = 0;
-			Static::d = "labels: \nswitch(label){\n";
+			Static::d = "labels:{\nswitch(label){\n";
 		}	
 
 		void toString(){
@@ -61,11 +61,10 @@ class Program{
 			Static::d += "default:\n";
 			Static::d += "return 0;\n}\n";
 
-			remainCode += Static::blocks;
-
 			remainCode += "return 0;\n";
+			remainCode += Static::blocks;
 			remainCode += Static::d + "\n";
-			remainCode += "}";
+			remainCode += "}\n}\n";
 
 			code += "\n// Structs' definitions\n";
 			code += Static::structs;
@@ -94,6 +93,7 @@ class Program{
 			    for(int i = 0; i < kv.second.params.size(); ++i){
 			    	std:: cout << kv.second.params[i] << ",";
 			    }
+			    std::cout << "/ label: " << kv.second.label;
 			    std::cout << std::endl;
 			}
 		}

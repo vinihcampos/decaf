@@ -4,6 +4,8 @@
 #include <string>
 #include "expression.h"
 #include "expression_list.h"
+#include "static.h"
+#include "symbol.h"
 
 class Call : public Expression{
 
@@ -29,7 +31,29 @@ class Call : public Expression{
 		}
 
 		std::string generate() override{
-			std::string code = "";
+
+			int labelFun = Static::table[id].label;
+			Symbol s = Static::table[id];
+
+			int structId = Static::pc++;
+			std::string structName = "fun_" + id + std::to_string(structId);
+			std::string code = "fun_" + id + " " + structName + ";\n";
+
+			for(int i = 0; i < actuals.expressions.size(); ++i){
+				code += structName + "." + s.params[i] + " = " + actuals.expressions[i]->generate() + ";\n";
+			}
+
+			int label = Static::pc++;
+			std::string continues = "continues" + std::to_string(label);
+			Static::d += "case(" + std::to_string(label) + "):\n";
+			Static::d += "goto " + continues + ";\n";
+
+			code += structName + ".label = " + std::to_string(label) + ";\n";
+			code += "stack_fun_" + id + ".push(" + structName + ");\n"; 
+			code += "label = " + std::to_string(labelFun) + ";\n";
+			code += "goto labels;\n";
+			code += continues + ":\n";
+
 			return code;
 		}
 

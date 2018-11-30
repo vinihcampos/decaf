@@ -6,6 +6,7 @@
 #include "operator_binary.h"
 #include "read_integer.h"
 #include "read_line.h"
+#include "call.h"
 
 class OperatorAssignment: public OperatorBinary{
 	public:
@@ -38,9 +39,12 @@ class OperatorAssignment: public OperatorBinary{
 		        code += "getline(cin, readStringAux);\n";
 		        code += expression1->generate();
 				code += "= readStringAux";
+		    }else if (Call* t = dynamic_cast<Call*>(expression2)) {
+		        code += expression2->generate();
+		        code += expression1->generate() + " = return_fun_" + t->id;
 		    }else{
 		    	code += expression1->generate();
-				code += "=";
+				code += " = ";
 				code += expression2->generate();	
 		    }			
 

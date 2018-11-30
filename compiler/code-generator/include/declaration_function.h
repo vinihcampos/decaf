@@ -42,31 +42,31 @@ class DeclarationFunction : public Declaration{
 				structFunc += "int label;\n";
 				structFunc += "};\n";
 
-				int label = Static::pc++;
+				int label = Static::table[id].label;
 				Static::d += "case(" + std::to_string(label) + "):\n";
-				Static::d += "goto " + structName + ";\n";
+				Static::d += "goto label_" + structName + ";\n";
 
 				Static::funId[structName] = label;
 
 				Static::structs += structFunc;
-				Static::stacks += "stack<" + structName + "> stack_" + id + ";\n";
-				Static::returns += type.generate() + " return_" + structName + ";\n";
+				Static::stacks += "stack<" + structName + "> stack_" + structName + ";\n";
+				if(type.base != VOID_T)
+					Static::returns += type.generate() + " return_" + structName + ";\n";
 
-				std::string code = "proc_" + id + ":{\n";
+				std::string code = "label_" + structName + ":{\n";
 
-				code += structName + " " + structName + "_ = " + "stack_" + id + ".head();\n";
+				code += structName + " " + structName + "_;\n";
+				code += structName + "_ = " + "stack_" + structName + ".top();\n";
 
 				for(int i = 0; i < formals.variables.size(); ++i){
-					code += formals.variables[i].type.generate() + " " + formals.variables[i].id + " = " + structName + "_." + formals.variables[i].id + ";\n";
+					code += formals.variables[i].type.generate() + " " + formals.variables[i].id + ";\n";
+					code += formals.variables[i].id + " = " + structName + "_." + formals.variables[i].id + ";\n";
 				}
 
-				Static::currFun = type.base == VOID_T ? "" : structName;
+				Static::currFun = type.base == VOID_T ? "-" + structName : structName;
 				code += stmtBlock.generate();
 				Static::currFun = "";
 
-				code += "stack_" + id + ".pop();\n";
-				code += "label = " + structName + "_.label;\n";
-				code += "goto labels;\n";
 				code += "}\n";
 
 				Static::blocks += code;
@@ -82,6 +82,7 @@ class DeclarationFunction : public Declaration{
 			s.id = id;
 			s.params = parameters;
 			s.type = type;
+			s.label = Static::pc++;
 			return s;
 		}
 };

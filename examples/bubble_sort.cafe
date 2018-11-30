@@ -1,0 +1,35 @@
+int[] bubble_sort(int [] array, int n){
+	int i;
+	int j;
+	for(i = 0; i < n; i = i + 1){
+		for(j = i + 1; j < n; j = j + 1){
+			if(array[j] < array[i]){
+				int swap;
+				swap = array[i];
+				array[i] = array[j];
+				array[j] = swap;
+			}
+		}
+	}
+
+	return array;
+}
+
+void main(){
+	int [] arr;
+    int arr_size;
+    int i;
+    arr = newArray(6, int);
+    arr[0] = 12; 
+    arr[1] = 11;
+    arr[2] = 13;
+    arr[3] = 5;
+    arr[4] = 6;
+    arr[5] = 7;
+
+    arr_size = 6;  
+
+    arr = bubble_sort(arr, arr_size); 
+    
+    print(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]);
+}

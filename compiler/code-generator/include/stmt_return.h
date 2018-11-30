@@ -5,6 +5,7 @@
 #include "stmt.h"
 #include "stmt_expression.h"
 #include "static.h"
+#include "symbol.h"
 
 class StatementReturn : public Statement{
 	
@@ -20,7 +21,23 @@ class StatementReturn : public Statement{
 			std::cout << "}";
 		}
 		std::string generate() override{
-			return !Static::currFun.compare("") ? "" : "return_" + Static::currFun + " = " + expression->generate();
+			std::string code = "";
+			if(Static::currFun[0] == '-'){
+				std::string name = Static::currFun.substr(1, Static::currFun.size() - 1);
+				code += "\n" + name + " auxReturn = stack_" + name + ".top();\n";
+				code += "stack_" + name + ".pop();\n";
+				code += "label = auxReturn.label;\n";
+				code += "goto labels;";
+			}else{
+				std::string name = Static::currFun;
+				code += "return_" + name + " = " + expression->generate();
+				code += "\n" + name + " auxReturn = stack_" + name + ".top();\n";
+				code += "stack_" + name + ".pop();\n";
+				code += "label = auxReturn.label;\n";
+				code += "goto labels;";
+			}
+
+			return code;
 		}
 };
 

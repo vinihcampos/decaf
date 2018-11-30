@@ -1,5 +1,6 @@
 void main(){
      int[] vector;
+     int result;
      vector = newArray(5, int);
 
      vector[0] = 9;
@@ -8,7 +9,8 @@ void main(){
      vector[3] = 56;
      vector[4] = 90;
 
-     vector = binarySearch(vector, 0, vector.length());
+     result = binarySearch(vector, 56, 5);
+     print(result);
 }
 
 int binarySearch (int[] vector, int key, int length){

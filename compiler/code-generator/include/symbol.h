@@ -11,6 +11,7 @@ class Symbol{
 		std::string id;
 		std::string parent;
 		std::vector<std::string> params;
+		int label;
 };
 
 #endif
