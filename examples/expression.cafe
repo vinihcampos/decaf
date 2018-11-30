@@ -1,0 +1,12 @@
+int main(){
+	
+	int a;
+	int x;
+
+	x = 10;
+	a = 2 + 5 * x;
+
+	print(a);
+
+	return 0;
+}

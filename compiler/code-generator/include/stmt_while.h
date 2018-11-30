@@ -29,10 +29,21 @@ class StatementWhile : public Statement{
 		std::string generate() override{
 			std::string code = "";
 			
+			int label = Static::pc++;
+			int block1N = label;
 			std::string block1;
-			block1 = "while" + std::to_string(Program::pc++);
-			std::string continues = "continue" + std::to_string(Program::pc++);
-			code += "goto " + block1 + ";\n";
+			block1 = "while" + std::to_string(block1N);
+			Static::d += "case(" + std::to_string(block1N) + "):\n";
+			Static::d += "goto " + block1 + ";\n";
+
+			int continueN = Static::pc++;
+			std::string continues = "continue" + std::to_string(continueN);
+
+			Static::d += "case(" + std::to_string(continueN) + "):\n";
+			Static::d += "goto " + continues + ";\n";
+
+			code += "label = " + std::to_string(block1N) + ";\n";
+			code += "goto labels;\n";
 
 			code += block1 + ":{\n";
 
@@ -44,9 +55,11 @@ class StatementWhile : public Statement{
 				code += "eval = false;\n";
 			}
 
-			code += "if(!eval) goto " + continues + ";\n";
+			code += "label = " + std::to_string(continueN) + ";\n";
+			code += "if(!eval) goto labels;\n";
 			code += whileStatement->generate() + "\n";
-			code += "goto " + block1 + ";\n}\n";
+			code += "label = " + std::to_string(block1N) + ";\n";
+			code += "goto labels;\n}\n";
 
 			code += continues + ":\n";
 

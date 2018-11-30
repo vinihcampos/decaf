@@ -1,5 +1,6 @@
 void main(){
 	int[] vector;
+    int i;
     vector = newArray(10, int);
 
 	vector[0] = 42;
@@ -13,41 +14,91 @@ void main(){
 	vector[8] = 94;
 	vector[9] = 11;
 
-	vector = quick_sort(vector, 0, vector.length() - 1);
+	quickSortIterative(vector, 0, 9);
+    for(i = 0; i < 10; i = i + 1)
+        print(vector[i]);
 }
 
-int[] quick_sort(int[] vector, int left, int right ){
-    int i; 
-    int j; 
-    int x; 
-    int y;
+/* This function is same in both iterative and recursive*/
+int partition (int [] arr, int l, int h) 
+{ 
+    int x;
+    int i;
+    int j;
+    int swap;
+    x = arr[h]; 
+    i = (l - 1); 
 
-    i = left;
-    j = right;
-    x = vector[(left + right) / 2];
+    for (j = l; j <= h- 1; j = j + 1) 
+    { 
+        if (arr[j] <= x) 
+        { 
+            i = i + 1;
+            swap = arr[i];
+            arr[i] = arr[j];
+            arr[j] = swap; 
+        } 
+    }
 
-    while(i <= j){
-        while(vector[i] < x && i < right){
-            i = i + 1;
-        }
-        while(vector[j] > x && j > left){
-            j = j - 1;
-        }
-        if(i <= j){
-            y = vector[i];
-            vector[i] = vector[j];
-            vector[j] = y;
-            i = i + 1;
-            j = j - 1;
-        }
+    swap = arr[i+1];
+    arr[i+1] = arr[h];
+    arr[h] = swap;
+
+    return (i + 1); 
+} 
+
+/* A[] --> Array to be sorted, 
+l --> Starting index, 
+h --> Ending index */
+void quickSortIterative (int []arr, int l, int h) 
+{ 
+    // Create an auxiliary stack 
+    int []stack; 
+    int top; 
+
+    stack = newArray( h - l + 1, int);
+    top = -1;
+
+    // push initial values of l and h to stack
+    top = top + 1; 
+    stack[ top ] = l;
+    top = top + 1; 
+    stack[ top ] = h; 
+
+    // Keep popping from stack while is not empty 
+    while ( top >= 0 ) 
+    { 
+        int p;
+        // Pop h and l 
+        h = stack[ top ];
+        top = top - 1; 
+        l = stack[ top ];
+        top = top - 1;  
+
+        // Set pivot element at its correct position 
+        // in sorted array 
+        p = partition( arr, l, h ); 
+
+        // If there are elements on left side of pivot, 
+        // then push left side to stack 
+        if ( p-1 > l ) 
+        {   
+            top = top + 1;
+            stack[ top ] = l;
+            top = top + 1; 
+            stack[ top ] = p - 1; 
+        } 
+
+        // If there are elements on right side of pivot, 
+        // then push right side to stack 
+        if ( p+1 < h ) 
+        { 
+            top = top + 1;
+            stack[ top ] = p + 1; 
+            top = top + 1;
+            stack[ top ] = h; 
+        } 
     }
-     
-    if(j > left){
-        quick_sort(vector, left, j);
-    }
-    if(i < right){
-        quick_sort(vector, i, right);
-    }
-    
-    return vector;
-}
+
+    return arr; 
+} 

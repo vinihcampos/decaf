@@ -22,6 +22,15 @@ class OperatorAnd : public OperatorBinary{
 			}
 			std::cout << "}";
 		}
+
+		std::string generate() override{
+		 	std::string code = "";
+			code += expression1->generate();
+			code += "&&";
+			code += expression2->generate();
+
+			return code;
+		}
 };
 
 #endif

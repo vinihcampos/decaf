@@ -3,6 +3,7 @@
 	#include <iostream>
 	#include <deque>
 	#include <string>
+	#include <map>
 	#include "program.h"
 	#include "declaration_class.h"
 	#include "declaration_function.h"
@@ -61,6 +62,8 @@
 	#include "expression_list.h"
 	#include "implements.h"
 	#include "frame.h"
+	#include "symbol.h"
+	#include "static.h"
 	
 	extern int row, column;
 	extern char * lexeme;
@@ -70,9 +73,17 @@
 	extern FILE* yyin;
 	int error_found = 0;
 
-	int Program::pc = 0;
-	std::string Program::d = "";
-	std::vector<std::string> Program::blocks;
+	int Static::pc = 0;
+	std::string Static::d = "";
+
+	std::string Static::structs = "";
+	std::string Static::blocks = "";
+	std::string Static::stacks = "";
+	std::string Static::returns = "";
+	std::string Static::currFun = "";
+	
+	std::map<std::string, Symbol> Static::table;
+	std::map<std::string, int> Static::funId;
 	Program program;
 
 %}
@@ -372,6 +383,7 @@ int main(int argc, char** args){
 				if(option.compare("ast") == 0){
 					program.toString();
 				}else if(option.compare("code") == 0){
+					program.tableGeneration();
 					std::cout << program.generate();
 				}
 			}

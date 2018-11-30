@@ -4,7 +4,7 @@
 #include "stmt.h"
 #include "expression.h"
 #include "frame.h"
-#include "program.h"
+#include "static.h"
 #include <iostream>
 #include <string>
 
@@ -48,27 +48,49 @@ class StatementIf : public Statement{
 			}
 
 			std::string block1;
-			std::string block2 = ""; 
-			block1 = "if" + std::to_string(Program::pc++);
-			code += "if(eval) goto " + block1 + ";\n";
+			std::string block2 = "";
+			int label = Static::pc++;
+			block1 = "if" + std::to_string(label);
+
+			Static::d += "case(" + std::to_string(label) + "):\n";
+			Static::d += "goto " + block1 + ";\n";
+
+			code += "label = " + std::to_string(label) + ";\n";
+			code += "if(eval) goto labels;\n";
 			if(elseStatement != nullptr){
-				block2 = "else" + std::to_string(Program::pc++);
-				code += "if(!eval) goto " + block2 + ";\n";
+				label = Static::pc++;
+				block2 = "else" + std::to_string(label);
+
+				Static::d += "case(" + std::to_string(label) + "):\n";
+				Static::d += "goto " + block2 + ";\n";
+
+				code += "label = " + std::to_string(label) + ";\n";
+				code += "if(!eval) goto labels;\n";
 			}
-			std::string continues = "continue" + std::to_string(Program::pc++);
-			code += "goto " + continues + ";\n";
+			label = Static::pc++;
+			int continueN = label;
+			std::string continues = "continue" + std::to_string(label);
+
+			Static::d += "case(" + std::to_string(label) + "):\n";
+			Static::d += "goto " + continues + ";\n";
+
+			code += "label = " + std::to_string(label) + ";\n";
+			code += "goto labels;\n";
 			
 			code += block1 + ":{\n";
 			code += ifStatement->generate() + "\n";
-			code += "goto " + continues + ";\n}\n";
+
+			code += "label = " + std::to_string(continueN) + ";\n";
+			code += "goto labels;\n}\n";
 
 			if(block2.compare("") != 0){
 				code += block2 + ":{\n";
 				code += elseStatement->generate() + "\n";
-				code += "goto " + continues + ";\n}\n";
+				code += "label = " + std::to_string(continueN) + ";\n";
+				code += "goto labels;\n}\n";
 			}
 
-			code += continues + ":\n";
+			code += continues + ":";
 
 			return code;	
 		}

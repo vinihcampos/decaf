@@ -1,0 +1,22 @@
+void soma()	{
+	int a;
+	int b;
+	a = 2;
+	b = 3;
+
+	print("Soma: ");
+	print(a + b);
+
+	return;
+}
+
+int multi(int a, int b){
+	return a * b;
+}
+
+void main(){
+	if(0){
+		"oi";
+	}
+	soma();
+}

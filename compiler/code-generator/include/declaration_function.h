@@ -8,6 +8,7 @@
 #include "type.h"
 #include "formal.h"
 #include "stmt_block.h"
+#include "static.h"
 
 class DeclarationFunction : public Declaration{
 
@@ -31,8 +32,58 @@ class DeclarationFunction : public Declaration{
 			std::cout << "}";
 		}
 
-		std::string generate() override{ 
-			return stmtBlock.generate();
+		std::string generate(){
+			if(id.compare("main") == 0)
+				return stmtBlock.generate();
+			else{
+				std::string structName = "fun_" + id;
+				std::string structFunc = "struct " + structName + "{\n";
+				structFunc += formals.generate();
+				structFunc += "int label;\n";
+				structFunc += "};\n";
+
+				int label = Static::table[id].label;
+				Static::d += "case(" + std::to_string(label) + "):\n";
+				Static::d += "goto label_" + structName + ";\n";
+
+				Static::funId[structName] = label;
+
+				Static::structs += structFunc;
+				Static::stacks += "stack<" + structName + "> stack_" + structName + ";\n";
+				if(type.base != VOID_T)
+					Static::returns += type.generate() + " return_" + structName + ";\n";
+
+				std::string code = "label_" + structName + ":{\n";
+
+				code += structName + " " + structName + "_;\n";
+				code += structName + "_ = " + "stack_" + structName + ".top();\n";
+
+				for(int i = 0; i < formals.variables.size(); ++i){
+					code += formals.variables[i].type.generate() + " " + formals.variables[i].id + ";\n";
+					code += formals.variables[i].id + " = " + structName + "_." + formals.variables[i].id + ";\n";
+				}
+
+				Static::currFun = type.base == VOID_T ? "-" + structName : structName;
+				code += stmtBlock.generate();
+				Static::currFun = "";
+
+				code += "}\n";
+
+				Static::blocks += code;
+				return "";
+			}
+		}
+
+		Symbol table(){
+			Symbol s; std::vector<std::string> parameters;
+			for(int i = 0; i < formals.variables.size(); ++i){
+				parameters.push_back(formals.variables[i].id);
+			}
+			s.id = id;
+			s.params = parameters;
+			s.type = type;
+			s.label = Static::pc++;
+			return s;
 		}
 };
 

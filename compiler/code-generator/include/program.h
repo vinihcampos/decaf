@@ -5,19 +5,21 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <map>
 #include "declaration.h"
+#include "declaration_function.h"
 #include "frame.h"
+#include "symbol.h"
+#include "static.h"
 
 class Program{
 
 	public:
 		std::deque<Declaration*> declarations;
-		static int pc;
-		static std::string d;
-		static std::vector<std::string> blocks;
 		
 		Program(){
-			pc = 0;
+			Static::pc = 0;
+			Static::d = "labels:{\nswitch(label){\n";
 		}	
 
 		void toString(){
@@ -37,33 +39,64 @@ class Program{
 			std::string code = "";
 			code += "#include <cstdio>\n";
 			code += "#include <iostream>\n";
+			code += "#include <stack>\n";
 			code += "#include <string>\n\n";
-			code += "using namespace std;\n\n";
+			code += "using namespace std;\n";
 
-			code += "int pc = 0;\n";
-			code += "bool eval = false;\n";
-			code += "int readIntAux;\n";
-			code += "std::string readStringAux;\n\n";
+			std::string remainCode = "";
 
-			code += "int main(){\n";
+			remainCode += "\n// Auxiliar variables";
+			remainCode += "int pc = 0;\n";
+			remainCode += "int label;\n";
+			remainCode += "bool eval = false;\n";
+			remainCode += "int readIntAux;\n";
+			remainCode += "std::string readStringAux;\n\n";
+
+			remainCode += "int main(){\n";
 
 			for(int i = 0; i < declarations.size(); ++i){
-				code += declarations[i]->generate();
+				remainCode += declarations[i]->generate();
 			}
 
-			code += "return 0;\n";
-			code += d + "\n";
-			code += "}";
+			Static::d += "default:\n";
+			Static::d += "return 0;\n}\n";
+
+			remainCode += "return 0;\n";
+			remainCode += Static::blocks;
+			remainCode += Static::d + "\n";
+			remainCode += "}\n}\n";
+
+			code += "\n// Structs' definitions\n";
+			code += Static::structs;
+			code += "\n// Stacks' definitions\n";
+			code += Static::stacks;
+			code += "\n// Returns' definitions\n";
+			code += Static::returns;
+			code += remainCode;
 
 			return code;
 		}
 
-		static void update_frames(Frame f){
-			d += "\tcase " + std::to_string(f.id) + ":\n";
-			d += "\t\tgoto " + f.label + ";\n";
-			d += "\t\tbreak;\n";
+		void tableGeneration(){
+			for(int i = 0; i < declarations.size(); ++i){
+				if (DeclarationFunction* t = dynamic_cast<DeclarationFunction*>(declarations[i])){
+					Symbol s = t->table();
+					s.parent = "_GLOBAL_";
+					Static::table[s.id] = s;
+				}
+			}			
 		}
 
+		void tablePrint(){
+			for (auto& kv : Static::table) {
+			    std::cout << kv.first << ": ";
+			    for(int i = 0; i < kv.second.params.size(); ++i){
+			    	std:: cout << kv.second.params[i] << ",";
+			    }
+			    std::cout << "/ label: " << kv.second.label;
+			    std::cout << std::endl;
+			}
+		}
 };
 
 #endif

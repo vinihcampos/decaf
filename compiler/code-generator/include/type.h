@@ -19,7 +19,7 @@ class Type{
 		int size;
 		BaseType base;
 
-		Type();
+		Type(){}
 		Type(BaseType base_, int size_) : size{size_}, base{base_} {}
 
 		void toString(){
@@ -30,10 +30,10 @@ class Type{
 		}
 
 		std::string generate(){
-			std::string squares = "";
+			std::string pointers = "";
 			for(int i = 0; i < size; ++i)
-				squares += "[]";
-			return baseTypeToCType() + squares;
+				pointers += "*";
+			return baseTypeToCType() + pointers;
 		}
 
 		std::string baseTypeToString(){
