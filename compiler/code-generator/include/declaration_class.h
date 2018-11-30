@@ -7,6 +7,7 @@
 #include "declaration.h"
 #include "field.h"
 #include "implements.h"
+#include "static.h"
 
 class DeclarationClass : public Declaration{
 

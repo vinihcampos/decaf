@@ -188,11 +188,11 @@ variableDeclList:	variableDecl variableDeclList{
 variable:	type ID {DeclarationVariable * var = new DeclarationVariable(*$1, $2); $$ = var;}
 	;
 
-type:	INT  { Type * t = new Type(INT_T, 0); $$ = t;}
-	|	DOUBLE { Type * t = new Type(DOUBLE_T, 0); $$ = t;}
-	|	BOOL { Type * t = new Type(BOOL_T, 0); $$ = t;}
-	|	STRING { Type * t = new Type(STRING_T, 0); $$ = t;}
-	|	USERTYPE { Type * t = new Type(USERTYPE_T, 0); $$ = t;}
+type:	INT  { Type * t = new Type(INT_T, 0, ""); $$ = t;}
+	|	DOUBLE { Type * t = new Type(DOUBLE_T, 0, ""); $$ = t;}
+	|	BOOL { Type * t = new Type(BOOL_T, 0, ""); $$ = t;}
+	|	STRING { Type * t = new Type(STRING_T, 0, ""); $$ = t;}
+	|	USERTYPE { Type * t = new Type(USERTYPE_T, 0, $1); $$ = t;}
 	|	type '[' ']' {Type * t = $1; t->size += 1; $$ = t; }
 	;
 
@@ -201,7 +201,7 @@ functionDecl:	type ID '(' formals ')' stmtBlock {
 					$$ = fun;
 				}
 	|			VOID ID '(' formals ')' stmtBlock {
-					Type t = Type(VOID_T, 0); 
+					Type t = Type(VOID_T, 0, ""); 
 					DeclarationFunction * fun = new DeclarationFunction(t, $2, *$4, *$6); 
 					$$ = fun;
 				}
@@ -263,7 +263,7 @@ prototype:	type ID '(' formals ')' ';' prototype {
 				$$ = $7;
 			}
 	|		VOID ID '(' formals ')' ';' prototype {
-				Type t = Type(VOID_T, 0);
+				Type t = Type(VOID_T, 0, "");
 				$7->prototypes.push_front(Prototype(t, $2, *$4));
 				$$ = $7;
 			}
