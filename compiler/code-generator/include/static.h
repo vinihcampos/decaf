@@ -14,8 +14,9 @@ class Static{
 		static std::string stacks;
 		static std::string returns;
 		static std::string currFun;
+		static std::string currClass;
 		static std::map<std::string, Symbol> table;
-		static std::map<std::string, int> funId;	
+		static std::map<std::string, int> funId;
 };
 
 #endif

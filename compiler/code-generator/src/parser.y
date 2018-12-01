@@ -81,6 +81,7 @@
 	std::string Static::stacks = "";
 	std::string Static::returns = "";
 	std::string Static::currFun = "";
+	std::string Static::currClass = "";
 	
 	std::map<std::string, Symbol> Static::table;
 	std::map<std::string, int> Static::funId;
@@ -384,6 +385,7 @@ int main(int argc, char** args){
 					program.toString();
 				}else if(option.compare("code") == 0){
 					program.tableGeneration();
+					program.tablePrint();
 					std::cout << program.generate();
 				}
 			}

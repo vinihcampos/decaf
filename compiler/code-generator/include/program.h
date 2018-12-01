@@ -8,6 +8,7 @@
 #include <map>
 #include "declaration.h"
 #include "declaration_function.h"
+#include "declaration_class.h"
 #include "frame.h"
 #include "symbol.h"
 #include "static.h"
@@ -83,6 +84,8 @@ class Program{
 					Symbol s = t->table();
 					s.parent = "_GLOBAL_";
 					Static::table[s.id] = s;
+				}else if(DeclarationClass* t = dynamic_cast<DeclarationClass*>(declarations[i])){
+					t->tableGeneration();
 				}
 			}			
 		}

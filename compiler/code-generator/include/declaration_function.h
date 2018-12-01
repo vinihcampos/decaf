@@ -36,10 +36,18 @@ class DeclarationFunction : public Declaration{
 			if(id.compare("main") == 0)
 				return stmtBlock.generate();
 			else{
-				std::string structName = "fun_" + id;
+				std::string structName; 
+				if(!Static::currClass.compare(""))
+					structName = "fun_" + id;
+				else
+					structName = "method_" + id;
 				std::string structFunc = "struct " + structName + "{\n";
 				structFunc += formals.generate();
 				structFunc += "int label;\n";
+
+				if(Static::currClass.compare(""))
+					structFunc += Static::currClass + " * attr;\n"; 
+
 				structFunc += "};\n";
 
 				int label = Static::table[id].label;

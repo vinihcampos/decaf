@@ -18,6 +18,9 @@ interface Calculo{
 }
 
 class Multiplicacao implements Calculo{
+	
+	Veiculo veiculo;
+
 	bool calculavel(){
 		return true;
 	}
