@@ -385,7 +385,7 @@ int main(int argc, char** args){
 					program.toString();
 				}else if(option.compare("code") == 0){
 					program.tableGeneration();
-					program.tablePrint();
+					//program.tablePrint();
 					std::cout << program.generate();
 				}
 			}

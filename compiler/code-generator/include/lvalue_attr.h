@@ -23,8 +23,8 @@ class LValueAttribute : public LValue{
 		}
 		std::string generate() override{
 			std::string code = "";
-			code += id + ".";
 			code += expression1->generate();
+			code += "." + id;
 
 			return code;
 		}

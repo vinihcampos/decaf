@@ -18,13 +18,21 @@ interface Calculo{
 }
 
 class Multiplicacao implements Calculo{
-	
-	Veiculo veiculo;
-
 	bool calculavel(){
 		return true;
 	}
 	double calcular(){
 		return 5 * 5;
+	}
+}
+
+class Valor{
+	int a;
+	Veiculo []v;
+
+	int valorar(){
+		v = newArray(10, Veiculo);
+		v[0].num_rodas = 2;
+		return a * v[0].num_rodas;
 	}
 }

@@ -38,14 +38,14 @@ class DeclarationClass : public Declaration{
 				Symbol s;
 				s.id = fields.variables[i]->id;
 				s.type = fields.variables[i]->type;
-				s.parent = "class_" + userType;
-				Static::table[s.id] = s;
+				s.parent = userType;
+				Static::table[userType + "_" + s.id] = s;
 			}
 
 			for (int i = 0; i < fields.functions.size(); ++i){
 				Symbol s = fields.functions[i]->table();
-				s.parent = "class_" + userType;
-				Static::table[s.id] = s;
+				s.parent = userType;
+				Static::table[userType + "_" + s.id] = s;
 			}
 		}
 
