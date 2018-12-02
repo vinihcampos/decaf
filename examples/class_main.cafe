@@ -1,0 +1,27 @@
+class Pessoa{
+	string nome;
+	int idade;
+
+	void setNome(string nome_){
+		nome = nome_;
+	}
+
+	void setIdade(int idade_){
+		idade = idade_;
+	}
+
+	void setPessoa(string nome_, int idade_){
+		nome = nome_;
+		idade = idade_;
+	}
+}
+
+void main(){
+	Pessoa p;
+	p.setPessoa("vinicius", 24);
+	print(p.nome, p.idade);
+	p.setNome("Andrezza");
+	print(p.nome, p.idade);
+	p.setIdade(25);
+	print(p.nome, p.idade);
+}

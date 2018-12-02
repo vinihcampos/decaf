@@ -17,10 +17,11 @@ class Type{
 	
 	public:
 		int size;
+		std::string name;
 		BaseType base;
 
 		Type(){}
-		Type(BaseType base_, int size_) : size{size_}, base{base_} {}
+		Type(BaseType base_, int size_, std::string name_) : size{size_}, base{base_} , name{name_}{}
 
 		void toString(){
 			std::cout << "type: {";
@@ -66,7 +67,7 @@ class Type{
 				case STRING_T:
 					return "string";
 				case USERTYPE_T:
-					return "USERTYPE";
+					return name;
 				case VOID_T :
 					return "void";
 				default:

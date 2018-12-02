@@ -3,6 +3,7 @@
 
 #include <string>
 #include "lvalue.h"
+#include "static.h"
 
 class LValueId : public LValue{
 
@@ -17,10 +18,12 @@ class LValueId : public LValue{
 		}
 
 		std::string generate() override{
-			std::string code = "";
-			code += id;
-
-			return code;
+			if(Static::currClass.compare("")){
+				if(Static::table.find(Static::currClass + "_" + id) != Static::table.end())
+					return "attr->" + id;
+			}
+			
+			return id;
 		}
 
 };

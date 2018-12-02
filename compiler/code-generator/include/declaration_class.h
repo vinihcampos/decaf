@@ -7,6 +7,7 @@
 #include "declaration.h"
 #include "field.h"
 #include "implements.h"
+#include "static.h"
 
 class DeclarationClass : public Declaration{
 
@@ -31,8 +32,37 @@ class DeclarationClass : public Declaration{
 			std::cout << "}";
 		}
 
+		void tableGeneration(){
+
+			for (int i = 0; i < fields.variables.size(); ++i){
+				Symbol s;
+				s.id = fields.variables[i]->id;
+				s.type = fields.variables[i]->type;
+				s.parent = userType;
+				Static::table[userType + "_" + s.id] = s;
+			}
+
+			for (int i = 0; i < fields.functions.size(); ++i){
+				Symbol s = fields.functions[i]->table();
+				s.parent = userType;
+				Static::table[s.id] = s;
+			}
+		}
+
 		std::string generate() override{
 			std::string code = "";
+
+			Static::currClass = userType;
+			Static::structs += "struct " + userType + "{\n";
+			for (int i = 0; i < fields.variables.size(); ++i){
+				Static::structs += fields.variables[i]->generate() + "\n";
+			}
+			Static::structs += "};\n";
+
+			for(int i = 0; i < fields.functions.size(); ++i){
+				fields.functions[i]->generate();
+			}
+			Static::currClass = "";
 
 			return code;
 		}
