@@ -69,7 +69,7 @@ commentLine [/][/].*
  /* Constants */
 
 {hex}|{digit}+  { yylval.lexeme = strdup(yytext); column += yyleng; return INTCONSTANT; }
-\".*\"          { yylval.lexeme = strdup(yytext); column += yyleng; return STRINGCONSTANT; }
+\"([^\\\"]|\\.)*\" { yylval.lexeme = strdup(yytext); column += yyleng; return STRINGCONSTANT; }
 false           { yylval.lexeme = strdup(yytext); column += yyleng; return FALSE; }
 true            { yylval.lexeme = strdup(yytext); column += yyleng; return TRUE; }
 {real}{exp}*    { yylval.lexeme = strdup(yytext); column += yyleng; return DOUBLECONSTANT; }

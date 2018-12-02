@@ -17,11 +17,15 @@ class Pessoa{
 }
 
 void main(){
+
+	int idade;
+	string nome;
 	Pessoa p;
-	p.setPessoa("vinicius", 24);
-	print(p.nome, p.idade);
-	p.setNome("Andrezza");
-	print(p.nome, p.idade);
-	p.setIdade(25);
-	print(p.nome, p.idade);
+
+	print("Digite seu nome: ");
+	nome = readLine();
+	print("Digite sua idade: ");
+	idade = readInteger();
+	p.setPessoa(nome, idade);
+	print("Oi ", p.nome, " você tem ", p.idade, " anos.");
 }

@@ -22,7 +22,7 @@ class StatementPrint : public Statement{
 			code += "cout ";
 
 			for (int i = 0; i < expressions.expressions.size(); ++i){
-				code += "<< " + expressions.expressions[i]->generate() + "<< \" \"";
+				code += "<< " + expressions.expressions[i]->generate();
 			}
 
 			code += "<< endl;";
