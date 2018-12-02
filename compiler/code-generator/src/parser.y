@@ -82,6 +82,7 @@
 	std::string Static::returns = "";
 	std::string Static::currFun = "";
 	std::string Static::currClass = "";
+	std::string Static::declarationFunctions = "";
 	
 	std::map<std::string, Symbol> Static::table;
 	std::map<std::string, int> Static::funId;

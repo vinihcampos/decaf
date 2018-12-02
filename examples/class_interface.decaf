@@ -2,6 +2,10 @@ class Veiculo{
 	string nome;
 	string cor;
 	int num_rodas;
+
+	int getNumRodas(){
+		return num_rodas;
+	}
 }
 
 class Moto extends Veiculo{
@@ -33,6 +37,6 @@ class Valor{
 	int valorar(){
 		v = newArray(10, Veiculo);
 		v[0].num_rodas = 2;
-		return a * v[0].num_rodas;
+		return a * v[0].getNumRodas();
 	}
 }

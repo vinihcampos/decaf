@@ -45,7 +45,7 @@ class DeclarationClass : public Declaration{
 			for (int i = 0; i < fields.functions.size(); ++i){
 				Symbol s = fields.functions[i]->table();
 				s.parent = userType;
-				Static::table[userType + "_" + s.id] = s;
+				Static::table[s.id] = s;
 			}
 		}
 

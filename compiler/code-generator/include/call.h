@@ -32,13 +32,19 @@ class Call : public Expression{
 
 		std::string generate() override{
 
+			std::string exp = "";
+			if(expression1 != nullptr){
+				exp = expression1->generate();
+			}
+
 			int labelFun = Static::table[id].label;
 			Symbol s = Static::table[id];
 
 			int structId = Static::pc++;
 			std::string structName = "fun_" + id + std::to_string(structId);
-			std::string code = "fun_" + id + " " + structName + ";\n";
+			Static::declarationFunctions += "fun_" + id + " " + structName + ";\n";
 
+			std::string code = "";			
 			for(int i = 0; i < actuals.expressions.size(); ++i){
 				code += structName + "." + s.params[i] + " = " + actuals.expressions[i]->generate() + ";\n";
 			}
@@ -49,6 +55,7 @@ class Call : public Expression{
 			Static::d += "goto " + continues + ";\n";
 
 			code += structName + ".label = " + std::to_string(label) + ";\n";
+			if(expression1 != nullptr) code += structName + ".attr = &" + exp + ";\n";
 			code += "stack_fun_" + id + ".push(" + structName + ");\n"; 
 			code += "label = " + std::to_string(labelFun) + ";\n";
 			code += "goto labels;\n";

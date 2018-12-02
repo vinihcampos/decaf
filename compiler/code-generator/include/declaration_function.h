@@ -37,10 +37,10 @@ class DeclarationFunction : public Declaration{
 				return stmtBlock.generate();
 			else{
 				std::string structName; 
-				if(!Static::currClass.compare(""))
+				//if(!Static::currClass.compare(""))
 					structName = "fun_" + id;
-				else
-					structName = "method_" + id;
+				//else
+				//	structName = "method_" + id;
 				std::string structFunc = "struct " + structName + "{\n";
 				structFunc += formals.generate();
 				structFunc += "int label;\n";
@@ -63,7 +63,7 @@ class DeclarationFunction : public Declaration{
 
 				std::string code = "label_" + structName + ":{\n";
 
-				code += structName + " " + structName + "_;\n";
+				Static::declarationFunctions += structName + " " + structName + "_;\n";
 				code += structName + "_ = " + "stack_" + structName + ".top();\n";
 
 				for(int i = 0; i < formals.variables.size(); ++i){
@@ -71,8 +71,22 @@ class DeclarationFunction : public Declaration{
 					code += formals.variables[i].id + " = " + structName + "_." + formals.variables[i].id + ";\n";
 				}
 
+				if(Static::currClass.compare("")){
+					code += Static::currClass + " * attr;\n";
+					code += "attr = " + structName + "_.attr;\n";
+				}
+
 				Static::currFun = type.base == VOID_T ? "-" + structName : structName;
 				code += stmtBlock.generate();
+
+				if(type.base == VOID_T){
+					std::string name = Static::currFun.substr(1, Static::currFun.size() - 1);
+					code += "\n" + name + " auxReturn = stack_" + name + ".top();\n";
+					code += "stack_" + name + ".pop();\n";
+					code += "label = auxReturn.label;\n";
+					code += "goto labels;\n";
+				}
+
 				Static::currFun = "";
 
 				code += "}\n";

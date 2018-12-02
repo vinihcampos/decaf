@@ -46,15 +46,6 @@ class Program{
 
 			std::string remainCode = "";
 
-			remainCode += "\n// Auxiliar variables";
-			remainCode += "int pc = 0;\n";
-			remainCode += "int label;\n";
-			remainCode += "bool eval = false;\n";
-			remainCode += "int readIntAux;\n";
-			remainCode += "std::string readStringAux;\n\n";
-
-			remainCode += "int main(){\n";
-
 			for(int i = 0; i < declarations.size(); ++i){
 				remainCode += declarations[i]->generate();
 			}
@@ -73,6 +64,14 @@ class Program{
 			code += Static::stacks;
 			code += "\n// Returns' definitions\n";
 			code += Static::returns;
+			code += "\n// Auxiliar variables";
+			code += "int pc = 0;\n";
+			code += "int label;\n";
+			code += "bool eval = false;\n";
+			code += "int readIntAux;\n";
+			code += "std::string readStringAux;\n\n";
+			code += "int main(){\n";
+			code += Static::declarationFunctions;
 			code += remainCode;
 
 			return code;

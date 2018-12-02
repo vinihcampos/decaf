@@ -22,13 +22,7 @@ class StatementReturn : public Statement{
 		}
 		std::string generate() override{
 			std::string code = "";
-			if(Static::currFun[0] == '-'){
-				std::string name = Static::currFun.substr(1, Static::currFun.size() - 1);
-				code += "\n" + name + " auxReturn = stack_" + name + ".top();\n";
-				code += "stack_" + name + ".pop();\n";
-				code += "label = auxReturn.label;\n";
-				code += "goto labels;";
-			}else{
+			if(Static::currFun[0] != '-' && Static::currFun.compare("")){
 				std::string name = Static::currFun;
 				code += "return_" + name + " = " + expression->generate();
 				code += "\n" + name + " auxReturn = stack_" + name + ".top();\n";

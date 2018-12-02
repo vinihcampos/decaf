@@ -14,9 +14,18 @@ int multi(int a, int b){
 	return a * b;
 }
 
+void text(string[]a){
+	soma();
+	print(a[0]);
+}
+
 void main(){
+	string [] a;
 	if(0){
 		"oi";
 	}
 	soma();
+	a = newArray(3, string);
+	a[0] = "vinicius";
+	text(a);
 }
