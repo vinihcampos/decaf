@@ -1,35 +1,9 @@
 void main(){
-	//a = readinteger();
-	//print(a * 10);
-
 	int a;
-	int c;
-	int i;
-	string nome;
-	c = 20;
-	a = 15;
-	nome = "vinicius";
-	if(0){
-		print(10 + 35);
-	}else{
-		if(c + a){
-			print(50, nome);
-		}else{
-			print(10);
-		}
-	}
+	int b;
 
-	for(i = 0; i < 10; i = i+1){
-		a = a+1;
-		while(a > 10){
-			a = a - 1;
-			if(a > 0){
-				print(a);
-			}else{
-				print(c);
-			}
-		}
-	}
+	a = 5;
+	b = 3;
 
-	return;
+	print(a * b);
 }

@@ -65,7 +65,7 @@ class Program{
 			code += "\n// Returns' definitions\n";
 			code += Static::returns;
 			code += "\n// Auxiliar variables";
-			code += "int pc = 0;\n";
+			code += "\nint pc = 0;\n";
 			code += "int label;\n";
 			code += "bool eval = false;\n";
 			code += "int readIntAux;\n";
